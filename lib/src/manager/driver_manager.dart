@@ -24,6 +24,7 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       backgroundColor: Colors.white30,
       appBar: AppBar(
+        iconTheme: IconTheme.of(context),
         centerTitle: true,
         title: Text(
           'Drivers',
