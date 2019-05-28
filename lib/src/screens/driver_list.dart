@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
-// import '../models/driver_model.dart';
+import 'driver_details.dart';
 
 class DriverList extends StatelessWidget {
   // final List<DriverModel> drivers;
   final List drivers;
+  final List<int> stars = [1, 2, 3, 4, 5];
   DriverList(this.drivers);
 
- Widget _singleListItem(BuildContext context, int index) {
+  Widget _singleListItem(BuildContext context, int index) {
     return Card(
       color: Colors.white,
       margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
       child: Column(
         children: <Widget>[
-          rowContainer(drivers[index]),
+          rowContainer(drivers[index], context),
           Image.asset(
             'assets/car.jpg',
           ),
-          Icon(
-            Icons.star,
-            color: Colors.yellow,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: stars
+                .map(
+                  (element) => Icon(
+                        Icons.star,
+                        color: Colors.yellow,
+                      ),
+                )
+                .toList(),
           ),
         ],
       ),
@@ -56,7 +64,7 @@ class DriverList extends StatelessWidget {
   }
 }
 
-Widget rowContainer(String element) {
+Widget rowContainer(String element, BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       gradient: LinearGradient(
@@ -72,7 +80,7 @@ Widget rowContainer(String element) {
         Container(margin: EdgeInsets.only(left: 10.00)),
         avatarText(element),
         Spacer(),
-        avatarMore(),
+        avatarMore(context),
       ],
     ),
   );
@@ -106,12 +114,17 @@ Widget avatarText(String element) {
   );
 }
 
-Widget avatarMore() {
+Widget avatarMore(BuildContext context) {
   return IconButton(
     icon: Icon(Icons.arrow_right),
     tooltip: 'Know More',
     iconSize: 35.0,
     color: Colors.white,
-    onPressed: () {},
+    onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => DriverDetails(),
+          ),
+        ),
   );
 }
