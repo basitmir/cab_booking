@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-// import '../manager/driver_manager.dart';
-import '../manager/driver_manager.dart';
-
-
-class Home extends StatelessWidget {
-  Widget build(BuildContext context) {
+import 'home.dart';
+class Login extends StatelessWidget{
+  @override
+ Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Home',
+          'LOGIN',
           style: TextStyle(color: Colors.white, fontSize: 21.0),
         ),
       ),
@@ -20,7 +18,7 @@ class Home extends StatelessWidget {
           onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => MyApp(),
+                  builder: (BuildContext context) => Home(),
                 ),
               ),
         ),
