@@ -6,6 +6,7 @@ class Register extends StatelessWidget{
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        iconTheme: IconTheme.of(context),
         centerTitle: true,
         title: Text(
           'Register',

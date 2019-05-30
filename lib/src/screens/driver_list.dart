@@ -3,7 +3,7 @@ import 'driver_details.dart';
 
 class DriverList extends StatelessWidget {
   // final List<DriverModel> drivers;
-  final List drivers;
+  final List<Map<String,String>> drivers;
   final List<int> stars = [1, 2, 3, 4, 5];
   DriverList(this.drivers);
 
@@ -13,9 +13,9 @@ class DriverList extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
       child: Column(
         children: <Widget>[
-          rowContainer(drivers[index], context),
+          rowContainer(drivers[index]['name'],drivers[index]['cabNumber'], context),
           Image.asset(
-            'assets/car.jpg',
+            drivers[index]['image'],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -37,6 +37,7 @@ class DriverList extends StatelessWidget {
     return ListView.builder(
       itemBuilder: _singleListItem,
       itemCount: drivers.length,
+     
 
       // children: [
       //   Column(
@@ -64,7 +65,7 @@ class DriverList extends StatelessWidget {
   }
 }
 
-Widget rowContainer(String element, BuildContext context) {
+Widget rowContainer(String name,String number, BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       gradient: LinearGradient(
@@ -78,9 +79,9 @@ Widget rowContainer(String element, BuildContext context) {
       children: <Widget>[
         avatar(),
         Container(margin: EdgeInsets.only(left: 10.00)),
-        avatarText(element),
+        avatarText(name,number),
         Spacer(),
-        avatarMore(context),
+        avatarMore(name,number,context),
       ],
     ),
   );
@@ -98,23 +99,23 @@ Widget avatar() {
   );
 }
 
-Widget avatarText(String element) {
+Widget avatarText(String name,String number) {
   return Column(
     children: <Widget>[
       Text(
-        element,
+        name,
         style: TextStyle(
             color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w600),
       ),
       Text(
-        'JK2012-XB',
+        number,
         style: TextStyle(color: Colors.black54, fontSize: 12.0),
       ),
     ],
   );
 }
 
-Widget avatarMore(BuildContext context) {
+Widget avatarMore(String name,String number,BuildContext context) {
   return IconButton(
     icon: Icon(Icons.arrow_right),
     tooltip: 'Know More',
@@ -123,7 +124,7 @@ Widget avatarMore(BuildContext context) {
     onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => DriverDetails(),
+            builder: (BuildContext context) => DriverDetails(name,number),
           ),
         ),
   );

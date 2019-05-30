@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DriverDetails extends StatelessWidget {
+  final String name;
+  final String number;
+  DriverDetails(this.name,this.number);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +17,7 @@ class DriverDetails extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Text('On the driver detail page'),
+        child: Text(name + ' ' + number),
       ),
     );
   }

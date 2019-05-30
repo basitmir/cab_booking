@@ -9,7 +9,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<String> _drivers = ['Basit Mir', 'Basit', 'Sami'];
+  List<Map<String, String>> _drivers = [
+    {'name': 'Basit Mir', 'cabNumber': 'JK2012-Xb','image':'assets/car.jpg'},
+    {'name': 'Basit', 'cabNumber': 'JK01L-2103','image':'assets/car.jpg'},
+    {'name': 'Sami', 'cabNumber': 'JK2012-12','image':'assets/car.jpg'},
+  ];
 
   void fetchDriver() async {
     //  var response= await get('http://www.splashbase.co/api/v1/images/random');
