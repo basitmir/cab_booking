@@ -20,31 +20,30 @@ class StartAppScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body:
-      Center(
-       child:Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          RaisedButton(
-            child: Text('Login'),
-            onPressed: () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => Login(),
+      body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RaisedButton(
+              child: Text('Login'),
+              onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => Login(),
+                    ),
                   ),
-                ),
-          ),
-          RaisedButton(
-            child: Text('Register'),
-            onPressed: () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => Register(),
+            ),
+            RaisedButton(
+              child: Text('Register'),
+              onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => Register(),
+                    ),
                   ),
-                ),
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
       ),
     );
   }
