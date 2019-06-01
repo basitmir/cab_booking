@@ -27,7 +27,7 @@ class StartAppScreen extends StatelessWidget {
         children: [
           RaisedButton(
             child: Text('Login'),
-            onPressed: () => Navigator.push(
+            onPressed: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => Login(),
@@ -36,7 +36,7 @@ class StartAppScreen extends StatelessWidget {
           ),
           RaisedButton(
             child: Text('Register'),
-            onPressed: () => Navigator.push(
+            onPressed: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => Register(),

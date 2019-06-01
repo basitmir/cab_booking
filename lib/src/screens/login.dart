@@ -16,7 +16,7 @@ class Login extends StatelessWidget{
       body: Center(
         child: RaisedButton(
           child: Text('Next'),
-          onPressed: () => Navigator.push(
+          onPressed: () => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) => Home(),

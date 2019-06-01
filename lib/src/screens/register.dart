@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
+import 'login.dart';
 class Register extends StatelessWidget{
   @override
  Widget build(BuildContext context) {
@@ -16,10 +16,10 @@ class Register extends StatelessWidget{
       body: Center(
         child: RaisedButton(
           child: Text('Next'),
-          onPressed: () => Navigator.push(
+          onPressed: () => Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => Home(),
+                  builder: (BuildContext context) => Login(),
                 ),
               ),
         ),
