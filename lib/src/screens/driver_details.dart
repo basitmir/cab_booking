@@ -19,6 +19,29 @@ class DriverDetails extends StatelessWidget {
       body: Center(
         child: Text(name + ' ' + number),
       ),
+       bottomNavigationBar: BottomNavigationBar(
+        type:BottomNavigationBarType.fixed,
+        currentIndex: 0, // this will be set when a new tab is tapped
+        items: [
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.home),
+            title: new Text('Home'),
+
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.chat),
+            title: new Text('Chat'),
+          ),
+           BottomNavigationBarItem(
+            icon: new Icon(Icons.network_cell),
+            title: new Text('Navigate'),
+          ),
+          
+          BottomNavigationBarItem(
+              icon: Icon(Icons.help_outline), title: Text('Help'),
+              ),
+        ],
+      ),
     );
   }
 }

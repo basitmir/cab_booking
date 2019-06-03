@@ -30,8 +30,9 @@ Widget drawer(){
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text('Basit Mir'),
-              accountEmail: Text('basitmir@gmail.com'),
+              
+              accountName: Text('Basit Mir',style: TextStyle(color: Colors.white),),
+              accountEmail: Text('basitmir@gmail.com',style: TextStyle(color: Colors.white70),),
               currentAccountPicture: CircleAvatar(
                 radius: 30.0,
                 // backgroundImage: NetworkImage('https://via.placeholder.com/150'),
@@ -44,33 +45,41 @@ Widget drawer(){
             ),
             ListTile(
               title: Text('My Trips'),
-              leading: Icon(Icons.add_call),
+              leading: Icon(Icons.directions_car,color: Colors.orange[500]),
               onTap: () {},
             ),
-            Divider(),
+            Divider(height: 0.0),
             ListTile(
-              title: Text('My Trips'),
-              leading: Icon(Icons.add_call),
+              title: Text('Notifications'),
+              leading: Icon(Icons.notifications_none,color: Colors.orange[500]),
               onTap: () {},
             ),
-            Divider(),
+            Divider(height: 0.0),
             ListTile(
-              title: Text('My Trips'),
-              leading: Icon(Icons.add_call),
+              title: Text('Payments'),
+              leading: Icon(Icons.payment,color: Colors.orange[500]),
               onTap: () {},
             ),
-            Divider(),
+             Divider(height: 0.0),
             ListTile(
-              title: Text('My Trips'),
-              leading: Icon(Icons.add_call),
+              title: Text('Settings'),
+              leading: Icon(Icons.settings,color: Colors.orange[500]),
               onTap: () {},
             ),
-            Divider(),
+            Divider(height: 0.0),
             ListTile(
-              title: Text('My Trips'),
-              leading: Icon(Icons.add_call),
+              title: Text('Help'),
+              leading: Icon(Icons.help,color: Colors.orange[500]),
               onTap: () {},
             ),
+            Divider(height: 0.0),
+            ListTile(
+              title: Text('Logout'),
+              leading: Icon(Icons.power_settings_new,color: Colors.orange[500]),
+              onTap: () {},
+            ),
+             Divider(height: 0.0),
+             
           ],
         ),
       );
