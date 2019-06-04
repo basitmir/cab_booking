@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DriverDetails extends StatelessWidget {
-  final String name;
-  final String number;
-  DriverDetails(this.name,this.number);
+class Navigate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,14 +9,13 @@ class DriverDetails extends StatelessWidget {
         iconTheme: IconTheme.of(context),
         centerTitle: true,
         title: Text(
-          'Details',
+          'Navigate',
           style: TextStyle(color: Colors.white, fontSize: 21.0),
         ),
       ),
       body: Center(
-        child: Text(name + ' ' + number),
+        child: Text('Comming Soon'),
       ),
-      
     );
   }
 }

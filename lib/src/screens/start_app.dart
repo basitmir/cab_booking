@@ -6,13 +6,16 @@ class StartApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.orange[500],
-        iconTheme: IconThemeData(color: Colors.white),
-      ),
-      home: StartAppScreen(),
-      debugShowCheckedModeBanner: false,
-    );
+        theme: ThemeData(
+          primaryColor: Colors.orange[500],
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        home: StartAppScreen(),
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/login': (BuildContext context) => Login(),
+          '/register': (BuildContext context) => Register(),
+        });
   }
 }
 
@@ -26,21 +29,13 @@ class StartAppScreen extends StatelessWidget {
           children: [
             RaisedButton(
               child: Text('Login'),
-              onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => Login(),
-                    ),
-                  ),
+              onPressed: () =>
+                  Navigator.pushReplacementNamed(context, '/login'),
             ),
             RaisedButton(
               child: Text('Register'),
-              onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => Register(),
-                    ),
-                  ),
+              onPressed: () =>
+                  Navigator.pushReplacementNamed(context, '/register'),
             ),
           ],
         ),

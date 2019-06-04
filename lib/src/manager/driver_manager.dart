@@ -36,7 +36,6 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       body: DriverList(_drivers),
-     
     );
   }
 }

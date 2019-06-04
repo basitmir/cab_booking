@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'driver_details.dart';
+// import 'driver_details.dart';
+import '../manager/tabs_manager.dart';
 
 class DriverList extends StatelessWidget {
   // final List<DriverModel> drivers;
@@ -124,7 +125,7 @@ Widget avatarMore(String name,String number,BuildContext context) {
     onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => DriverDetails(name,number),
+            builder: (BuildContext context) => Tabs(name,number),
           ),
         ),
   );
