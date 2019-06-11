@@ -1,4 +1,4 @@
-import 'package:cab/src/screens/home.dart';
+//import 'package:cab/src/screens/home.dart';
 import 'package:flutter/material.dart';
 import '../screens/chat.dart';
 import '../screens/navigation.dart';
@@ -72,20 +72,20 @@ class _MyTabs extends State<Tabs> with SingleTickerProviderStateMixin {
 
           items: [
             BottomNavigationBarItem(
-              icon: new Icon(Icons.person_pin),
-              title: new Text('Details'),
+              icon:   Icon(Icons.person_pin),
+              title:  Text('Details', style: TextStyle(fontSize: 11.00),),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.chat),
-              title: new Text('Chat'),
+              icon:  Icon(Icons.chat),
+              title:  Text('Chat',style: TextStyle(fontSize: 11.00),),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.location_searching),
-              title: new Text('Navigate'),
+              icon:  Icon(Icons.location_searching),
+              title:  Text('Navigate',style: TextStyle(fontSize: 11.00),),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.help_outline),
-              title: Text('Help'),
+              title: Text('Help',style: TextStyle(fontSize: 11.00),),
             ),
           ],
         ),

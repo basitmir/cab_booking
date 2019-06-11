@@ -14,7 +14,7 @@ class HomeState extends State<Home> {
   String destination = '';
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: drawer(),
+      drawer: drawer(context),
       floatingActionButton: Container(
         child: FloatingButtons(),
       ),
@@ -26,7 +26,7 @@ class HomeState extends State<Home> {
               Row(
                 children: <Widget>[
                   Expanded(
-                    flex: 7,
+                     flex: 10,
                     child: Column(
                       children: <Widget>[
                         TextField(
@@ -99,7 +99,7 @@ class HomeState extends State<Home> {
   }
 }
 
-Widget drawer() {
+Widget drawer(BuildContext context) {
   return Drawer(
     child: ListView(
       children: <Widget>[
@@ -155,7 +155,9 @@ Widget drawer() {
         ListTile(
           title: Text('Logout'),
           leading: Icon(Icons.power_settings_new, color: Colors.orange[500]),
-          onTap: () {},
+          onTap: () {
+            Navigator.popAndPushNamed(context, '/login');
+          },
         ),
         Divider(height: 0.0),
       ],
