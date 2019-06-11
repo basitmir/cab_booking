@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'driver_details.dart';
-import '../manager/tabs_manager.dart';
 
 class DriverList extends StatelessWidget {
-  // final List<DriverModel> drivers;
-  final List<Map<String,String>> drivers;
+  
+  final List<Map<String, String>> drivers;
   final List<int> stars = [1, 2, 3, 4, 5];
   DriverList(this.drivers);
 
@@ -14,7 +12,8 @@ class DriverList extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
       child: Column(
         children: <Widget>[
-          rowContainer(drivers[index]['name'],drivers[index]['cabNumber'], context),
+          rowContainer(
+              drivers[index]['name'], drivers[index]['cabNumber'],index,context),
           Image.asset(
             drivers[index]['image'],
           ),
@@ -38,7 +37,6 @@ class DriverList extends StatelessWidget {
     return ListView.builder(
       itemBuilder: _singleListItem,
       itemCount: drivers.length,
-     
 
       // children: [
       //   Column(
@@ -66,7 +64,7 @@ class DriverList extends StatelessWidget {
   }
 }
 
-Widget rowContainer(String name,String number, BuildContext context) {
+Widget rowContainer(String name, String number,int index, BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       gradient: LinearGradient(
@@ -80,9 +78,9 @@ Widget rowContainer(String name,String number, BuildContext context) {
       children: <Widget>[
         avatar(),
         Container(margin: EdgeInsets.only(left: 10.00)),
-        avatarText(name,number),
+        avatarText(name, number),
         Spacer(),
-        avatarMore(name,number,context),
+        avatarMore(index, context),
       ],
     ),
   );
@@ -100,7 +98,7 @@ Widget avatar() {
   );
 }
 
-Widget avatarText(String name,String number) {
+Widget avatarText(String name, String number) {
   return Column(
     children: <Widget>[
       Text(
@@ -116,17 +114,12 @@ Widget avatarText(String name,String number) {
   );
 }
 
-Widget avatarMore(String name,String number,BuildContext context) {
+Widget avatarMore(int index, BuildContext context) {
   return IconButton(
     icon: Icon(Icons.arrow_right),
     tooltip: 'Know More',
     iconSize: 35.0,
     color: Colors.white,
-    onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => Tabs(name,number),
-          ),
-        ),
+    onPressed: () => Navigator.pushNamed(context, '/driver/'+ index.toString()),
   );
 }

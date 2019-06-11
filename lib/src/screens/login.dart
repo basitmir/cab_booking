@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
-class Login extends StatelessWidget{
+
+class Login extends StatelessWidget {
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -16,12 +16,7 @@ class Login extends StatelessWidget{
       body: Center(
         child: RaisedButton(
           child: Text('Next'),
-          onPressed: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => Home(),
-                ),
-              ),
+          onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
         ),
       ),
     );

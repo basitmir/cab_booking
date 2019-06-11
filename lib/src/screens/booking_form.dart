@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 
-class Register extends StatelessWidget {
+class Booking extends StatefulWidget {
+  final String origin;
+  final String destination;
+  Booking(this.origin, this.destination);
+  
+  @override
+  State<StatefulWidget> createState() {
+    return BookingForm();
+  }
+}
+
+class BookingForm extends State<Booking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,15 +20,12 @@ class Register extends StatelessWidget {
         iconTheme: IconTheme.of(context),
         centerTitle: true,
         title: Text(
-          'Register',
+          'Booking',
           style: TextStyle(color: Colors.white, fontSize: 21.0),
         ),
       ),
       body: Center(
-        child: RaisedButton(
-          child: Text('Next'),
-          onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
-        ),
+        child: Text(widget.origin + '' + widget.destination),
       ),
     );
   }

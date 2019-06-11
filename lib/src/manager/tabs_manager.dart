@@ -43,12 +43,7 @@ class _MyTabs extends State<Tabs> with SingleTickerProviderStateMixin {
       //   ),
       // ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => Home(),
-              ),
-            ),
+        onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
         mini: true,
         child: Icon(Icons.home, color: Colors.orange),
         backgroundColor: Colors.white,
@@ -57,43 +52,43 @@ class _MyTabs extends State<Tabs> with SingleTickerProviderStateMixin {
       body: _pageOption[_bottomNavBarIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: SizedBox(
-         height: 54.00,
-      child:BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.orange[500],
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
-        currentIndex: _bottomNavBarIndex,
-        
-        unselectedIconTheme: IconThemeData(
-          size: 18.00,
+        height: 54.00,
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.orange[500],
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
+          currentIndex: _bottomNavBarIndex,
+
+          unselectedIconTheme: IconThemeData(
+            size: 18.00,
+          ),
+
+          onTap: (int index) {
+            setState(() {
+              _bottomNavBarIndex = index;
+            });
+          }, // this will be set when a new tab is tapped
+
+          items: [
+            BottomNavigationBarItem(
+              icon: new Icon(Icons.person_pin),
+              title: new Text('Details'),
+            ),
+            BottomNavigationBarItem(
+              icon: new Icon(Icons.chat),
+              title: new Text('Chat'),
+            ),
+            BottomNavigationBarItem(
+              icon: new Icon(Icons.location_searching),
+              title: new Text('Navigate'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.help_outline),
+              title: Text('Help'),
+            ),
+          ],
         ),
-
-        onTap: (int index) {
-          setState(() {
-            _bottomNavBarIndex = index;
-          });
-        }, // this will be set when a new tab is tapped
-
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.person_pin),
-            title: new Text('Details'),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.chat),
-            title: new Text('Chat'),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.location_searching),
-            title: new Text('Navigate'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.help_outline),
-            title: Text('Help'),
-          ),
-        ],
-      ),
       ),
     );
   }

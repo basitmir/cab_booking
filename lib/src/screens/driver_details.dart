@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DriverDetails extends StatelessWidget {
   final String name;
   final String number;
-  DriverDetails(this.name,this.number);
+  DriverDetails(this.name, this.number);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,10 +16,16 @@ class DriverDetails extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 21.0),
         ),
       ),
-      body: Center(
-        child: Text(name + ' ' + number),
+      body: ListView(
+        children: <Widget>[
+          Text(name + ' ' + number),
+          RaisedButton(
+            child: Text('Next'),
+            onPressed: () =>
+                Navigator.pushReplacementNamed(context, '/booking'),
+          ),
+        ],
       ),
-      
     );
   }
 }
