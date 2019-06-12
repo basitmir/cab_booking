@@ -40,10 +40,9 @@ class StartApp extends State<Start> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Colors.orange[500],
-        iconTheme: IconThemeData(color: Colors.white),
-        fontFamily: 'MyFont'
-      ),
+          primaryColor: Colors.orange[500],
+          iconTheme: IconThemeData(color: Colors.white),
+          fontFamily: 'MyFont'),
       home: StartAppScreen(),
       debugShowCheckedModeBanner: false,
       routes: {
@@ -75,19 +74,107 @@ class StartAppScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RaisedButton(
-              child: Text('Login'),
-              onPressed: () =>
-                  Navigator.pushReplacementNamed(context, '/login'),
+      body: Container(
+        padding: EdgeInsets.only(bottom: 60.0),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('assets/background.jpg'),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 30.0, horizontal: 25.0),
+                  child: Text(
+                    'RIDEz',
+                    style: TextStyle(
+                        shadows: [
+                          Shadow(
+                            color: Colors.orange,
+                            blurRadius: 3.0,
+                            offset: Offset(5.0, 5.0),
+                          ),
+                        ],
+                        color: Colors.white,
+                        fontSize: 50.0,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        letterSpacing: 3.0),
+                  ),
+                ),
+              ],
             ),
-            RaisedButton(
-              child: Text('Register'),
-              onPressed: () =>
-                  Navigator.pushReplacementNamed(context, '/register'),
+            // SizedBox(height: 310.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                RaisedButton(
+                  textColor: Colors.white,
+                  padding: const EdgeInsets.all(0.0),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
+                  shape: StadiumBorder(),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.0),
+                      ),
+                      gradient: LinearGradient(
+                        begin: FractionalOffset(0.6, 0.8),
+                        end: FractionalOffset(0.0, 0.0),
+                        colors: <Color>[
+                          Colors.orange,
+                          Colors.white,
+                        ],
+                      ),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 55.0),
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(fontSize: 15.0),
+                    ),
+                  ),
+                ),
+                RaisedButton(
+                  textColor: Colors.white,
+                  padding: const EdgeInsets.all(0.0),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/register');
+                  },
+                  shape: StadiumBorder(),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.0),
+                      ),
+                      gradient: LinearGradient(
+                         begin: FractionalOffset(0.6, 0.8),
+                        end: FractionalOffset(0.0, 0.0),
+                        colors: <Color>[
+                          Colors.orange,
+                          Colors.white,
+                        ],
+                      ),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 50.0),
+                    child: const Text(
+                      'Register',
+                      style: TextStyle(fontSize: 15.0),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

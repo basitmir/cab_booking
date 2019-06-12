@@ -13,7 +13,8 @@ class Login extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 21.0),
         ),
       ),
-      body: Center(
+      body: 
+      Center(
         child: RaisedButton(
           child: Text('Next'),
           onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
