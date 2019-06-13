@@ -75,7 +75,7 @@ class StartAppScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-        padding: EdgeInsets.only(bottom: 60.0),
+        padding: EdgeInsets.only(bottom: 70.0),
         decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
@@ -103,7 +103,7 @@ class StartAppScreen extends StatelessWidget {
                           ),
                         ],
                         color: Colors.white,
-                        fontSize: 50.0,
+                        fontSize: 80.0,
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.italic,
                         letterSpacing: 3.0),
@@ -138,9 +138,9 @@ class StartAppScreen extends StatelessWidget {
                       ),
                     ),
                     padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 55.0),
+                        EdgeInsets.symmetric(vertical: 8.8, horizontal: 57.0),
                     child: const Text(
-                      'Login',
+                      'LOGIN',
                       style: TextStyle(fontSize: 15.0),
                     ),
                   ),
@@ -151,7 +151,7 @@ class StartAppScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/register');
                   },
-                  shape: StadiumBorder(),
+                   shape: StadiumBorder(),
                   child: Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(
@@ -167,9 +167,9 @@ class StartAppScreen extends StatelessWidget {
                       ),
                     ),
                     padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 50.0),
+                        EdgeInsets.symmetric(vertical: 8.8, horizontal: 50.0),
                     child: const Text(
-                      'Register',
+                      'REGISTER',
                       style: TextStyle(fontSize: 15.0),
                     ),
                   ),

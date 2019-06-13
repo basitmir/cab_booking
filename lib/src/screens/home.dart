@@ -140,18 +140,31 @@ Widget drawer(BuildContext context) {
           onTap: () {},
         ),
         Divider(height: 0.0),
+         ListTile(
+          title: Text('Help'),
+          leading: Icon(Icons.help, color: Colors.orange[500]),
+          onTap: () {},
+        ),
+        Divider(height: 0.0),
         ListTile(
           title: Text('Settings'),
           leading: Icon(Icons.settings, color: Colors.orange[500]),
           onTap: () {},
         ),
         Divider(height: 0.0),
-        ListTile(
-          title: Text('Help'),
-          leading: Icon(Icons.help, color: Colors.orange[500]),
+         ListTile(
+          title: Text('Spread The Word'),
+          leading: Icon(Icons.share, color: Colors.orange[500]),
           onTap: () {},
         ),
         Divider(height: 0.0),
+         ListTile(
+          title: Text('Rate Us'),
+          leading: Icon(Icons.star, color: Colors.orange[500]),
+          onTap: () {},
+        ),
+        Divider(height: 0.0),
+       
         ListTile(
           title: Text('Logout'),
           leading: Icon(Icons.power_settings_new, color: Colors.orange[500]),
