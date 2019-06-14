@@ -42,7 +42,7 @@ class StartApp extends State<Start> {
       theme: ThemeData(
           primaryColor: Colors.orange[500],
           iconTheme: IconThemeData(color: Colors.white),
-          fontFamily: 'MyFont'),
+          fontFamily: 'myFont'),
       home: StartAppScreen(),
       debugShowCheckedModeBanner: false,
       routes: {
@@ -105,8 +105,9 @@ class StartAppScreen extends StatelessWidget {
                         color: Colors.white,
                         fontSize: 80.0,
                         fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        letterSpacing: 3.0),
+                         fontStyle: FontStyle.italic,
+                        // letterSpacing: 3.0
+                        ),
                   ),
                 ),
               ],

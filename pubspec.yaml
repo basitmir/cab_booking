@@ -58,11 +58,11 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
    fonts:
-    - family: MyFont
+    - family: myFont
       fonts:
-       - asset: assets/Oswald[wght].ttf
-      #  - asset: assets/Amiri-Bold.ttf
-        #  weight: 700
+       - asset: assets/Assistant-Regular.ttf
+       - asset: assets/Assistant-Bold.ttf
+         weight: 700
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

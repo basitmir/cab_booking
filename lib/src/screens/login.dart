@@ -102,7 +102,7 @@ class LoginScreen extends State<Login> {
                             ),
                           ),
                           padding: EdgeInsets.symmetric(
-                              vertical: 6.8, horizontal: 45.0),
+                              vertical: 8.9, horizontal: 45.0),
                           child: const Text(
                             'LOGIN',
                             style: TextStyle(fontSize: 15.0),
@@ -113,7 +113,7 @@ class LoginScreen extends State<Login> {
                         'Forgot Password',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 15.0,
+                          fontSize: 18.0,
                         ),
                       ),
                     ],
