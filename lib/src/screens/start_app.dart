@@ -139,7 +139,7 @@ class StartAppScreen extends StatelessWidget {
                       ),
                     ),
                     padding:
-                        EdgeInsets.symmetric(vertical: 8.8, horizontal: 57.0),
+                        EdgeInsets.symmetric(vertical: 9.9, horizontal: 57.0),
                     child: const Text(
                       'LOGIN',
                       style: TextStyle(fontSize: 15.0),
@@ -168,7 +168,7 @@ class StartAppScreen extends StatelessWidget {
                       ),
                     ),
                     padding:
-                        EdgeInsets.symmetric(vertical: 8.8, horizontal: 50.0),
+                        EdgeInsets.symmetric(vertical: 9.9, horizontal: 50.0),
                     child: const Text(
                       'REGISTER',
                       style: TextStyle(fontSize: 15.0),
