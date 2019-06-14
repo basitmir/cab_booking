@@ -152,12 +152,12 @@ void initState(){
                         Expanded(
                           flex: 10,
                           child:Padding( 
-                            padding: EdgeInsets.symmetric(horizontal: 60.00),
+                            padding: EdgeInsets.symmetric(horizontal: 20.00),
                          child: TextField(
                            textAlign: TextAlign.center, 
                             readOnly: true,
                             decoration: InputDecoration(
-                               contentPadding: EdgeInsets.symmetric(horizontal:20.0,vertical: 8.0),
+                               contentPadding: EdgeInsets.symmetric(horizontal:20.0,vertical: 5.0),
                               border: InputBorder.none,
                               hintText: "Don't have an account? SignUp ",
                         
@@ -166,7 +166,7 @@ void initState(){
                                 color: Colors.white,
                               ),
                               filled: true,
-                              fillColor: Colors.orange.withOpacity(0.5),
+                              fillColor: Colors.orange.withOpacity(0.6),
 
                               // icon is 48px widget.
                             ),
