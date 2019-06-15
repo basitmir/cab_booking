@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Login extends StatefulWidget {
-  
   @override
   State<StatefulWidget> createState() {
     return LoginScreen();
@@ -13,16 +12,16 @@ class LoginScreen extends State<Login> {
   String email;
   String password;
   @override
-void initState(){
-  super.initState();
-  SystemChrome.setPreferredOrientations([
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
-  ]);
-}
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -34,7 +33,7 @@ void initState(){
           ),
         ),
         child: Container(
-          margin: EdgeInsets.fromLTRB(10.00,50.00,10.00,10.00),
+          margin: EdgeInsets.fromLTRB(10.00, 0.00, 10.00, 50.00),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
@@ -49,7 +48,7 @@ void initState(){
                     ),
                   ),
                   SizedBox(
-                    height: 50.0,
+                    height: 60.0,
                   ),
                   TextField(
                     cursorColor: Colors.white,
@@ -135,42 +134,14 @@ void initState(){
                           ),
                         ),
                         Text(
-                          'Forgot Password',
+                          'Forgot Password ?',
+                          
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 90.0, 0.0, 0.0),
-                    child: Row(
-                     
-                      children: <Widget>[
-                        Expanded(
-                          flex: 10,
-                          child:Padding( 
-                            padding: EdgeInsets.symmetric(horizontal: 20.00),
-                         child: TextField(
-                           textAlign: TextAlign.center, 
-                            readOnly: true,
-                            decoration: InputDecoration(
-                               contentPadding: EdgeInsets.symmetric(horizontal:20.0,vertical: 5.0),
-                              border: InputBorder.none,
-                              hintText: "Don't have an account? SignUp ",
-                        
-                              hintStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                              filled: true,
-                              fillColor: Colors.orange.withOpacity(0.6),
-
-                              // icon is 48px widget.
-                            ),
-                          ),
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                            
                           ),
                         ),
                       ],
@@ -182,18 +153,62 @@ void initState(){
           ),
         ),
       ),
-      
+      bottomNavigationBar: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 30.0,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Flexible(
+              child: RaisedButton(
+                textColor: Colors.white,
+                padding: const EdgeInsets.all(0.0),
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/home');
+                },
+                child: Container(
+                  padding: EdgeInsets.only(top: 6.0),
+                  width: MediaQuery.of(context).size.width,
+                  height: 30.0,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: FractionalOffset(0.4, 0.8),
+                      end: FractionalOffset(0.0, 0.0),
+                      colors: <Color>[
+                        Color(0xFFFFA726),
+                        Colors.white,
+                      ],
+                    ),
+                  ),
+                  // padding: EdgeInsets.symmetric(
+                  // vertical: 9.9, horizontal: 100.0),
+                  child: Text(
+                    "Dont't have an account? SIGNUP",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
-    
   }
+
   @override
-dispose(){
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeRight,
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-  super.dispose();
-}
+  dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
 }
