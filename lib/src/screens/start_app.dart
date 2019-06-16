@@ -75,47 +75,55 @@ class StartAppScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-        padding: EdgeInsets.only(bottom: 70.0),
+        padding:
+            EdgeInsets.only(bottom: 10.0, left: 10.0, right: 10.0, top: 15.00),
         decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
             image: AssetImage('assets/background.jpg'),
+            colorFilter: ColorFilter.mode(
+                Colors.orange.withOpacity(0.4), BlendMode.luminosity),
           ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Stack(
+              alignment: AlignmentDirectional.bottomEnd,
               children: <Widget>[
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 30.0, horizontal: 25.0),
-                  child: Text(
-                    'RIDEz',
-                    style: TextStyle(
-                        shadows: [
-                          Shadow(
-                            color: Colors.orange,
-                            blurRadius: 3.0,
-                            offset: Offset(5.0, 5.0),
-                          ),
-                        ],
-                        color: Colors.white,
-                        fontSize: 80.0,
-                        fontWeight: FontWeight.bold,
-                         fontStyle: FontStyle.italic,
-                        // letterSpacing: 3.0
-                        ),
+                Text(
+                  'RIDEz',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    shadows: [
+                      Shadow(
+                        color: Colors.orange,
+                        blurRadius: 3.0,
+                        offset: Offset(5.0, 5.0),
+                      ),
+                    ],
+                    color: Colors.white,
+                    fontSize: 80.0,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+
+                    // letterSpacing: 3.0
                   ),
+                ),
+                Text(
+                  'Joyfull and Comfortable travel',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             // SizedBox(height: 310.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.end,
+
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 RaisedButton(
                   textColor: Colors.white,
@@ -125,12 +133,13 @@ class StartAppScreen extends StatelessWidget {
                   },
                   shape: StadiumBorder(),
                   child: Container(
+                    width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(
                         Radius.circular(20.0),
                       ),
                       gradient: LinearGradient(
-                        begin: FractionalOffset(0.6, 0.8),
+                        begin: FractionalOffset(0.7, 0.8),
                         end: FractionalOffset(0.0, 0.0),
                         colors: <Color>[
                           Colors.orange,
@@ -138,11 +147,12 @@ class StartAppScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 9.9, horizontal: 57.0),
+                    padding: EdgeInsets.symmetric(vertical: 9.9),
                     child: const Text(
                       'LOGIN',
-                      style: TextStyle(fontSize: 15.0),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 15.0, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -152,14 +162,15 @@ class StartAppScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/register');
                   },
-                   shape: StadiumBorder(),
+                  shape: StadiumBorder(),
                   child: Container(
+                    width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(
                         Radius.circular(20.0),
                       ),
                       gradient: LinearGradient(
-                         begin: FractionalOffset(0.6, 0.8),
+                        begin: FractionalOffset(0.7, 0.8),
                         end: FractionalOffset(0.0, 0.0),
                         colors: <Color>[
                           Colors.orange,
@@ -167,11 +178,12 @@ class StartAppScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 9.9, horizontal: 50.0),
+                    padding: EdgeInsets.symmetric(vertical: 9.9),
                     child: const Text(
                       'REGISTER',
-                      style: TextStyle(fontSize: 15.0),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 15.0, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),

@@ -165,7 +165,7 @@ class LoginScreen extends State<Login> {
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(0.0),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/home');
+                  Navigator.pushReplacementNamed(context, '/register');
                 },
                 child: Container(
                   padding: EdgeInsets.only(top: 6.0),
