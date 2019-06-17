@@ -81,8 +81,8 @@ class HomeState extends State<Home> {
                   padding: EdgeInsets.fromLTRB(0.0, 15.0, 10.0,0.0),
                       
                      child: IconButton(
-                        icon: Icon(Icons.play_circle_outline,
-                            color: Colors.orange, size: 40),
+                        icon: Icon(Icons.arrow_right,
+                            color: Colors.orange, size: 50),
                         onPressed: () {
                           widget.addDetails(origin, destination);
                           Navigator.pushNamed(context, '/drivers');
@@ -169,7 +169,7 @@ Widget drawer(BuildContext context) {
           title: Text('Logout'),
           leading: Icon(Icons.power_settings_new, color: Colors.orange[500]),
           onTap: () {
-            Navigator.popAndPushNamed(context, '/login');
+            Navigator.pushNamed(context, '/login');
           },
         ),
         Divider(height: 0.0),

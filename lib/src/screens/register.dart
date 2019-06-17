@@ -11,6 +11,8 @@ class Register extends StatefulWidget {
 class RegisterScreen extends State<Register> {
   String email;
   String password;
+  String confirmPassword;
+  String userName;
   @override
   void initState() {
     super.initState();
@@ -48,7 +50,7 @@ class RegisterScreen extends State<Register> {
                     ),
                   ),
                   SizedBox(
-                    height: 30.0,
+                    height: 20.0,
                   ),
                    TextField(
                     cursorColor: Colors.white,
@@ -71,7 +73,7 @@ class RegisterScreen extends State<Register> {
                     textInputAction: TextInputAction.go,
                     onChanged: (String value) {
                       setState(() {
-                        email = value;
+                        userName = value;
                       });
                     },
                   ),
@@ -151,7 +153,7 @@ class RegisterScreen extends State<Register> {
                     obscureText: true,
                     onChanged: (String value) {
                       setState(() {
-                        password = value;
+                        confirmPassword = value;
                       });
                     },
                   ),
