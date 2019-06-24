@@ -1,9 +1,9 @@
+import 'package:cab/src/screens/driver_list.dart';
 import 'package:flutter/material.dart';
 import 'register.dart';
 import 'login.dart';
 import 'home.dart';
 import '../manager/tabs_manager.dart';
-import '../manager/driver_manager.dart';
 import '../screens/booking_form.dart';
 
 class Start extends StatefulWidget {
@@ -49,7 +49,7 @@ class StartApp extends State<Start> {
         '/login': (BuildContext context) => Login(),
         '/register': (BuildContext context) => Register(),
         '/home': (BuildContext context) => Home(addDetails),
-        '/drivers': (BuildContext context) => MyApp(_drivers),
+        '/drivers': (BuildContext context) => DriverList(_drivers),
         '/booking': (BuildContext context) => Booking(origin, destination),
       },
       onGenerateRoute: (RouteSettings settings) {
@@ -88,110 +88,112 @@ class StartAppScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Stack(
-              alignment: AlignmentDirectional.bottomEnd,
-              children: <Widget>[
-                Text(
-                  'RIDEz',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    shadows: [
-                      Shadow(
-                        color: Colors.orange,
-                        blurRadius: 3.0,
-                        offset: Offset(5.0, 5.0),
-                      ),
-                    ],
-                    color: Colors.white,
-                    fontSize: 80.0,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-
-                    // letterSpacing: 3.0
-                  ),
-                ),
-                Text(
-                  'Joyfull and Comfortable travel',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            // SizedBox(height: 310.0),
-
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                RaisedButton(
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0.0),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/login');
-                  },
-                  shape: StadiumBorder(),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20.0),
-                      ),
-                      gradient: LinearGradient(
-                        begin: FractionalOffset(0.7, 0.8),
-                        end: FractionalOffset(0.0, 0.0),
-                        colors: <Color>[
-                          Colors.orange,
-                          Colors.white,
-                        ],
-                      ),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 9.9),
-                    child: const Text(
-                      'LOGIN',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 15.0, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                RaisedButton(
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0.0),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/register');
-                  },
-                  shape: StadiumBorder(),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20.0),
-                      ),
-                      gradient: LinearGradient(
-                        begin: FractionalOffset(0.7, 0.8),
-                        end: FractionalOffset(0.0, 0.0),
-                        colors: <Color>[
-                          Colors.orange,
-                          Colors.white,
-                        ],
-                      ),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 9.9),
-                    child: const Text(
-                      'REGISTER',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 15.0, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            textAtTop(),
+            buttonAtBottom(context),
           ],
         ),
       ),
     );
   }
+}
+
+Widget textAtTop() {
+  return Stack(
+    alignment: AlignmentDirectional.bottomEnd,
+    children: <Widget>[
+      Text(
+        'RIDEz',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          shadows: [
+            Shadow(
+              color: Colors.orange,
+              blurRadius: 3.0,
+              offset: Offset(5.0, 5.0),
+            ),
+          ],
+          color: Colors.white,
+          fontSize: 80.0,
+          fontWeight: FontWeight.bold,
+          fontStyle: FontStyle.italic,
+
+          // letterSpacing: 3.0
+        ),
+      ),
+      Text(
+        'Joyfull and Comfortable travel',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: Colors.white, fontSize: 15.0, fontWeight: FontWeight.bold),
+      ),
+    ],
+  );
+}
+
+Widget buttonAtBottom(BuildContext context) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      RaisedButton(
+        textColor: Colors.white,
+        padding: const EdgeInsets.all(0.0),
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, '/login');
+        },
+        shape: StadiumBorder(),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20.0),
+            ),
+            gradient: LinearGradient(
+              begin: FractionalOffset(0.7, 0.8),
+              end: FractionalOffset(0.0, 0.0),
+              colors: <Color>[
+                Colors.orange,
+                Colors.white,
+              ],
+            ),
+          ),
+          padding: EdgeInsets.symmetric(vertical: 9.9),
+          child: const Text(
+            'LOGIN',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      RaisedButton(
+        textColor: Colors.white,
+        padding: const EdgeInsets.all(0.0),
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, '/register');
+        },
+        shape: StadiumBorder(),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20.0),
+            ),
+            gradient: LinearGradient(
+              begin: FractionalOffset(0.7, 0.8),
+              end: FractionalOffset(0.0, 0.0),
+              colors: <Color>[
+                Colors.orange,
+                Colors.white,
+              ],
+            ),
+          ),
+          padding: EdgeInsets.symmetric(vertical: 9.9),
+          child: const Text(
+            'REGISTER',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    ],
+  );
 }

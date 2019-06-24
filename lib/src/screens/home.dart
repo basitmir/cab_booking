@@ -12,6 +12,69 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
   String origin = '';
   String destination = '';
+
+  Widget _originFeild() {
+    return TextField(
+        decoration: InputDecoration(
+          //  border: InputBorder(
+          //    borderSide:BorderSide(width:10.00)
+          //  ),
+          contentPadding: EdgeInsets.only(bottom: 5.0, left: 10.0, right: 10.0),
+
+          labelText: 'Origin',
+          prefixIcon: Padding(
+            padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+            child: Icon(
+              Icons.trip_origin,
+              color: Colors.orange[500],
+              size: 21,
+            ), // icon is 48px widget.
+          ),
+        ),
+        onChanged: (String value) {
+          setState(() {
+            origin = value;
+          });
+        });
+  }
+
+  Widget _destinationFeild() {
+    return TextField(
+        decoration: InputDecoration(
+          labelText: 'Destination',
+          prefixIcon: Padding(
+            padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+            child: Icon(
+              Icons.pin_drop,
+              color: Colors.orange[500],
+            ), // icon is 48px widget.
+          ),
+        ),
+        onChanged: (String value) {
+          setState(() {
+            destination = value;
+          });
+        });
+  }
+
+  Widget _nextButton() {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(0.0, 15.0, 10.0, 0.0),
+          child: IconButton(
+            icon:
+                Icon(Icons.play_circle_outline, color: Colors.orange, size: 40),
+            onPressed: () {
+              widget.addDetails(origin, destination);
+              Navigator.pushNamed(context, '/drivers');
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: drawer(context),
@@ -26,71 +89,15 @@ class HomeState extends State<Home> {
               Row(
                 children: <Widget>[
                   Expanded(
-                     flex: 10,
+                    flex: 10,
                     child: Column(
                       children: <Widget>[
-                        TextField(
-                            decoration: InputDecoration(
-                              //  border: InputBorder(
-                              //    borderSide:BorderSide(width:10.00)
-                              //  ),
-                              contentPadding: EdgeInsets.only(
-                                  bottom: 5.0, left: 10.0, right: 10.0),
-
-                              labelText: 'Origin',
-                              prefixIcon: Padding(
-                                padding:
-                                    EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
-                                child: Icon(
-                                  Icons.trip_origin,
-                                  color: Colors.orange[500],
-                                  size: 21,
-                                ), // icon is 48px widget.
-                              ),
-                            ),
-                            onChanged: (String value) {
-                              setState(() {
-                                origin = value;
-                              });
-                            }),
-
-                        // flex: 3,
-                        TextField(
-                            decoration: InputDecoration(
-                              labelText: 'Destination',
-                              prefixIcon: Padding(
-                                padding:
-                                    EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
-                                child: Icon(
-                                  Icons.pin_drop,
-                                  color: Colors.orange[500],
-                                ), // icon is 48px widget.
-                              ),
-                            ),
-                            onChanged: (String value) {
-                              setState(() {
-                                destination = value;
-                              });
-                            }),
+                        _originFeild(),
+                        _destinationFeild(),
                       ],
                     ),
                   ),
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                  padding: EdgeInsets.fromLTRB(0.0, 15.0, 10.0,0.0),
-                      
-                     child: IconButton(
-                        icon: Icon(Icons.arrow_right,
-                            color: Colors.orange, size: 50),
-                        onPressed: () {
-                          widget.addDetails(origin, destination);
-                          Navigator.pushNamed(context, '/drivers');
-                        },
-                      ),
-                      ),
-                    ],
-                  )
+                  _nextButton(),
                 ],
               ),
             ],
@@ -140,7 +147,7 @@ Widget drawer(BuildContext context) {
           onTap: () {},
         ),
         Divider(height: 0.0),
-         ListTile(
+        ListTile(
           title: Text('Help'),
           leading: Icon(Icons.help, color: Colors.orange[500]),
           onTap: () {},
@@ -152,19 +159,18 @@ Widget drawer(BuildContext context) {
           onTap: () {},
         ),
         Divider(height: 0.0),
-         ListTile(
+        ListTile(
           title: Text('Spread The Word'),
           leading: Icon(Icons.share, color: Colors.orange[500]),
           onTap: () {},
         ),
         Divider(height: 0.0),
-         ListTile(
+        ListTile(
           title: Text('Rate Us'),
           leading: Icon(Icons.star, color: Colors.orange[500]),
           onTap: () {},
         ),
         Divider(height: 0.0),
-       
         ListTile(
           title: Text('Logout'),
           leading: Icon(Icons.power_settings_new, color: Colors.orange[500]),

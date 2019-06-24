@@ -34,7 +34,21 @@ class DriverList extends StatelessWidget {
   }
 
   Widget build(context) {
-    return ListView.builder(
+     return Scaffold(
+      backgroundColor: Colors.white30,
+      appBar: AppBar(
+        iconTheme: IconTheme.of(context),
+        centerTitle: true,
+        title: Text(
+          'Drivers',
+          style: TextStyle(color: Colors.white, fontSize: 21.0),
+        ),
+      ),
+      body: 
+    
+    
+    
+    ListView.builder(
       itemBuilder: _singleListItem,
       itemCount: drivers.length,
 
@@ -60,6 +74,7 @@ class DriverList extends StatelessWidget {
       //         .toList(),
       //   ),
       // ],
+    ),
     );
   }
 }
@@ -83,7 +98,7 @@ Widget rowContainer(String name, String number,int index, BuildContext context) 
         avatarMore(index, context),
       ],
     ),
-  );
+  ); 
 }
 
 Widget avatar() {
