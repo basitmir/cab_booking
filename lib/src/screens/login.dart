@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,16 +10,21 @@ class Login extends StatefulWidget {
 }
 
 class LoginScreen extends State<Login> {
-  String email;
-  String password;
+  String _email;
+  String _password;
+  bool _autoValidate = false;
+  
+  final GlobalKey<FormState> _formKey=GlobalKey<FormState>();
 
   Widget _loginEmail() {
-    return TextField(
+    return TextFormField(
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         border: InputBorder.none,
         labelText: 'EMAIL',
+        errorStyle: TextStyle(backgroundColor: Colors.white.withOpacity(0.2),fontWeight: FontWeight.w600),
+       
         filled: true,
         fillColor: Colors.orange.withOpacity(0.4),
         labelStyle: TextStyle(
@@ -32,22 +38,29 @@ class LoginScreen extends State<Login> {
       ),
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.go,
-      onChanged: (String value) {
+      validator: (String value) {
+           if(value.isEmpty || !RegExp(r'^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$').hasMatch(value) ){
+             return 'Please enter the valid email';
+           }
+           return null;
+      },
+      onSaved: (String value) {
         setState(() {
-          email = value;
+          _email = value;
         });
       },
     );
   }
 
   Widget _loginPassword() {
-    return TextField(
+    return TextFormField(
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         border: InputBorder.none,
         labelText: 'PASSWORD',
-
+      errorStyle: TextStyle(backgroundColor: Colors.white.withOpacity(0.2),fontWeight: FontWeight.w600),
+    
         filled: true,
         fillColor: Colors.orange.withOpacity(0.4),
         labelStyle: TextStyle(
@@ -61,9 +74,16 @@ class LoginScreen extends State<Login> {
       ),
       textInputAction: TextInputAction.go,
       obscureText: true,
-      onChanged: (String value) {
+       validator: (String value) {
+
+           if(value.length<8)
+             return 'Password should be 8+ characters long';
+           else
+           return null;
+      },
+      onSaved: (String value) {
         setState(() {
-          password = value;
+          _password = value;
         });
       },
     );
@@ -78,9 +98,7 @@ class LoginScreen extends State<Login> {
           RaisedButton(
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/home');
-            },
+            onPressed: _submitLogin,
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -116,7 +134,26 @@ class LoginScreen extends State<Login> {
             ),
           );
  }
+  void _submitLogin(){
+     if(_formKey.currentState.validate()){ //if validation is true for all
+   Scaffold
+          .of(context)
+          .showSnackBar(SnackBar(content: Text('Processing Data')));
+    
+    _formKey.currentState.save();
+     final Map<String,dynamic> loginDetails ={
+       'email': _email,
+       'password':_password,
+     };
+     print(loginDetails);
+     Navigator.pushReplacementNamed(context, '/home');
+     }else{
+        setState(() {
+      _autoValidate = true;
+    });
+     }
 
+  }
   @override
   void initState() {
     super.initState();
@@ -139,10 +176,14 @@ class LoginScreen extends State<Login> {
           ),
         ),
         child: Container(
-          margin: EdgeInsets.fromLTRB(10.00, 0.00, 10.00, 50.00),
+          margin: EdgeInsets.fromLTRB(10.00, 10.00, 10.00, 0.00),
           child: Center(
             child: SingleChildScrollView(
-              child: Column(
+              
+              child: Form(
+                key:_formKey,
+                autovalidate: _autoValidate,
+                child:Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
@@ -154,13 +195,16 @@ class LoginScreen extends State<Login> {
                     ),
                   ),
                   SizedBox(
-                    height: 60.0,
+                    height: 50.0,
                   ),
+                
                   _loginEmail(),
                   SizedBox(height: 7.0),
                   _loginPassword(),
                   _loginButton(),
+                   SizedBox(height: 50.0),
                 ],
+              ),
               ),
             ),
           ),
@@ -184,6 +228,7 @@ class LoginScreen extends State<Login> {
 
 Widget bottomNavBar(context){
   return  Container(
+    
         width: MediaQuery.of(context).size.width,
         height: 30.0,
         child: Row(

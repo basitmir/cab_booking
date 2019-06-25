@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class DriverList extends StatelessWidget {
-  
   final List<Map<String, String>> drivers;
   final List<int> stars = [1, 2, 3, 4, 5];
   DriverList(this.drivers);
@@ -12,8 +11,8 @@ class DriverList extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
       child: Column(
         children: <Widget>[
-          rowContainer(
-              drivers[index]['name'], drivers[index]['cabNumber'],index,context),
+          rowContainer(drivers[index]['name'], drivers[index]['cabNumber'],
+              index, context),
           Image.asset(
             drivers[index]['image'],
           ),
@@ -22,9 +21,9 @@ class DriverList extends StatelessWidget {
             children: stars
                 .map(
                   (element) => Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      ),
+                    Icons.star,
+                    color: Colors.yellow,
+                  ),
                 )
                 .toList(),
           ),
@@ -34,7 +33,7 @@ class DriverList extends StatelessWidget {
   }
 
   Widget build(context) {
-     return Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white30,
       appBar: AppBar(
         iconTheme: IconTheme.of(context),
@@ -44,42 +43,39 @@ class DriverList extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 21.0),
         ),
       ),
-      body: 
-    
-    
-    
-    ListView.builder(
-      itemBuilder: _singleListItem,
-      itemCount: drivers.length,
+      body: ListView.builder(
+        itemBuilder: _singleListItem,
+        itemCount: drivers.length,
 
-      // children: [
-      //   Column(
-      //     children: drivers
-      //         .map((element) => Card(
-      //               color: Colors.white,
-      //               margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
-      //               child: Column(
-      //                 children: <Widget>[
-      //                   rowContainer(element),
-      //                   Image.asset(
-      //                     'assets/car.jpg',
-      //                   ),
-      //                   Icon(
-      //                     Icons.star,
-      //                     color: Colors.yellow,
-      //                   ),
-      //                 ],
-      //               ),
-      //             ))
-      //         .toList(),
-      //   ),
-      // ],
-    ),
+        // children: [
+        //   Column(
+        //     children: drivers
+        //         .map((element) => Card(
+        //               color: Colors.white,
+        //               margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
+        //               child: Column(
+        //                 children: <Widget>[
+        //                   rowContainer(element),
+        //                   Image.asset(
+        //                     'assets/car.jpg',
+        //                   ),
+        //                   Icon(
+        //                     Icons.star,
+        //                     color: Colors.yellow,
+        //                   ),
+        //                 ],
+        //               ),
+        //             ))
+        //         .toList(),
+        //   ),
+        // ],
+      ),
     );
   }
 }
 
-Widget rowContainer(String name, String number,int index, BuildContext context) {
+Widget rowContainer(
+    String name, String number, int index, BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       gradient: LinearGradient(
@@ -98,7 +94,7 @@ Widget rowContainer(String name, String number,int index, BuildContext context) 
         avatarMore(index, context),
       ],
     ),
-  ); 
+  );
 }
 
 Widget avatar() {
@@ -135,6 +131,7 @@ Widget avatarMore(int index, BuildContext context) {
     tooltip: 'Know More',
     iconSize: 35.0,
     color: Colors.white,
-    onPressed: () => Navigator.pushNamed(context, '/driver/'+ index.toString()),
+    onPressed: () =>
+        Navigator.pushNamed(context, '/driver/' + index.toString()),
   );
 }
