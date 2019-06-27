@@ -10,11 +10,15 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  String origin = '';
-  String destination = '';
+  final Map<String, dynamic> _homePageDetails = {
+    'origin': null,
+    'destination': null,
+  };
 
+  bool _autoValidate = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Widget _originFeild() {
-    return TextField(
+    return TextFormField(
         decoration: InputDecoration(
           //  border: InputBorder(
           //    borderSide:BorderSide(width:10.00)
@@ -31,15 +35,21 @@ class HomeState extends State<Home> {
             ), // icon is 48px widget.
           ),
         ),
-        onChanged: (String value) {
-          setState(() {
-            origin = value;
-          });
+        validator: (String value) {
+          if (value.length < 3 || !RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+            return 'Please enter valid origin';
+          } else
+            return null;
+        },
+        onSaved: (String value) {
+          // setState(() {
+          _homePageDetails['origin'] = value;
+          // });
         });
   }
 
   Widget _destinationFeild() {
-    return TextField(
+    return TextFormField(
         decoration: InputDecoration(
           labelText: 'Destination',
           prefixIcon: Padding(
@@ -50,9 +60,15 @@ class HomeState extends State<Home> {
             ), // icon is 48px widget.
           ),
         ),
-        onChanged: (String value) {
+        validator: (String value) {
+          if (value.length < 3 || !RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+            return 'Please enter valid destination';
+          } else
+            return null;
+        },
+        onSaved: (String value) {
           setState(() {
-            destination = value;
+            _homePageDetails['destination'] = value;
           });
         });
   }
@@ -65,14 +81,24 @@ class HomeState extends State<Home> {
           child: IconButton(
             icon:
                 Icon(Icons.play_circle_outline, color: Colors.orange, size: 40),
-            onPressed: () {
-              widget.addDetails(origin, destination);
-              Navigator.pushNamed(context, '/drivers');
-            },
+            onPressed: nextPage,
           ),
         ),
       ],
     );
+  }
+
+  void nextPage() {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      widget.addDetails(
+          _homePageDetails['origin'], _homePageDetails['destination']);
+      Navigator.pushNamed(context, '/drivers');
+    } else {
+      setState(() {
+        _autoValidate = true;
+      });
+    }
   }
 
   Widget build(BuildContext context) {
@@ -82,26 +108,35 @@ class HomeState extends State<Home> {
         child: FloatingButtons(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-      body: Container(
-          margin: EdgeInsets.fromLTRB(10.00, 35.00, 10.00, 00.00),
-          child: ListView(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 10,
-                    child: Column(
-                      children: <Widget>[
-                        _originFeild(),
-                        _destinationFeild(),
-                      ],
-                    ),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Container(
+            margin: EdgeInsets.fromLTRB(10.00, 35.00, 10.00, 00.00),
+            child: ListView(
+              children: <Widget>[
+                Form(
+                  key: _formKey,
+                  autovalidate: _autoValidate,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 10,
+                        child: Column(
+                          children: <Widget>[
+                            _originFeild(),
+                            _destinationFeild(),
+                          ],
+                        ),
+                      ),
+                      _nextButton(),
+                    ],
                   ),
-                  _nextButton(),
-                ],
-              ),
-            ],
-          )),
+                ),
+              ],
+            )),
+      ),
     );
   }
 }

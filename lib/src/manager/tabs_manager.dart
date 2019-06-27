@@ -6,9 +6,10 @@ import '../screens/help.dart';
 import '../screens/driver_details.dart';
 
 class Tabs extends StatefulWidget {
-  final String name;
-  final String number;
-  Tabs(this.name, this.number);
+  // final String name;
+  // final String number;
+  final Map<String,String> singleDriver;
+  Tabs(this.singleDriver);
   @override
   State<StatefulWidget> createState() {
     return _MyTabs();
@@ -25,7 +26,7 @@ class _MyTabs extends State<Tabs> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    _pageOption.insert(0, DriverDetails(widget.name, widget.number));
+    _pageOption.insert(0, DriverDetails(widget.singleDriver));
 
     super.initState();
   }
@@ -45,8 +46,8 @@ class _MyTabs extends State<Tabs> with SingleTickerProviderStateMixin {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
         mini: true,
-        child: Icon(Icons.home, color: Colors.orange),
-        backgroundColor: Colors.white,
+        child: Icon(Icons.home, color: Colors.white),
+        backgroundColor: Colors.orange,
         elevation: 0.00,
       ),
       body: _pageOption[_bottomNavBarIndex],

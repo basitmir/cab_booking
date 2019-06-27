@@ -9,19 +9,28 @@ class Register extends StatefulWidget {
 }
 
 class RegisterScreen extends State<Register> {
-  String email;
-  String password;
-  String confirmPassword;
-  String userName;
+   final Map<String, dynamic> _registerDetails = {
+        'userName': null,
+        'email': null,
+        'password': null,
+      };
+  final TextEditingController _passwordTextController = TextEditingController();
+  bool _autoValidate = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _userName() {
-    return TextField(
+    return TextFormField(
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         border: InputBorder.none,
         labelText: 'UserName',
         filled: true,
+        errorStyle: TextStyle(
+            backgroundColor: Colors.white.withOpacity(0.2),
+            fontWeight: FontWeight.w600),
+        errorBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
         fillColor: Colors.orange.withOpacity(0.4),
         labelStyle: TextStyle(
           color: Colors.white,
@@ -32,18 +41,24 @@ class RegisterScreen extends State<Register> {
           color: Colors.white,
         ), // icon is 48px widget.
       ),
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       textInputAction: TextInputAction.go,
-      onChanged: (String value) {
-        setState(() {
-          userName = value;
-        });
+      validator: (String value) {
+        if (value.length < 3 || !RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+          return 'Please enter valid username';
+        } else
+          return null;
+      },
+      onSaved: (String value) {
+        // setState(() {
+         _registerDetails['userName'] = value;
+        // });
       },
     );
   }
 
   Widget _email() {
-    return TextField(
+    return TextFormField(
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
@@ -51,6 +66,11 @@ class RegisterScreen extends State<Register> {
         labelText: 'EMAIL',
         filled: true,
         fillColor: Colors.orange.withOpacity(0.4),
+        errorStyle: TextStyle(
+            backgroundColor: Colors.white.withOpacity(0.2),
+            fontWeight: FontWeight.w600),
+        errorBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
         labelStyle: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
@@ -62,22 +82,35 @@ class RegisterScreen extends State<Register> {
       ),
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.go,
-      onChanged: (String value) {
-        setState(() {
-          email = value;
-        });
+      validator: (String value) {
+        if (value.isEmpty ||
+            !RegExp(r'^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$')
+                .hasMatch(value)) {
+          return 'Please enter valid email';
+        } else
+          return null;
+      },
+      onSaved: (String value) {
+        // setState(() {
+        _registerDetails['email'] = value;
+        // });
       },
     );
   }
 
   Widget _password() {
-    return TextField(
+    return TextFormField(
+      controller: _passwordTextController,
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         border: InputBorder.none,
         labelText: 'PASSWORD',
-
+        errorStyle: TextStyle(
+            backgroundColor: Colors.white.withOpacity(0.2),
+            fontWeight: FontWeight.w600),
+        errorBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
         filled: true,
         fillColor: Colors.orange.withOpacity(0.4),
         labelStyle: TextStyle(
@@ -91,22 +124,33 @@ class RegisterScreen extends State<Register> {
       ),
       textInputAction: TextInputAction.go,
       obscureText: true,
-      onChanged: (String value) {
-        setState(() {
-          password = value;
-        });
+      validator: (String value) {
+        if (value.length < 8) {
+          return 'Password should be 8+ characters long';
+        } else
+          return null;
+      },
+      onSaved: (String value) {
+        // setState(() {
+          _registerDetails['password'] = value;
+         
+        // });
       },
     );
   }
 
   Widget _checkPassword() {
-    return TextField(
+    return TextFormField(
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         border: InputBorder.none,
         labelText: 'CONFIRM PASSWORD',
-
+        errorStyle: TextStyle(
+            backgroundColor: Colors.white.withOpacity(0.2),
+            fontWeight: FontWeight.w600),
+        errorBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
         filled: true,
         fillColor: Colors.orange.withOpacity(0.4),
         labelStyle: TextStyle(
@@ -120,11 +164,14 @@ class RegisterScreen extends State<Register> {
       ),
       textInputAction: TextInputAction.go,
       obscureText: true,
-      onChanged: (String value) {
-        setState(() {
-          confirmPassword = value;
-        });
+      validator: (String value) {
+        if (value != _passwordTextController.text) {
+         
+          return 'Password mismatch';
+        } else
+          return null;
       },
+     
     );
   }
 
@@ -137,9 +184,7 @@ class RegisterScreen extends State<Register> {
           RaisedButton(
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/login');
-            },
+            onPressed: _register,
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -163,6 +208,19 @@ class RegisterScreen extends State<Register> {
     );
   }
 
+  void _register() {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+     
+      print(_registerDetails);
+      Navigator.pushReplacementNamed(context, '/login');
+    } else {
+      setState(() {
+        _autoValidate = true;
+      });
+    }
+  }
+
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([
@@ -174,43 +232,52 @@ class RegisterScreen extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage('assets/background.jpg'),
-            colorFilter: ColorFilter.mode(
-                Colors.orange.withOpacity(0.6), BlendMode.dstATop),
-          ),
-        ),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
         child: Container(
-          margin: EdgeInsets.fromLTRB(10.00, 0.00, 10.00, 10.00),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'REGISTER',
-                    style: TextStyle(
-                      fontSize: 60.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/background.jpg'),
+              colorFilter: ColorFilter.mode(
+                  Colors.orange.withOpacity(0.6), BlendMode.dstATop),
+            ),
+          ),
+          child: Container(
+            margin: EdgeInsets.fromLTRB(10.00, 0.00, 10.00, 10.00),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  autovalidate: _autoValidate,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'REGISTER',
+                        style: TextStyle(
+                          fontSize: 60.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      _userName(),
+                      SizedBox(height: 7.0),
+                      _email(),
+                      SizedBox(height: 7.0),
+                      _password(),
+                      SizedBox(height: 7.0),
+                      _checkPassword(),
+                      // SizedBox(height: 2.0),
+                      _registerButton(),
+                    ],
                   ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  _userName(),
-                  SizedBox(height: 7.0),
-                  _email(),
-                  SizedBox(height: 7.0),
-                  _password(),
-                  SizedBox(height: 7.0),
-                  _checkPassword(),
-                  // SizedBox(height: 2.0),
-                  _registerButton(),
-                ],
+                ),
               ),
             ),
           ),

@@ -12,7 +12,7 @@ class DriverList extends StatelessWidget {
       child: Column(
         children: <Widget>[
           rowContainer(drivers[index]['name'], drivers[index]['cabNumber'],
-              index, context),
+              drivers[index]['image'], index, context),
           Image.asset(
             drivers[index]['image'],
           ),
@@ -75,7 +75,7 @@ class DriverList extends StatelessWidget {
 }
 
 Widget rowContainer(
-    String name, String number, int index, BuildContext context) {
+    String name, String number, String image, int index, BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       gradient: LinearGradient(
@@ -87,7 +87,7 @@ Widget rowContainer(
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        avatar(),
+        avatar(image),
         Container(margin: EdgeInsets.only(left: 10.00)),
         avatarText(name, number),
         Spacer(),
@@ -97,10 +97,11 @@ Widget rowContainer(
   );
 }
 
-Widget avatar() {
+Widget avatar(String image) {
   return CircleAvatar(
     radius: 30.0,
     // backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+    backgroundImage: AssetImage(image),
     backgroundColor: Colors.black12,
     child: Text(
       'Test',
@@ -115,11 +116,11 @@ Widget avatarText(String name, String number) {
       Text(
         name,
         style: TextStyle(
-            color: Colors.black87, fontSize: 15.0, fontWeight: FontWeight.w600),
+            color: Colors.orange, fontSize: 15.0, fontWeight: FontWeight.w600),
       ),
       Text(
         number,
-        style: TextStyle(color: Colors.black54, fontSize: 12.0),
+        style: TextStyle(color: Colors.orange[400], fontSize: 12.0),
       ),
     ],
   );

@@ -16,6 +16,7 @@ class Start extends StatefulWidget {
 class StartApp extends State<Start> {
   String origin;
   String destination;
+  //  List <Map<String,String>> singleDriver;
   void addDetails(String start, String end) {
     setState(() {
       origin = start;
@@ -24,9 +25,48 @@ class StartApp extends State<Start> {
   }
 
   List<Map<String, String>> _drivers = [
-    {'name': 'Basit Mir', 'cabNumber': 'JK2012-Xb', 'image': 'assets/car.jpg'},
-    {'name': 'Basit', 'cabNumber': 'JK01L-2103', 'image': 'assets/car.jpg'},
-    {'name': 'Sami', 'cabNumber': 'JK2012-12', 'image': 'assets/car.jpg'},
+    {
+      'name': 'Basit Mir',
+      'cabNumber': 'JK2012-Xb',
+      'image': 'assets/car.jpg',
+      'address': 'Naseem Bagh',
+      'city':'Srinagar',
+      'age': '54',
+      'experience': '20',
+      'gender': 'male',
+      'vacancy': '4',
+      'mobile': '9419476521',
+      'email' : 'basitmir98@gmail.com',
+      'rating': '5',
+    },
+    {
+      'name': 'Basit',
+      'cabNumber': 'JK01L-2103',
+      'image': 'assets/car.jpg',
+      'address': 'Naseem Bagh',
+       'city':'Srinagar',
+      'age': '54',
+      'experience': '20',
+      'gender': 'male',
+      'vacancy': '4',
+      'mobile': '9419476521',
+      'email' : 'basit@gmail.com',
+      'rating': '5',
+    },
+    {
+      'name': 'Sami',
+      'cabNumber': 'JK2012-12',
+      'image': 'assets/car.jpg',
+      'address': 'Naseem Bagh',
+       'city':'Srinagar',
+      'age': '54',
+      'experience': '20',
+      'gender': 'male',
+      'vacancy': '4',
+      'mobile': '9419476521',
+      'email' : 'basit@gmail.com',
+      'rating': '5',
+    },
   ];
 
   void fetchDriver() async {
@@ -59,9 +99,25 @@ class StartApp extends State<Start> {
         }
         if (driverDetails[1] == 'driver') {
           final int index = int.parse(driverDetails[2]);
+           Map<String,String> _singleDriver={
+               'name':_drivers[index]['name'],
+                'cabNumber':_drivers[index]['cabNumber'],
+                'image':_drivers[index]['image'],
+                'address':_drivers[index]['address'],
+                'age':_drivers[index]['age'],
+                'experience':_drivers[index]['experience'],
+                'gender':_drivers[index]['gender'],
+                'vacancy':_drivers[index]['vacancy'],
+                'mobile':_drivers[index]['mobile'],
+                'email':_drivers[index]['email'],
+                 'city':_drivers[index]['city'],
+                'rating':_drivers[index]['rating'],
+          
+           };
           return MaterialPageRoute(
-            builder: (BuildContext context) =>
-                Tabs(_drivers[index]['name'], _drivers[index]['cabNumber']),
+            builder: (BuildContext context) => Tabs(
+               _singleDriver
+                ),
           );
         }
         return null;
