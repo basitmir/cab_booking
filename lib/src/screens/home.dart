@@ -23,7 +23,10 @@ class HomeState extends State<Home> {
           //  border: InputBorder(
           //    borderSide:BorderSide(width:10.00)
           //  ),
-          contentPadding: EdgeInsets.only(bottom: 5.0, left: 10.0, right: 10.0),
+          enabledBorder: UnderlineInputBorder(      
+                      borderSide: BorderSide(color: Colors.orange),   
+                      ),
+         contentPadding: EdgeInsets.only(bottom: 0.0,top:0.0 ,left: 0.0, right: 0.0),
 
           labelText: 'Origin',
           prefixIcon: Padding(
@@ -51,6 +54,10 @@ class HomeState extends State<Home> {
   Widget _destinationFeild() {
     return TextFormField(
         decoration: InputDecoration(
+          enabledBorder: UnderlineInputBorder(      
+                      borderSide: BorderSide(color: Colors.orange),   
+                      ),
+           contentPadding: EdgeInsets.only(bottom: 0.0,top:5.0, left: 0.0, right: 0.0),
           labelText: 'Destination',
           prefixIcon: Padding(
             padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),

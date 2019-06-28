@@ -31,6 +31,7 @@ class StartApp extends State<Start> {
       'image': 'assets/car.jpg',
       'address': 'Naseem Bagh',
       'city':'Srinagar',
+      'state':'j&k',
       'age': '54',
       'experience': '20',
       'gender': 'male',
@@ -45,6 +46,7 @@ class StartApp extends State<Start> {
       'image': 'assets/car.jpg',
       'address': 'Naseem Bagh',
        'city':'Srinagar',
+       'state':'j&k',
       'age': '54',
       'experience': '20',
       'gender': 'male',
@@ -59,6 +61,7 @@ class StartApp extends State<Start> {
       'image': 'assets/car.jpg',
       'address': 'Naseem Bagh',
        'city':'Srinagar',
+       'state':'j&k',
       'age': '54',
       'experience': '20',
       'gender': 'male',
@@ -111,6 +114,7 @@ class StartApp extends State<Start> {
                 'mobile':_drivers[index]['mobile'],
                 'email':_drivers[index]['email'],
                  'city':_drivers[index]['city'],
+                  'state':_drivers[index]['state'],
                 'rating':_drivers[index]['rating'],
           
            };
@@ -155,7 +159,7 @@ class StartAppScreen extends StatelessWidget {
 
 Widget textAtTop() {
   return Stack(
-    alignment: AlignmentDirectional.bottomEnd,
+    alignment: AlignmentDirectional.bottomCenter,
     children: <Widget>[
       Text(
         'RIDEz',
@@ -169,7 +173,7 @@ Widget textAtTop() {
             ),
           ],
           color: Colors.white,
-          fontSize: 80.0,
+          fontSize: 110.0,
           fontWeight: FontWeight.bold,
           fontStyle: FontStyle.italic,
 
@@ -180,7 +184,7 @@ Widget textAtTop() {
         'Joyfull and Comfortable travel',
         textAlign: TextAlign.center,
         style: TextStyle(
-            color: Colors.white, fontSize: 15.0, fontWeight: FontWeight.bold),
+            color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold),
       ),
     ],
   );

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DriverDetails extends StatelessWidget {
-  // final String name;
-  // final String number;
   final Map<String, String> singleDriver;
   DriverDetails(this.singleDriver);
-   Map<String, dynamic> iconList = {'icon': Icons.person};
+  static Map<String, dynamic> iconList = {};
   // singleDriver.add('icon':'Icons.Person');
   @override
   Widget build(BuildContext context) {
@@ -28,48 +26,52 @@ class DriverDetails extends StatelessWidget {
                 singleDriver['image'], singleDriver['rating'], context),
 
             singleRow(
-                'EMAIL',
-                singleDriver['email'],
-                iconList =
-                  {'icon': Icons.email},
-                ),
+              'EMAIL',
+              singleDriver['email'],
+              iconList = {'icon': Icons.email},
+            ),
             singleRow(
-                'ADDRESS',
-                singleDriver['address'],
-                iconList=
-                  {'icon': Icons.my_location},
-                ),
+              'ADDRESS',
+              singleDriver['address'],
+              iconList = {'icon': Icons.person_pin_circle},
+            ),
+             singleRow(
+              'STATE',
+              singleDriver['state'],
+              iconList = {'icon': Icons.my_location},
+            ),
             singleRow(
-                'CITY',
-                singleDriver['city'],
-                iconList = 
-                  {'icon': Icons.location_city},
-                ),
+              'CITY',
+              singleDriver['city'],
+              iconList = {'icon': Icons.location_city},
+            ),
             singleRow(
-                'MOBILE',
-                singleDriver['mobile'],
-                iconList= 
-                  {'icon': Icons.contact_phone},
-                ),
-            singleRow(
-                'GENDER',
-                singleDriver['gender'],
-                iconList= 
-                  {'icon': Icons.assignment_ind},
-                ),
-            singleRow(
-                'AGE',
-                singleDriver['age'],
-                iconList=
-                  {'icon': Icons.perm_identity},
-                ),
+              'CONTACT',
+              singleDriver['mobile'],
+              iconList = {'icon': Icons.contact_phone},
+            ),
 
             singleRow(
-                'VACANCY',
-                singleDriver['vacancy'],
-                iconList=
-                  {'icon': Icons.event_seat},
-                ),
+              'GENDER',
+              singleDriver['gender'],
+              iconList = {'icon': Icons.assignment_ind},
+            ),
+            singleRow(
+              'EXPERIENCE',
+              singleDriver['experience'],
+              iconList = {'icon': Icons.verified_user},
+            ),
+            singleRow(
+              'AGE',
+              singleDriver['age'],
+              iconList = {'icon': Icons.perm_identity},
+            ),
+
+            singleRow(
+              'VACANCY',
+              singleDriver['vacancy'],
+              iconList = {'icon': Icons.event_seat},
+            ),
 
             // Text(singleDriver[0]['name']),
             bookingButton(context),
@@ -220,8 +222,8 @@ Widget bookingButton(BuildContext context) {
           Radius.circular(20.0),
         ),
         gradient: LinearGradient(
-          // begin: FractionalOffset(0.7, 0.8),
-          // end: FractionalOffset(0.0, 0.0),
+          //  begin: FractionalOffset(0.7, 0.8),
+          //  end: FractionalOffset(0.0, 0.0),
           colors: <Color>[
             Colors.orange,
             Colors.white,
