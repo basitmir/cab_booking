@@ -85,7 +85,9 @@ class StartApp extends State<Start> {
       theme: ThemeData(
           primaryColor: Colors.orange[500],
           iconTheme: IconThemeData(color: Colors.white),
-          fontFamily: 'myFont'),
+          fontFamily: 'myFont',
+          accentColor: Colors.orange,
+          unselectedWidgetColor:Colors.white),
       home: StartAppScreen(),
       debugShowCheckedModeBanner: false,
       routes: {

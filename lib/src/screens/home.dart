@@ -39,7 +39,7 @@ class HomeState extends State<Home> {
           ),
         ),
         validator: (String value) {
-          if (value.length < 3 || !RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+          if (value.length < 3 || !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$').hasMatch(value)) {
             return 'Please enter valid origin';
           } else
             return null;
@@ -62,13 +62,13 @@ class HomeState extends State<Home> {
           prefixIcon: Padding(
             padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
             child: Icon(
-              Icons.pin_drop,
+              Icons.place,
               color: Colors.orange[500],
             ), // icon is 48px widget.
           ),
         ),
         validator: (String value) {
-          if (value.length < 3 || !RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+          if (value.length < 3 || !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$').hasMatch(value)) {
             return 'Please enter valid destination';
           } else
             return null;

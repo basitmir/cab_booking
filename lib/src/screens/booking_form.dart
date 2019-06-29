@@ -13,19 +13,164 @@ class Booking extends StatefulWidget {
 
 class BookingForm extends State<Booking> {
   bool _autoValidate = false;
-  Map<String, dynamic> iconList = {};
+
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+
+  Map<String, dynamic> passDetails = {};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-   final Map<String, dynamic> _bookingDetails = {
+  final Map<String, dynamic> _bookingDetails = {
     'name': null,
-    'address': null,
     'origin': null,
     'destination': null,
     'contact': null,
-    'oneWayTrip': null,
-    'roundTrip': null,
+    'tripDetails': 'oneWayTrip',
     'landMark': null,
+    'date': null,
+    'time': null,
   };
-//.......................FUunction Used..........................................................
+//.......................date Field..........................................................
+
+  DateTime _date = DateTime.now().toUtc();
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: _date,
+      lastDate: DateTime(2099),
+    );
+    if (picked != null) {
+      print(_date.toString());
+      setState(() {
+        _date = picked;
+        DateTime modifyDate = DateTime.parse(_date.toString());
+        _dateController.text =
+            "${modifyDate.day}-${modifyDate.month}-${modifyDate.year}";
+        _bookingDetails['date'] = _dateController.text;
+      });
+    }
+  }
+
+  Widget dateField() {
+    return InkWell(
+      onTap: () {
+        _selectDate(context); //call to date widget
+      },
+      child: IgnorePointer(
+        child: TextFormField(
+          controller: _dateController,
+          maxLines: 1,
+          // keyboardType: passDetails['keyboard'],
+
+          cursorColor: Colors.orange,
+          style: TextStyle(color: Colors.orange[700]),
+
+          decoration: InputDecoration(
+            contentPadding:
+                EdgeInsets.only(bottom: 5.0, top: 10.0, left: 10.0, right: 5.0),
+            // border: UnderLineInputBorder(),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+
+            labelText: 'DATE',
+            labelStyle:
+                TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+            prefixIcon: Padding(
+              padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+              child: Icon(
+                Icons.date_range,
+                color: Colors.orange[500],
+                size: 21,
+              ), // icon is 48px widget.
+            ),
+          ),
+          validator: (String value) {
+            if (value.isEmpty) {
+              return 'Please enter valid date';
+            } else
+              return null;
+          },
+          onSaved: (value) {},
+        ),
+      ),
+    );
+  }
+//.........................................Date Field close ...............................................
+
+//.........................................Time Field.........................................
+  TimeOfDay _time = TimeOfDay.now();
+  
+  Future<Null> _selectTime(BuildContext context) async {
+    final TimeOfDay picked = await showTimePicker(
+      context: context,
+      initialTime: _time,
+      builder: (BuildContext context, Widget child) {
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+      child: child,
+    );
+  },
+    );
+    if (picked != null && picked != _time) {
+      print(_time.toString());
+      setState(() {
+        _time = picked;
+       
+
+        _timeController.text = _time.format(context);
+        print(_timeController.text);
+        _bookingDetails['time'] = _timeController.text;
+      });
+    }
+  }
+
+  Widget timeField() {
+    return InkWell(
+      onTap: () {
+        _selectTime(context); //call to date widget
+      },
+      child: IgnorePointer(
+        child: TextFormField(
+          controller: _timeController,
+          maxLines: 1,
+          // keyboardType: passDetails['keyboard'],
+
+          cursorColor: Colors.orange,
+          style: TextStyle(color: Colors.orange[700]),
+
+          decoration: InputDecoration(
+            contentPadding:
+                EdgeInsets.only(bottom: 5.0, top: 10.0, left: 10.0, right: 5.0),
+            // border: UnderLineInputBorder(),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+
+            labelText: 'TIME',
+            labelStyle:
+                TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+            prefixIcon: Padding(
+              padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+              child: Icon(
+                Icons.timer,
+                color: Colors.orange[500],
+                size: 21,
+              ), // icon is 48px widget.
+            ),
+          ),
+          validator: (String value) {
+            if (value.isEmpty) {
+              return 'Please enter valid time';
+            } else
+              return null;
+          },
+          onSaved: (value) {},
+        ),
+      ),
+    );
+  }
+//..........................................Time Field Close.........................................
 
   Widget saveButton() {
     return RaisedButton(
@@ -72,6 +217,45 @@ class BookingForm extends State<Booking> {
     }
   }
 
+  Widget radioField() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(
+          width: 20.0,
+        ),
+        Text(
+          'ONE-WAY TRIP',
+          style: new TextStyle(
+              fontSize: 16.0,
+              color: Colors.orange,
+              fontWeight: FontWeight.bold),
+        ),
+        Radio(
+          value: 'oneWayTrip',
+          activeColor: Colors.orange,
+          groupValue: _bookingDetails['tripDetails'],
+          onChanged: (details) =>
+              setState(() => _bookingDetails['tripDetails'] = details),
+        ),
+        Text(
+          'ROUND TRIP',
+          style: new TextStyle(
+              fontSize: 16.0,
+              color: Colors.orange,
+              fontWeight: FontWeight.bold),
+        ),
+        Radio(
+          value: 'roundTrip',
+          activeColor: Colors.orange,
+          groupValue: _bookingDetails['tripDetails'],
+          onChanged: (details) =>
+              setState(() => _bookingDetails['tripDetails'] = details),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,55 +271,97 @@ class BookingForm extends State<Booking> {
       body: Form(
         key: _formKey,
         autovalidate: _autoValidate,
-        child: Card(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: FractionalOffset(0.8, 0.8),
-                end: FractionalOffset(0.0, 0.8),
-                colors: <Color>[
-                  Color(0xFFFFFB74D),
-                  Colors.white,
-                ],
+        child: Column(children: <Widget>[
+          Expanded(
+            child: Card(
+              margin: EdgeInsets.fromLTRB(0.0, 3.0, 0.0, 0.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: FractionalOffset(0.8, 0.8),
+                    end: FractionalOffset(0.0, 0.8),
+                    colors: <Color>[
+                      Color(0xFFFFFB74D),
+                      Colors.white,
+                    ],
+                  ),
+                ),
+                child: ListView(
+                  children: <Widget>[
+                    formField(
+                        _bookingDetails,
+                        'origin',
+                        passDetails = {
+                          'icon': Icons.trip_origin,
+                          'keyboard': TextInputType.text,
+                          'lines': 4,
+                        },
+                        initalVal: widget.origin),
+                    formField(
+                        _bookingDetails,
+                        'destination',
+                        passDetails = {
+                          'icon': Icons.place,
+                          'keyboard': TextInputType.text,
+                          'lines': 3,
+                        },
+                        initalVal: widget.destination),
+                    formField(
+                        _bookingDetails,
+                        'origin landmark',
+                        passDetails = {
+                          'icon': Icons.pin_drop,
+                          'keyboard': TextInputType.text,
+                          'lines': 3
+                        }),
+                    formField(
+                        _bookingDetails,
+                        'name',
+                        passDetails = {
+                          'icon': Icons.person,
+                          'keyboard': TextInputType.text,
+                          'lines': 2
+                        }),
+                    formField(
+                        _bookingDetails,
+                        'contact',
+                        passDetails = {
+                          'icon': Icons.contact_phone,
+                          'keyboard': TextInputType.number,
+                          'lines': 2
+                        }),
+                    dateField(),
+                    timeField(),
+                    SizedBox(height:12.00),
+                    radioField(),
+                  ],
+                ),
               ),
             ),
-            child: ListView(
-              children: <Widget>[
-                formField(
-                    _bookingDetails, 'origin', iconList = {'icon': Icons.email},initalVal: widget.origin),
-                formField(_bookingDetails, 'destination',
-                    iconList = {'icon': Icons.person},initalVal: widget.destination),
-                formField(_bookingDetails, 'name',
-                    iconList = {'icon': Icons.person}),
-                formField(
-                    _bookingDetails, 'address', iconList = {'icon': Icons.email}),
-                formField(_bookingDetails, 'landmark',
-                    iconList = {'icon': Icons.person}),
-                formField(
-                    _bookingDetails, 'contact', iconList = {'icon': Icons.email}),
-                formField(_bookingDetails, 'onewaytrip',
-                    iconList = {'icon': Icons.person}),
-                formField(
-                    _bookingDetails, 'roundtrip', iconList = {'icon': Icons.email}),
-                formField(_bookingDetails, 'address',
-                    iconList = {'icon': Icons.person}),
-                saveButton(),
-              ],
-            ),
           ),
-        ),
+          Expanded(
+            flex: 0,
+            child: saveButton(),
+          ),
+        ]),
       ),
     );
   }
 }
 
 Widget formField(
-    _bookingDetails, String property, Map<String, dynamic> iconList,{String initalVal=''}) {
+    _bookingDetails, String property, Map<String, dynamic> passDetails,
+    {String initalVal = ''}) {
   return TextFormField(
+    maxLines: passDetails['lines'],
+    keyboardType: passDetails['keyboard'],
+    cursorColor: Colors.orange,
+    style: TextStyle(color: Colors.orange[700]),
     initialValue: initalVal,
     decoration: InputDecoration(
-      //  contentPadding: EdgeInsets.only(bottom: 0.0,top:0.0 ,left: 0.0, right: 0.0),
+      contentPadding:
+          EdgeInsets.only(bottom: 5.0, top: 10.0, left: 10.0, right: 5.0),
       // border: UnderLineInputBorder(),
       enabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: Colors.white),
@@ -146,7 +372,7 @@ Widget formField(
       prefixIcon: Padding(
         padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
         child: Icon(
-          iconList['icon'],
+          passDetails['icon'],
           color: Colors.orange[500],
           size: 21,
         ), // icon is 48px widget.
@@ -154,15 +380,29 @@ Widget formField(
     ),
     validator: (value) {
       switch (property) {
-        case 'name':
+        case 'origin':
           {
-            return validateName(value);
+            return commonValidation(value, 'origin');
             // print('in the name');
           }
           break;
-        case 'address':
+        case 'destination':
           {
-            print('in the address');
+            return commonValidation(value, 'destination');
+          }
+          break;
+        case 'origin landmark':
+          {
+            return commonValidation(value, 'landmark');
+          }
+          break;
+        case 'name':
+          {
+            return commonValidation(value, 'name');
+          }
+        case 'contact':
+          {
+            return contactValidation(value);
           }
       }
       return null;
@@ -173,9 +413,17 @@ Widget formField(
   );
 }
 
-String validateName(value) {
-  if (value.length < 3 || !RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
-    return 'Please enter valid name';
+String commonValidation(value, msg) {
+  if (value.length < 3 ||
+      !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$').hasMatch(value)) {
+    return 'Please enter valid' + ' ' + msg;
+  } else
+    return null;
+}
+
+String contactValidation(value) {
+  if (value.length != 10 || !RegExp(r'^\d{10}$').hasMatch(value)) {
+    return 'Please enter valid number';
   } else
     return null;
 }

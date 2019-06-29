@@ -46,8 +46,8 @@ class _MyTabs extends State<Tabs> with SingleTickerProviderStateMixin {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
         mini: true,
-        child: Icon(Icons.home, color: Colors.white),
-        backgroundColor: Colors.orange,
+        child: Icon(Icons.home, color: Colors.orange),
+        backgroundColor: Colors.white,
         elevation: 0.00,
       ),
       body: _pageOption[_bottomNavBarIndex],

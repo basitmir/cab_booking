@@ -17,67 +17,74 @@ class DriverDetails extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 21.0),
         ),
       ),
-      body: Card(
-        color: Colors.white,
-        margin: EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 0.0),
-        child: ListView(
-          children: <Widget>[
-            rowContainer(singleDriver['name'], singleDriver['cabNumber'],
-                singleDriver['image'], singleDriver['rating'], context),
+      body: Column(children: <Widget>[
+        Expanded(
+          child: Card(
+            color: Colors.white,
+            margin: EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 0.0),
+            child: ListView(
+              children: <Widget>[
+                rowContainer(singleDriver['name'], singleDriver['cabNumber'],
+                    singleDriver['image'], singleDriver['rating'], context),
 
-            singleRow(
-              'EMAIL',
-              singleDriver['email'],
-              iconList = {'icon': Icons.email},
-            ),
-            singleRow(
-              'ADDRESS',
-              singleDriver['address'],
-              iconList = {'icon': Icons.person_pin_circle},
-            ),
-             singleRow(
-              'STATE',
-              singleDriver['state'],
-              iconList = {'icon': Icons.my_location},
-            ),
-            singleRow(
-              'CITY',
-              singleDriver['city'],
-              iconList = {'icon': Icons.location_city},
-            ),
-            singleRow(
-              'CONTACT',
-              singleDriver['mobile'],
-              iconList = {'icon': Icons.contact_phone},
-            ),
+                singleRow(
+                  'EMAIL',
+                  singleDriver['email'],
+                  iconList = {'icon': Icons.email},
+                ),
+                singleRow(
+                  'ADDRESS',
+                  singleDriver['address'],
+                  iconList = {'icon': Icons.person_pin_circle},
+                ),
+                singleRow(
+                  'STATE',
+                  singleDriver['state'],
+                  iconList = {'icon': Icons.my_location},
+                ),
+                singleRow(
+                  'CITY',
+                  singleDriver['city'],
+                  iconList = {'icon': Icons.location_city},
+                ),
+                singleRow(
+                  'CONTACT',
+                  singleDriver['mobile'],
+                  iconList = {'icon': Icons.contact_phone},
+                ),
 
-            singleRow(
-              'GENDER',
-              singleDriver['gender'],
-              iconList = {'icon': Icons.assignment_ind},
-            ),
-            singleRow(
-              'EXPERIENCE',
-              singleDriver['experience'],
-              iconList = {'icon': Icons.verified_user},
-            ),
-            singleRow(
-              'AGE',
-              singleDriver['age'],
-              iconList = {'icon': Icons.perm_identity},
-            ),
+                singleRow(
+                  'GENDER',
+                  singleDriver['gender'],
+                  iconList = {'icon': Icons.assignment_ind},
+                ),
+                singleRow(
+                  'EXPERIENCE',
+                  singleDriver['experience'],
+                  iconList = {'icon': Icons.verified_user},
+                ),
+                singleRow(
+                  'AGE',
+                  singleDriver['age'],
+                  iconList = {'icon': Icons.perm_identity},
+                ),
 
-            singleRow(
-              'VACANCY',
-              singleDriver['vacancy'],
-              iconList = {'icon': Icons.event_seat},
-            ),
+                singleRow(
+                  'VACANCY',
+                  singleDriver['vacancy'],
+                  iconList = {'icon': Icons.event_seat},
+                ),
 
-            // Text(singleDriver[0]['name']),
-            bookingButton(context),
-          ],
+                // Text(singleDriver[0]['name']),
+              ],
+            ),
+          ),
         ),
-      ),
+        Expanded(
+          flex: 0,
+          child: bookingButton(context),
+        ),
+      ]),
     );
   }
 }
@@ -157,6 +164,7 @@ Widget singleRow(String text, String name, Map<String, dynamic> iconList) {
             flex: 4,
             child: Row(
               children: <Widget>[
+                SizedBox(width: 12.0),
                 Icon(
                   iconList['icon'],
                   color: Colors.orange,
@@ -166,7 +174,7 @@ Widget singleRow(String text, String name, Map<String, dynamic> iconList) {
                 Text(
                   text,
                   style: TextStyle(
-                      fontSize: 15.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.orange),
                 ),
@@ -178,13 +186,13 @@ Widget singleRow(String text, String name, Map<String, dynamic> iconList) {
             child: Text(
               name,
               style: TextStyle(
-                  fontSize: 15.0,
+                  fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
           ),
           SizedBox(
-            height: 50.0,
+            height: 51.0,
           ),
         ],
       ),
@@ -217,13 +225,13 @@ Widget bookingButton(BuildContext context) {
     shape: StadiumBorder(side: BorderSide(color: Colors.white)),
     child: Container(
       width: MediaQuery.of(context).size.width,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(20.0),
         ),
         gradient: LinearGradient(
-          //  begin: FractionalOffset(0.7, 0.8),
-          //  end: FractionalOffset(0.0, 0.0),
+          begin: FractionalOffset(0.1, 0.9),
+          end: FractionalOffset(0.4, 0.0),
           colors: <Color>[
             Colors.orange,
             Colors.white,
@@ -231,10 +239,15 @@ Widget bookingButton(BuildContext context) {
         ),
       ),
       padding: EdgeInsets.symmetric(vertical: 9.9),
-      child: const Text(
-        'BOOK A CAB',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+      child: Container(
+        padding: EdgeInsets.only(left: 35.00),
+        child: Text(
+          'BOOK A CAB',
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     ),
   );
