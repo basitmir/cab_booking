@@ -5,9 +5,9 @@ class DriverModel{
 
   DriverModel(this.id,this.url,this.name);
 
-  DriverModel.fromJson(Map<String,dynamic>parsedJson){
-    id=parsedJson['id'];
-    url=parsedJson['url'];
-    name=parsedJson['name'];
-  }
+  // DriverModel.fromJson(Map<String,dynamic>parsedJson){
+  //   id=parsedJson['id'];
+  //   url=parsedJson['url'];
+  //   name=parsedJson['name'];
+  // }
 }

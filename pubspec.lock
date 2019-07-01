@@ -46,6 +46,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  map_view:
+    dependency: "direct main"
+    description:
+      name: map_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.14"
   matcher:
     dependency: transitive
     description:
@@ -81,6 +88,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
+  scoped_model:
+    dependency: "direct main"
+    description:
+      name: scoped_model
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -135,6 +149,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
+  uri:
+    dependency: transitive
+    description:
+      name: uri
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.11.3+1"
+  utf:
+    dependency: transitive
+    description:
+      name: utf
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.0+5"
   vector_math:
     dependency: transitive
     description:

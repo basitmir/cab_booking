@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../models/booking_model.dart';
 class Booking extends StatefulWidget {
   final String origin;
   final String destination;
@@ -13,7 +13,7 @@ class Booking extends StatefulWidget {
 
 class BookingForm extends State<Booking> {
   bool _autoValidate = false;
-
+//  BookingModel _bookingModel;
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
 
@@ -207,7 +207,16 @@ class BookingForm extends State<Booking> {
   void saveDetails() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-
+    BookingModel(
+     name:_bookingDetails['name'],
+     origin:_bookingDetails['origin'],
+     destination:_bookingDetails['destination'],
+     contact:int.parse(_bookingDetails['contact']),
+     tripDetails:_bookingDetails['tripDetails'],
+     date:_bookingDetails['date'],
+     time:_bookingDetails['time'],
+     landMark: _bookingDetails['landMark'],
+    );
       print(_bookingDetails);
       // Navigator.pushReplacementNamed(context, '/home');
     } else {

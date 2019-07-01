@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:map_view/map_view.dart';
+import '../helpers/ensure_visible.dart';
 
 class Home extends StatefulWidget {
   final Function addDetails;
+  
   Home(this.addDetails);
   @override
   State<StatefulWidget> createState() {
@@ -10,6 +13,8 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  final FocusNode _addressInputFocusNode = FocusNode();
+   Uri _staticMapUri;
   final Map<String, dynamic> _homePageDetails = {
     'origin': null,
     'destination': null,
@@ -17,16 +22,24 @@ class HomeState extends State<Home> {
 
   bool _autoValidate = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // Widget _location() {
+  //   return Column(
+  //     children: <Widget>[],
+  //   );
+  // }
+
   Widget _originFeild() {
     return TextFormField(
         decoration: InputDecoration(
           //  border: InputBorder(
           //    borderSide:BorderSide(width:10.00)
           //  ),
-          enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: Colors.orange),   
-                      ),
-         contentPadding: EdgeInsets.only(bottom: 0.0,top:0.0 ,left: 0.0, right: 0.0),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.orange),
+          ),
+          contentPadding:
+              EdgeInsets.only(bottom: 0.0, top: 0.0, left: 0.0, right: 0.0),
 
           labelText: 'Origin',
           prefixIcon: Padding(
@@ -39,7 +52,9 @@ class HomeState extends State<Home> {
           ),
         ),
         validator: (String value) {
-          if (value.length < 3 || !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$').hasMatch(value)) {
+          if (value.length < 3 ||
+              !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$')
+                  .hasMatch(value)) {
             return 'Please enter valid origin';
           } else
             return null;
@@ -54,10 +69,11 @@ class HomeState extends State<Home> {
   Widget _destinationFeild() {
     return TextFormField(
         decoration: InputDecoration(
-          enabledBorder: UnderlineInputBorder(      
-                      borderSide: BorderSide(color: Colors.orange),   
-                      ),
-           contentPadding: EdgeInsets.only(bottom: 0.0,top:5.0, left: 0.0, right: 0.0),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.orange),
+          ),
+          contentPadding:
+              EdgeInsets.only(bottom: 0.0, top: 5.0, left: 0.0, right: 0.0),
           labelText: 'Destination',
           prefixIcon: Padding(
             padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
@@ -68,7 +84,9 @@ class HomeState extends State<Home> {
           ),
         ),
         validator: (String value) {
-          if (value.length < 3 || !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$').hasMatch(value)) {
+          if (value.length < 3 ||
+              !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$')
+                  .hasMatch(value)) {
             return 'Please enter valid destination';
           } else
             return null;
@@ -108,6 +126,37 @@ class HomeState extends State<Home> {
     }
   }
 
+@override   
+void initState(){
+  _addressInputFocusNode.addListener(_updateLocation);  
+  getStaticMap();
+  super.initState();
+}
+
+@override
+void dispose(){
+  _addressInputFocusNode.removeListener(_updateLocation);
+super.dispose();
+}
+ 
+ void getStaticMap() async{
+   final StaticMapProvider staticMapViewProvider= StaticMapProvider('AIzaSyB7yLqn6MURvJHRsPKCWRvAdyfQXFsK2vM');
+   final Uri staticMapUri = staticMapViewProvider.getStaticUriWithMarkers(
+     [Marker('position','Position',41.40338,2.17403)],
+     center:Location(41.40338,2.17403),
+     width:500,
+     height:300,
+     maptype:StaticMapViewType.roadmap
+   );
+   setState(() {
+    _staticMapUri=staticMapUri; 
+   });
+ }
+
+ void _updateLocation(){
+   
+ }
+
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: drawer(context),
@@ -132,7 +181,10 @@ class HomeState extends State<Home> {
                         flex: 10,
                         child: Column(
                           children: <Widget>[
-                            _originFeild(),
+                            EnsureVisibleWhenFocused(
+                              focusNode: _addressInputFocusNode,
+                              child: _originFeild(),
+                            ),
                             _destinationFeild(),
                           ],
                         ),
@@ -141,6 +193,7 @@ class HomeState extends State<Home> {
                     ],
                   ),
                 ),
+                Image.network(_staticMapUri.toString()),
               ],
             )),
       ),
