@@ -19,11 +19,13 @@ class LoginScreen extends State<Login> {
 
   Widget _loginEmail() {
     return TextFormField(
+      initialValue: 'basit@gmail.com',
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
         border: InputBorder.none,
         labelText: 'EMAIL',
+        
         errorStyle: TextStyle(
             backgroundColor: Colors.white.withOpacity(0.2),
             fontWeight: FontWeight.w600),
@@ -60,6 +62,7 @@ class LoginScreen extends State<Login> {
 
   Widget _loginPassword() {
     return TextFormField(
+      initialValue: 'basit@gmail.com',
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(

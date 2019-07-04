@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:map_view/map_view.dart';
 import '../helpers/ensure_visible.dart';
+// import 'package:map_view/map_view.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
+import '../models/location_model.dart';
+import 'package:location/location.dart' as geoloc;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Home extends StatefulWidget {
   final Function addDetails;
-  
+
   Home(this.addDetails);
   @override
   State<StatefulWidget> createState() {
@@ -13,8 +19,28 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  Completer<GoogleMapController> _controller = Completer();
+  // Uri _staticMapUri = Uri.https('media.wired.com',
+  //     '/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg');
+  LocationData _locationData;
+  @override
+  void initState() {
+    // _addressInputFocusNode.addListener(_updateLocation);
+    getUserLocation();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // _addressInputFocusNode.removeListener(_updateLocation);
+    super.dispose();
+  }
+
   final FocusNode _addressInputFocusNode = FocusNode();
-   Uri _staticMapUri;
+  final TextEditingController _originController = TextEditingController();
+  final TextEditingController _destinationController = TextEditingController();
+
   final Map<String, dynamic> _homePageDetails = {
     'origin': null,
     'destination': null,
@@ -31,6 +57,8 @@ class HomeState extends State<Home> {
 
   Widget _originFeild() {
     return TextFormField(
+        controller: _originController,
+        focusNode: _addressInputFocusNode,
         decoration: InputDecoration(
           //  border: InputBorder(
           //    borderSide:BorderSide(width:10.00)
@@ -68,6 +96,8 @@ class HomeState extends State<Home> {
 
   Widget _destinationFeild() {
     return TextFormField(
+        controller: _destinationController,
+        //  focusNode: _addressInputFocusNode,
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.orange),
@@ -126,36 +156,87 @@ class HomeState extends State<Home> {
     }
   }
 
-@override   
-void initState(){
-  _addressInputFocusNode.addListener(_updateLocation);  
-  getStaticMap();
-  super.initState();
-}
+//.............................works on inputs for maps..............
+  Future<String> _getAddress(double lat, double lng) async {
+    final Uri uri = Uri.https('maps.googleapis.com', '/maps/api/geocode/json', {
+      'latlng': '${lat.toString()},${lng.toString()}',
+      'key': 'AIzaSyAYSefL-7VDaENcauwR7Z3xLn82j00e0TI'
+    });
+    // print('uri');
+    print(uri);
+    final http.Response response = await http.get(uri);
+    final decodeResponse = json.decode(response.body);
 
-@override
-void dispose(){
-  _addressInputFocusNode.removeListener(_updateLocation);
-super.dispose();
-}
- 
- void getStaticMap() async{
-   final StaticMapProvider staticMapViewProvider= StaticMapProvider('AIzaSyB7yLqn6MURvJHRsPKCWRvAdyfQXFsK2vM');
-   final Uri staticMapUri = staticMapViewProvider.getStaticUriWithMarkers(
-     [Marker('position','Position',41.40338,2.17403)],
-     center:Location(41.40338,2.17403),
-     width:500,
-     height:300,
-     maptype:StaticMapViewType.roadmap
-   );
-   setState(() {
-    _staticMapUri=staticMapUri; 
-   });
- }
+    final formattedAddress = decodeResponse['results'][0]['formatted_address'];
+    return formattedAddress;
+  }
 
- void _updateLocation(){
-   
- }
+  void getUserLocation() async {
+    final location = geoloc.Location();
+    final currentLocation = await location.getLocation();
+    setState(() {
+      _locationData = LocationData(
+        // address: _originController.text,
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+      );
+    });
+    final address =
+        await _getAddress(currentLocation.latitude, currentLocation.longitude);
+    _originController.text = address;
+   _locationData.address=_originController.text;
+    print(address);
+    // getStaticMap(address,
+    //     geocode: false,
+    //     lat: currentLocation['latitude'],
+    //     lng: currentLocation['longitude']);
+  }
+
+  // void getStaticMap(String address,
+  //     {geocode = true, double lat, double lng}) async {
+  //   if (address.isEmpty) {
+  //     return;
+  //   }
+  //   if (geocode) {
+  //     final Uri uri = Uri.https(
+  //         'maps.googleapis.com', '/maps/api/geocode/json', {
+  //       'address': address,
+  //       'key': 'AIzaSyAYSefL-7VDaENcauwR7Z3xLn82j00e0TI'
+  //     });
+  //     final http.Response response = await http.get(uri);
+  //     final decodedResponse = json.decode(response.body);
+
+  //     final formattedAddress =
+  //         decodedResponse['results'][0]['formatted_address'];
+  //     final coords = decodedResponse['results'][0]['geometry']['location'];
+  //     print(formattedAddress);
+  //     _locationData = LocationData(
+  //         address: formattedAddress,
+  //         latitude: coords['lat'],
+  //         longitude: coords['lng']);
+
+  //   }else {
+  //     _locationData =
+  //         LocationData(address: address, latitude: lat, longitude: lng);
+  //   }
+  //     final StaticMapProvider staticMapViewProvider =
+  //         StaticMapProvider('AIzaSyB7yLqn6MURvJHRsPKCWRvAdyfQXFsK2vM');
+  //     final Uri staticMapUri = staticMapViewProvider.getStaticUriWithMarkers([
+  //       Marker('position', 'Position', _locationData.latitude,
+  //           _locationData.longitude)
+  //     ],
+  //         center: Location(_locationData.latitude, _locationData.longitude),
+  //         //  width:500,
+  //         //  height:300,
+
+  //         maptype: StaticMapViewType.roadmap,
+  //         );
+  //     setState(() {
+  //       _staticMapUri = staticMapUri;
+  //     });
+  //   }
+
+//..............................end for working on maps...............
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,38 +245,45 @@ super.dispose();
         child: FloatingButtons(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Container(
-            margin: EdgeInsets.fromLTRB(10.00, 35.00, 10.00, 00.00),
-            child: ListView(
-              children: <Widget>[
-                Form(
-                  key: _formKey,
-                  autovalidate: _autoValidate,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 10,
-                        child: Column(
-                          children: <Widget>[
-                            EnsureVisibleWhenFocused(
-                              focusNode: _addressInputFocusNode,
-                              child: _originFeild(),
+      body: Stack(
+        children: <Widget>[
+          _googleMap(context, _controller,
+              lat: _locationData.latitude, lng: _locationData.longitude),
+          GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Container(
+                margin: EdgeInsets.fromLTRB(10.00, 35.00, 10.00, 00.00),
+                child: ListView(
+                  children: <Widget>[
+                    Form(
+                      key: _formKey,
+                      autovalidate: _autoValidate,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 10,
+                            child: Column(
+                              children: <Widget>[
+                                EnsureVisibleWhenFocused(
+                                  focusNode: _addressInputFocusNode,
+                                  child: _originFeild(),
+                                ),
+                                _destinationFeild(),
+                              ],
                             ),
-                            _destinationFeild(),
-                          ],
-                        ),
+                          ),
+                          _nextButton(),
+                        ],
                       ),
-                      _nextButton(),
-                    ],
-                  ),
-                ),
-                Image.network(_staticMapUri.toString()),
-              ],
-            )),
+                    ),
+                    // Image.network('https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg'),
+                    // Navigate(_originController.text, _destinationController.text),
+                  ],
+                )),
+          ),
+        ],
       ),
     );
   }
@@ -317,3 +405,46 @@ class FloatingButtons extends StatelessWidget {
     );
   }
 }
+
+Widget _googleMap(BuildContext context, _controller,
+    {double lat = 33.7782, double lng = 76.5762}) {
+  return Container(
+    height: MediaQuery.of(context).size.height,
+    width: MediaQuery.of(context).size.width,
+    child: GoogleMap(
+      mapType: MapType.normal,
+      initialCameraPosition: CameraPosition(target: LatLng(lat, lng), zoom: 15),
+      onMapCreated: (GoogleMapController controller) {
+        _controller.complete(controller);
+      },
+      markers: {
+        Marker(
+          markerId: MarkerId('current'),
+          position: LatLng(lat, lng),
+          infoWindow: InfoWindow(title: 'current'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueOrange,
+          ),
+        ),
+      },
+    ),
+  );
+}
+// Marker currentLocation=Marker(
+// markerId: MarkerId('current'),
+// position: LatLng(lat, lng),
+// infoWindow: InfoWindow(title:'current'),
+// icon:BitmapDescriptor.defaultMarkerWithHue(
+//   BitmapDescriptor.hueOrange,
+// ),
+// );
+
+// Container(
+//         padding:
+//             EdgeInsets.only(bottom: 0.0, left: 0.0, right: 0.0, top: 0.00),
+//         decoration: BoxDecoration(
+//           image: DecorationImage(
+//             fit: BoxFit.cover,
+//              image:NetworkImage(_staticMapUri.toString()),
+//               ),
+//         ),

@@ -5,11 +5,11 @@ import '../screens/navigation.dart';
 import '../screens/help.dart';
 import '../screens/driver_details.dart';
 
-class Tabs extends StatefulWidget {
-  // final String name;
-  // final String number;
+class Tabs extends StatefulWidget { 
+   final String origin;
+   final String destination;
   final Map<String,String> singleDriver;
-  Tabs(this.singleDriver);
+  Tabs(this.singleDriver,this.origin,this.destination);
   @override
   State<StatefulWidget> createState() {
     return _MyTabs();
@@ -20,13 +20,14 @@ class _MyTabs extends State<Tabs> with SingleTickerProviderStateMixin {
   int _bottomNavBarIndex = 0;
   final List<Widget> _pageOption = [
     Chat(),
-    Navigate(),
+   // Navigate(widget.origin,widget.destination),
     Help(),
   ];
 
   @override
   void initState() {
     _pageOption.insert(0, DriverDetails(widget.singleDriver));
+    _pageOption.insert(2, Navigate(widget.origin,widget.destination));
 
     super.initState();
   }

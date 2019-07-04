@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/booking_model.dart';
+import '../helpers/ensure_visible.dart';
+import 'navigation.dart';
 class Booking extends StatefulWidget {
   final String origin;
   final String destination;
@@ -12,10 +14,13 @@ class Booking extends StatefulWidget {
 }
 
 class BookingForm extends State<Booking> {
+  final FocusNode _addressInputFocusNode = FocusNode();
   bool _autoValidate = false;
 //  BookingModel _bookingModel;
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _originController = TextEditingController();
+  final TextEditingController _destinationController = TextEditingController();
 
   Map<String, dynamic> passDetails = {};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -100,23 +105,22 @@ class BookingForm extends State<Booking> {
 
 //.........................................Time Field.........................................
   TimeOfDay _time = TimeOfDay.now();
-  
+
   Future<Null> _selectTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
       context: context,
       initialTime: _time,
       builder: (BuildContext context, Widget child) {
-    return MediaQuery(
-      data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-      child: child,
-    );
-  },
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child,
+        );
+      },
     );
     if (picked != null && picked != _time) {
       print(_time.toString());
       setState(() {
         _time = picked;
-       
 
         _timeController.text = _time.format(context);
         print(_timeController.text);
@@ -207,16 +211,16 @@ class BookingForm extends State<Booking> {
   void saveDetails() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-    BookingModel(
-     name:_bookingDetails['name'],
-     origin:_bookingDetails['origin'],
-     destination:_bookingDetails['destination'],
-     contact:int.parse(_bookingDetails['contact']),
-     tripDetails:_bookingDetails['tripDetails'],
-     date:_bookingDetails['date'],
-     time:_bookingDetails['time'],
-     landMark: _bookingDetails['landMark'],
-    );
+      BookingModel(
+        name: _bookingDetails['name'],
+        origin: _bookingDetails['origin'],
+        destination: _bookingDetails['destination'],
+        contact: int.parse(_bookingDetails['contact']),
+        tripDetails: _bookingDetails['tripDetails'],
+        date: _bookingDetails['date'],
+        time: _bookingDetails['time'],
+        landMark: _bookingDetails['landMark'],
+      );
       print(_bookingDetails);
       // Navigator.pushReplacementNamed(context, '/home');
     } else {
@@ -264,7 +268,29 @@ class BookingForm extends State<Booking> {
       ],
     );
   }
+//.............................works on inputs for maps..............
 
+  void initState() {
+    _addressInputFocusNode.addListener(_updateLocation);
+    // getStaticMap();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _addressInputFocusNode.removeListener(_updateLocation);
+    super.dispose();
+  }
+
+  void _updateLocation() {
+
+    if(!_addressInputFocusNode.hasFocus){
+    //  Navigate(_originController.text, _destinationController.text);
+    }
+    
+  }
+
+//..............................end for working on maps...............
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -298,16 +324,23 @@ class BookingForm extends State<Booking> {
                 ),
                 child: ListView(
                   children: <Widget>[
-                    formField(
-                        _bookingDetails,
-                        'origin',
-                        passDetails = {
-                          'icon': Icons.trip_origin,
-                          'keyboard': TextInputType.text,
-                          'lines': 4,
-                        },
-                        initalVal: widget.origin),
-                    formField(
+                    EnsureVisibleWhenFocused(
+                      focusNode: _addressInputFocusNode,
+                      child: formField(
+                          _bookingDetails,
+                          'origin',
+                          passDetails = {
+                            'icon': Icons.trip_origin,
+                            'keyboard': TextInputType.text,
+                            'lines': 4,
+                          },
+                          initalVal: widget.origin,
+                          addressInputFocusNode: _addressInputFocusNode,
+                          dataController: _originController),
+                    ),
+                    EnsureVisibleWhenFocused(
+                      focusNode: _addressInputFocusNode,
+                    child:formField(
                         _bookingDetails,
                         'destination',
                         passDetails = {
@@ -315,7 +348,10 @@ class BookingForm extends State<Booking> {
                           'keyboard': TextInputType.text,
                           'lines': 3,
                         },
-                        initalVal: widget.destination),
+                        initalVal: widget.destination,
+                         addressInputFocusNode: _addressInputFocusNode,
+                         dataController: _destinationController),
+                    ),
                     formField(
                         _bookingDetails,
                         'origin landmark',
@@ -342,7 +378,7 @@ class BookingForm extends State<Booking> {
                         }),
                     dateField(),
                     timeField(),
-                    SizedBox(height:12.00),
+                    SizedBox(height: 12.00),
                     radioField(),
                   ],
                 ),
@@ -361,8 +397,10 @@ class BookingForm extends State<Booking> {
 
 Widget formField(
     _bookingDetails, String property, Map<String, dynamic> passDetails,
-    {String initalVal = ''}) {
+    {String initalVal = '', dynamic addressInputFocusNode,dynamic dataController}) {
   return TextFormField(
+    controller: dataController,
+    focusNode: addressInputFocusNode,
     maxLines: passDetails['lines'],
     keyboardType: passDetails['keyboard'],
     cursorColor: Colors.orange,
