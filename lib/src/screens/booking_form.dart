@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/booking_model.dart';
 import '../helpers/ensure_visible.dart';
-import 'navigation.dart';
+//import '../models/location_model.dart';
+// import 'navigation.dart';
 class Booking extends StatefulWidget {
   final String origin;
   final String destination;
@@ -19,8 +20,8 @@ class BookingForm extends State<Booking> {
 //  BookingModel _bookingModel;
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
-  final TextEditingController _originController = TextEditingController();
-  final TextEditingController _destinationController = TextEditingController();
+   TextEditingController _originController = TextEditingController();
+   TextEditingController _destinationController = TextEditingController();
 
   Map<String, dynamic> passDetails = {};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -221,6 +222,7 @@ class BookingForm extends State<Booking> {
         time: _bookingDetails['time'],
         landMark: _bookingDetails['landMark'],
       );
+      Navigator.pushReplacementNamed(context, '/payment');
       print(_bookingDetails);
       // Navigator.pushReplacementNamed(context, '/home');
     } else {
@@ -334,9 +336,11 @@ class BookingForm extends State<Booking> {
                             'keyboard': TextInputType.text,
                             'lines': 4,
                           },
-                          initalVal: widget.origin,
+                          
+                            // initalVal: widget.origin,
                           addressInputFocusNode: _addressInputFocusNode,
-                          dataController: _originController),
+                           dataController: _originController=TextEditingController(text: widget.origin),
+                          ),
                     ),
                     EnsureVisibleWhenFocused(
                       focusNode: _addressInputFocusNode,
@@ -348,9 +352,10 @@ class BookingForm extends State<Booking> {
                           'keyboard': TextInputType.text,
                           'lines': 3,
                         },
-                        initalVal: widget.destination,
+                          // initalVal: widget.destination,
                          addressInputFocusNode: _addressInputFocusNode,
-                         dataController: _destinationController),
+                        dataController: _destinationController=TextEditingController(text: widget.destination),
+                         ),
                     ),
                     formField(
                         _bookingDetails,
@@ -397,15 +402,16 @@ class BookingForm extends State<Booking> {
 
 Widget formField(
     _bookingDetails, String property, Map<String, dynamic> passDetails,
-    {String initalVal = '', dynamic addressInputFocusNode,dynamic dataController}) {
+    { dynamic addressInputFocusNode,TextEditingController dataController}) {
   return TextFormField(
-    controller: dataController,
+    
+     controller: dataController,
     focusNode: addressInputFocusNode,
     maxLines: passDetails['lines'],
     keyboardType: passDetails['keyboard'],
     cursorColor: Colors.orange,
     style: TextStyle(color: Colors.orange[700]),
-    initialValue: initalVal,
+    // initialValue: initalVal,
     decoration: InputDecoration(
       contentPadding:
           EdgeInsets.only(bottom: 5.0, top: 10.0, left: 10.0, right: 5.0),
@@ -462,7 +468,7 @@ Widget formField(
 
 String commonValidation(value, msg) {
   if (value.length < 3 ||
-      !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$').hasMatch(value)) {
+      !RegExp(r'[#.0-9a-zA-Z\s,-]+$').hasMatch(value)) {
     return 'Please enter valid' + ' ' + msg;
   } else
     return null;

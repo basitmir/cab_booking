@@ -1,4 +1,5 @@
 import 'package:cab/src/screens/driver_list.dart';
+import 'package:cab/src/screens/payment_details.dart';
 import 'package:flutter/material.dart';
 import 'register.dart';
 import 'login.dart';
@@ -96,6 +97,7 @@ class StartApp extends State<Start> {
         '/home': (BuildContext context) => Home(addDetails),
         '/drivers': (BuildContext context) => DriverList(_drivers),
         '/booking': (BuildContext context) => Booking(origin, destination),
+        '/payment': (BuildContext context) => Payment(),
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> driverDetails = settings.name.split('/');

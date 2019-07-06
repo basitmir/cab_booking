@@ -54,34 +54,43 @@ class HomeState extends State<Home> {
   //     children: <Widget>[],
   //   );
   // }
-
+ 
   Widget _originFeild() {
     return TextFormField(
         controller: _originController,
         focusNode: _addressInputFocusNode,
+        cursorColor: Colors.orange,
+      style: TextStyle(color: Colors.orange[800],fontWeight: FontWeight.bold,),
         decoration: InputDecoration(
+          
           //  border: InputBorder(
           //    borderSide:BorderSide(width:10.00)
           //  ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.orange),
+            
           ),
           contentPadding:
               EdgeInsets.only(bottom: 0.0, top: 0.0, left: 0.0, right: 0.0),
 
           labelText: 'Origin',
+          labelStyle: TextStyle(
+          color: Colors.orange[700],
+          fontWeight: FontWeight.bold,
+        ),
           prefixIcon: Padding(
             padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
             child: Icon(
               Icons.trip_origin,
-              color: Colors.orange[500],
+              color: Colors.orange[600],
               size: 21,
             ), // icon is 48px widget.
           ),
         ),
         validator: (String value) {
+          value=_originController.text;
           if (value.length < 3 ||
-              !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$')
+              !RegExp(r'[#.0-9a-zA-Z\s,-]+$')
                   .hasMatch(value)) {
             return 'Please enter valid origin';
           } else
@@ -90,6 +99,7 @@ class HomeState extends State<Home> {
         onSaved: (String value) {
           // setState(() {
           _homePageDetails['origin'] = value;
+          _locationData.origin=_originController.text;
           // });
         });
   }
@@ -98,6 +108,9 @@ class HomeState extends State<Home> {
     return TextFormField(
         controller: _destinationController,
         //  focusNode: _addressInputFocusNode,
+        cursorColor: Colors.orange,
+      style: TextStyle(color: Colors.orange[800],fontWeight: FontWeight.bold,),
+        
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.orange),
@@ -105,17 +118,22 @@ class HomeState extends State<Home> {
           contentPadding:
               EdgeInsets.only(bottom: 0.0, top: 5.0, left: 0.0, right: 0.0),
           labelText: 'Destination',
+          labelStyle: TextStyle(
+          color: Colors.orange[700],
+          fontWeight: FontWeight.bold,
+        ),
           prefixIcon: Padding(
             padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
             child: Icon(
               Icons.place,
-              color: Colors.orange[500],
+              color: Colors.orange[600],
             ), // icon is 48px widget.
           ),
         ),
         validator: (String value) {
+          value=_destinationController.text;
           if (value.length < 3 ||
-              !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$')
+              !RegExp(r'[#.0-9a-zA-Z\s,-]+$')
                   .hasMatch(value)) {
             return 'Please enter valid destination';
           } else
@@ -123,6 +141,7 @@ class HomeState extends State<Home> {
         },
         onSaved: (String value) {
           setState(() {
+             _locationData.destinaiton=_destinationController.text;
             _homePageDetails['destination'] = value;
           });
         });
@@ -181,11 +200,11 @@ class HomeState extends State<Home> {
         longitude: currentLocation.longitude,
       );
     });
-    final address =
+    final origin =
         await _getAddress(currentLocation.latitude, currentLocation.longitude);
-    _originController.text = address;
-   _locationData.address=_originController.text;
-    print(address);
+    _originController.text = origin;
+    _locationData.origin = _originController.text;
+    print(origin);
     // getStaticMap(address,
     //     geocode: false,
     //     lat: currentLocation['latitude'],
@@ -254,14 +273,22 @@ class HomeState extends State<Home> {
               FocusScope.of(context).requestFocus(FocusNode());
             },
             child: Container(
-                margin: EdgeInsets.fromLTRB(10.00, 35.00, 10.00, 00.00),
+              decoration:  BoxDecoration(
+                           color: Colors.white.withOpacity(0.5),
+        
+                          ),
+                height: 202,
+                 padding: EdgeInsets.fromLTRB(10.00, 35.00, 10.00, 00.00),
                 child: ListView(
+                  
                   children: <Widget>[
                     Form(
                       key: _formKey,
                       autovalidate: _autoValidate,
                       child: Row(
+                      
                         children: <Widget>[
+                         
                           Expanded(
                             flex: 10,
                             child: Column(
@@ -408,11 +435,13 @@ class FloatingButtons extends StatelessWidget {
 
 Widget _googleMap(BuildContext context, _controller,
     {double lat = 33.7782, double lng = 76.5762}) {
+      
   return Container(
     height: MediaQuery.of(context).size.height,
     width: MediaQuery.of(context).size.width,
     child: GoogleMap(
-      mapType: MapType.normal,
+       myLocationEnabled: true,
+        mapType: MapType.normal,
       initialCameraPosition: CameraPosition(target: LatLng(lat, lng), zoom: 15),
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
