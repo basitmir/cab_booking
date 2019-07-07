@@ -45,7 +45,7 @@ class _MyTabs extends State<Tabs> with SingleTickerProviderStateMixin {
       //   ),
       // ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
+        onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/home')),
         mini: true,
         child: Icon(Icons.home, color: Colors.orange),
         backgroundColor: Colors.white,

@@ -19,6 +19,7 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  List<Marker> allMarkers=[];
   Completer<GoogleMapController> _controller = Completer();
   // Uri _staticMapUri = Uri.https('media.wired.com',
   //     '/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg');
@@ -26,6 +27,7 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     // _addressInputFocusNode.addListener(_updateLocation);
+   
     getUserLocation();
 
     super.initState();
@@ -54,30 +56,31 @@ class HomeState extends State<Home> {
   //     children: <Widget>[],
   //   );
   // }
- 
+
   Widget _originFeild() {
     return TextFormField(
         controller: _originController,
         focusNode: _addressInputFocusNode,
         cursorColor: Colors.orange,
-      style: TextStyle(color: Colors.orange[800],fontWeight: FontWeight.bold,),
+        style: TextStyle(
+          color: Colors.orange[800],
+          fontWeight: FontWeight.bold,
+        ),
         decoration: InputDecoration(
-          
           //  border: InputBorder(
           //    borderSide:BorderSide(width:10.00)
           //  ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.orange),
-            
           ),
           contentPadding:
               EdgeInsets.only(bottom: 0.0, top: 0.0, left: 0.0, right: 0.0),
 
           labelText: 'Origin',
           labelStyle: TextStyle(
-          color: Colors.orange[700],
-          fontWeight: FontWeight.bold,
-        ),
+            color: Colors.orange[700],
+            fontWeight: FontWeight.bold,
+          ),
           prefixIcon: Padding(
             padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
             child: Icon(
@@ -88,10 +91,9 @@ class HomeState extends State<Home> {
           ),
         ),
         validator: (String value) {
-          value=_originController.text;
+          value = _originController.text;
           if (value.length < 3 ||
-              !RegExp(r'[#.0-9a-zA-Z\s,-]+$')
-                  .hasMatch(value)) {
+              !RegExp(r'[#.0-9a-zA-Z\s,-]+$').hasMatch(value)) {
             return 'Please enter valid origin';
           } else
             return null;
@@ -99,7 +101,7 @@ class HomeState extends State<Home> {
         onSaved: (String value) {
           // setState(() {
           _homePageDetails['origin'] = value;
-          _locationData.origin=_originController.text;
+          _locationData.origin = _originController.text;
           // });
         });
   }
@@ -109,8 +111,10 @@ class HomeState extends State<Home> {
         controller: _destinationController,
         //  focusNode: _addressInputFocusNode,
         cursorColor: Colors.orange,
-      style: TextStyle(color: Colors.orange[800],fontWeight: FontWeight.bold,),
-        
+        style: TextStyle(
+          color: Colors.orange[800],
+          fontWeight: FontWeight.bold,
+        ),
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.orange),
@@ -119,9 +123,9 @@ class HomeState extends State<Home> {
               EdgeInsets.only(bottom: 0.0, top: 5.0, left: 0.0, right: 0.0),
           labelText: 'Destination',
           labelStyle: TextStyle(
-          color: Colors.orange[700],
-          fontWeight: FontWeight.bold,
-        ),
+            color: Colors.orange[700],
+            fontWeight: FontWeight.bold,
+          ),
           prefixIcon: Padding(
             padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
             child: Icon(
@@ -131,17 +135,16 @@ class HomeState extends State<Home> {
           ),
         ),
         validator: (String value) {
-          value=_destinationController.text;
+          value = _destinationController.text;
           if (value.length < 3 ||
-              !RegExp(r'[#.0-9a-zA-Z\s,-]+$')
-                  .hasMatch(value)) {
+              !RegExp(r'[#.0-9a-zA-Z\s,-]+$').hasMatch(value)) {
             return 'Please enter valid destination';
           } else
             return null;
         },
         onSaved: (String value) {
           setState(() {
-             _locationData.destinaiton=_destinationController.text;
+            _locationData.destinaiton = _destinationController.text;
             _homePageDetails['destination'] = value;
           });
         });
@@ -192,23 +195,52 @@ class HomeState extends State<Home> {
 
   void getUserLocation() async {
     final location = geoloc.Location();
-    final currentLocation = await location.getLocation();
-    setState(() {
-      _locationData = LocationData(
-        // address: _originController.text,
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude,
-      );
-    });
-    final origin =
-        await _getAddress(currentLocation.latitude, currentLocation.longitude);
-    _originController.text = origin;
-    _locationData.origin = _originController.text;
-    print(origin);
+    bool hasPermission =
+        await location.hasPermission() && await location.serviceEnabled();
+
+    if (!hasPermission) {
+      hasPermission =
+          await location.requestPermission() && await location.requestService();
+    }
+
+    if (hasPermission) {
+      final currentLocation = await location.getLocation();
+      final origin = await _getAddress(
+          currentLocation.latitude, currentLocation.longitude);
+      setState(() {
+        _locationData = LocationData(
+          origin: _originController.text,
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+        );
+      });
+      _originController.text = origin;
+      print(origin);
+      print(_locationData.latitude);
+    } else {
+      setState(() {
+        _locationData = LocationData(
+          origin: '',
+          latitude: 33.7782,
+          longitude: 76.5762,
+        );
+      });
+      print('i dont have permission');
+      print(_locationData.latitude);
+    }
     // getStaticMap(address,
     //     geocode: false,
     //     lat: currentLocation['latitude'],
     //     lng: currentLocation['longitude']);
+
+     allMarkers.add(Marker(
+markerId: MarkerId('current'),
+            position: LatLng(_locationData.latitude, _locationData.longitude),
+            infoWindow: InfoWindow(title: 'current'),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueOrange,)
+            
+    ));
   }
 
   // void getStaticMap(String address,
@@ -250,12 +282,37 @@ class HomeState extends State<Home> {
 
   //         maptype: StaticMapViewType.roadmap,
   //         );
-  //     setState(() {
+  //     setState(() {R
   //       _staticMapUri = staticMapUri;
   //     });
   //   }
 
 //..............................end for working on maps...............
+
+  Widget _googleMap() {
+    
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: GoogleMap(
+        myLocationEnabled: true,
+        mapType: MapType.normal,
+        initialCameraPosition: CameraPosition(
+            target: LatLng(_locationData.latitude, _locationData.longitude),
+            zoom: 15,
+            ),
+        onMapCreated: (GoogleMapController controller) {
+          setState(() {
+             _controller.complete(controller);
+             
+          });
+         
+        },
+       // markers:Set.from(allMarkers),
+      
+      ),
+    );
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -266,29 +323,24 @@ class HomeState extends State<Home> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       body: Stack(
         children: <Widget>[
-          _googleMap(context, _controller,
-              lat: _locationData.latitude, lng: _locationData.longitude),
+          _googleMap(),
           GestureDetector(
             onTap: () {
               FocusScope.of(context).requestFocus(FocusNode());
             },
             child: Container(
-              decoration:  BoxDecoration(
-                           color: Colors.white.withOpacity(0.5),
-        
-                          ),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.5),
+                ),
                 height: 202,
-                 padding: EdgeInsets.fromLTRB(10.00, 35.00, 10.00, 00.00),
+                padding: EdgeInsets.fromLTRB(10.00, 35.00, 10.00, 00.00),
                 child: ListView(
-                  
                   children: <Widget>[
                     Form(
                       key: _formKey,
                       autovalidate: _autoValidate,
                       child: Row(
-                      
                         children: <Widget>[
-                         
                           Expanded(
                             flex: 10,
                             child: Column(
@@ -433,32 +485,6 @@ class FloatingButtons extends StatelessWidget {
   }
 }
 
-Widget _googleMap(BuildContext context, _controller,
-    {double lat = 33.7782, double lng = 76.5762}) {
-      
-  return Container(
-    height: MediaQuery.of(context).size.height,
-    width: MediaQuery.of(context).size.width,
-    child: GoogleMap(
-       myLocationEnabled: true,
-        mapType: MapType.normal,
-      initialCameraPosition: CameraPosition(target: LatLng(lat, lng), zoom: 15),
-      onMapCreated: (GoogleMapController controller) {
-        _controller.complete(controller);
-      },
-      markers: {
-        Marker(
-          markerId: MarkerId('current'),
-          position: LatLng(lat, lng),
-          infoWindow: InfoWindow(title: 'current'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-            BitmapDescriptor.hueOrange,
-          ),
-        ),
-      },
-    ),
-  );
-}
 // Marker currentLocation=Marker(
 // markerId: MarkerId('current'),
 // position: LatLng(lat, lng),

@@ -220,7 +220,7 @@ Widget bookingButton(BuildContext context) {
     textColor: Colors.white,
     padding: EdgeInsets.all(0.0),
     onPressed: () {
-      Navigator.pushReplacementNamed(context, '/booking');
+      Navigator.pushNamed(context, '/booking');
     },
     shape: StadiumBorder(side: BorderSide(color: Colors.white)),
     child: Container(

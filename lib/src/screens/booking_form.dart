@@ -222,7 +222,7 @@ class BookingForm extends State<Booking> {
         time: _bookingDetails['time'],
         landMark: _bookingDetails['landMark'],
       );
-      Navigator.pushReplacementNamed(context, '/payment');
+      Navigator.pushNamed(context, '/payment');
       print(_bookingDetails);
       // Navigator.pushReplacementNamed(context, '/home');
     } else {
