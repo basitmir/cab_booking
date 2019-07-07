@@ -1,10 +1,10 @@
 // import 'package:flutter/material.dart';
 
 class LocationData {
-   double latitude;
-   double longitude;
-   String origin;
-   String destinaiton;
+  final double latitude;
+  final double longitude;
+  final  String origin;
+  final String destinaiton;
 
   LocationData({ this.latitude, this.longitude, this.origin,this.destinaiton});
 }

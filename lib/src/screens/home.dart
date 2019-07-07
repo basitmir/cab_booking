@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import '../helpers/ensure_visible.dart';
 // import 'package:map_view/map_view.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
 import 'dart:async';
 import '../models/location_model.dart';
-import 'package:location/location.dart' as geoloc;
+// import 'package:location/location.dart' as geoloc;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import '../models/location_model.dart';
 
 class Home extends StatefulWidget {
   final Function addDetails;
-
-  Home(this.addDetails);
+  final LocationData getLocationDetails;
+  Home(this.addDetails, this.getLocationDetails);
   @override
   State<StatefulWidget> createState() {
     return HomeState();
@@ -19,17 +20,23 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  List<Marker> allMarkers=[];
+  final TextEditingController _originController = TextEditingController();
+  final TextEditingController _destinationController = TextEditingController();
+  List<Marker> allMarkers = [];
   Completer<GoogleMapController> _controller = Completer();
-  // Uri _staticMapUri = Uri.https('media.wired.com',
-  //     '/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg');
   LocationData _locationData;
+
   @override
   void initState() {
-    // _addressInputFocusNode.addListener(_updateLocation);
-   
-    getUserLocation();
-
+    _locationData = widget.getLocationDetails;
+    allMarkers.add(Marker(
+        markerId: MarkerId('current'),
+        position: LatLng(_locationData.latitude, _locationData.longitude),
+        infoWindow: InfoWindow(title: 'current'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(
+          BitmapDescriptor.hueOrange,
+        )));
+  _originController.text=_locationData.origin;
     super.initState();
   }
 
@@ -40,8 +47,6 @@ class HomeState extends State<Home> {
   }
 
   final FocusNode _addressInputFocusNode = FocusNode();
-  final TextEditingController _originController = TextEditingController();
-  final TextEditingController _destinationController = TextEditingController();
 
   final Map<String, dynamic> _homePageDetails = {
     'origin': null,
@@ -101,7 +106,7 @@ class HomeState extends State<Home> {
         onSaved: (String value) {
           // setState(() {
           _homePageDetails['origin'] = value;
-          _locationData.origin = _originController.text;
+          // _locationData.origin = _originController.text;
           // });
         });
   }
@@ -144,7 +149,7 @@ class HomeState extends State<Home> {
         },
         onSaved: (String value) {
           setState(() {
-            _locationData.destinaiton = _destinationController.text;
+            // _locationData.destinaiton = _destinationController.text;
             _homePageDetails['destination'] = value;
           });
         });
@@ -178,119 +183,9 @@ class HomeState extends State<Home> {
     }
   }
 
-//.............................works on inputs for maps..............
-  Future<String> _getAddress(double lat, double lng) async {
-    final Uri uri = Uri.https('maps.googleapis.com', '/maps/api/geocode/json', {
-      'latlng': '${lat.toString()},${lng.toString()}',
-      'key': 'AIzaSyAYSefL-7VDaENcauwR7Z3xLn82j00e0TI'
-    });
-    // print('uri');
-    print(uri);
-    final http.Response response = await http.get(uri);
-    final decodeResponse = json.decode(response.body);
-
-    final formattedAddress = decodeResponse['results'][0]['formatted_address'];
-    return formattedAddress;
-  }
-
-  void getUserLocation() async {
-    final location = geoloc.Location();
-    bool hasPermission =
-        await location.hasPermission() && await location.serviceEnabled();
-
-    if (!hasPermission) {
-      hasPermission =
-          await location.requestPermission() && await location.requestService();
-    }
-
-    if (hasPermission) {
-      final currentLocation = await location.getLocation();
-      final origin = await _getAddress(
-          currentLocation.latitude, currentLocation.longitude);
-      setState(() {
-        _locationData = LocationData(
-          origin: _originController.text,
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
-        );
-      });
-      _originController.text = origin;
-      print(origin);
-      print(_locationData.latitude);
-    } else {
-      setState(() {
-        _locationData = LocationData(
-          origin: '',
-          latitude: 33.7782,
-          longitude: 76.5762,
-        );
-      });
-      print('i dont have permission');
-      print(_locationData.latitude);
-    }
-    // getStaticMap(address,
-    //     geocode: false,
-    //     lat: currentLocation['latitude'],
-    //     lng: currentLocation['longitude']);
-
-     allMarkers.add(Marker(
-markerId: MarkerId('current'),
-            position: LatLng(_locationData.latitude, _locationData.longitude),
-            infoWindow: InfoWindow(title: 'current'),
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueOrange,)
-            
-    ));
-  }
-
-  // void getStaticMap(String address,
-  //     {geocode = true, double lat, double lng}) async {
-  //   if (address.isEmpty) {
-  //     return;
-  //   }
-  //   if (geocode) {
-  //     final Uri uri = Uri.https(
-  //         'maps.googleapis.com', '/maps/api/geocode/json', {
-  //       'address': address,
-  //       'key': 'AIzaSyAYSefL-7VDaENcauwR7Z3xLn82j00e0TI'
-  //     });
-  //     final http.Response response = await http.get(uri);
-  //     final decodedResponse = json.decode(response.body);
-
-  //     final formattedAddress =
-  //         decodedResponse['results'][0]['formatted_address'];
-  //     final coords = decodedResponse['results'][0]['geometry']['location'];
-  //     print(formattedAddress);
-  //     _locationData = LocationData(
-  //         address: formattedAddress,
-  //         latitude: coords['lat'],
-  //         longitude: coords['lng']);
-
-  //   }else {
-  //     _locationData =
-  //         LocationData(address: address, latitude: lat, longitude: lng);
-  //   }
-  //     final StaticMapProvider staticMapViewProvider =
-  //         StaticMapProvider('AIzaSyB7yLqn6MURvJHRsPKCWRvAdyfQXFsK2vM');
-  //     final Uri staticMapUri = staticMapViewProvider.getStaticUriWithMarkers([
-  //       Marker('position', 'Position', _locationData.latitude,
-  //           _locationData.longitude)
-  //     ],
-  //         center: Location(_locationData.latitude, _locationData.longitude),
-  //         //  width:500,
-  //         //  height:300,
-
-  //         maptype: StaticMapViewType.roadmap,
-  //         );
-  //     setState(() {R
-  //       _staticMapUri = staticMapUri;
-  //     });
-  //   }
-
 //..............................end for working on maps...............
 
   Widget _googleMap() {
-    
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -298,18 +193,15 @@ markerId: MarkerId('current'),
         myLocationEnabled: true,
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(
-            target: LatLng(_locationData.latitude, _locationData.longitude),
-            zoom: 15,
-            ),
+          target: LatLng(_locationData.latitude, _locationData.longitude),
+          zoom: 15,
+        ),
         onMapCreated: (GoogleMapController controller) {
           setState(() {
-             _controller.complete(controller);
-             
+            _controller.complete(controller);
           });
-         
         },
-       // markers:Set.from(allMarkers),
-      
+        markers: Set.from(allMarkers),
       ),
     );
   }
@@ -437,7 +329,7 @@ Widget drawer(BuildContext context) {
           title: Text('Logout'),
           leading: Icon(Icons.power_settings_new, color: Colors.orange[500]),
           onTap: () {
-            Navigator.pushNamed(context, '/login');
+          Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
           },
         ),
         Divider(height: 0.0),

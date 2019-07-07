@@ -6,7 +6,8 @@ import 'login.dart';
 import 'home.dart';
 import '../manager/tabs_manager.dart';
 import '../screens/booking_form.dart';
-
+import '../widgets/location_widget.dart';
+import '../models/location_model.dart';
 class Start extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -18,13 +19,33 @@ class StartApp extends State<Start> {
   String origin;
   String destination;
   //  List <Map<String,String>> singleDriver;
+  LocationData getLocationDetails;
+  @override
+  void initState() {
+    // _addressInputFocusNode.addListener(_updateLocation);
+    getUserLocationDetails();
+    
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // _addressInputFocusNode.removeListener(_updateLocation);
+    super.dispose();
+  }
+
+  void getUserLocationDetails() async{
+   getLocationDetails= await getUserLocation();
+    // print(getDetails.latitude);
+    // print('dddddddddddddddddddddddddddddddddddd');
+  }
   void addDetails(String start, String end) {
     setState(() {
       origin = start;
       destination = end;
     });
   }
-
+ 
   List<Map<String, String>> _drivers = [
     {
       'name': 'Basit Mir',
@@ -94,7 +115,7 @@ class StartApp extends State<Start> {
       routes: {
         '/login': (BuildContext context) => Login(),
         '/register': (BuildContext context) => Register(),
-        '/home': (BuildContext context) => Home(addDetails),
+        '/home': (BuildContext context) => Home(addDetails,getLocationDetails),
         '/drivers': (BuildContext context) => DriverList(_drivers),
         '/booking': (BuildContext context) => Booking(origin, destination),
         '/payment': (BuildContext context) => Payment(),
