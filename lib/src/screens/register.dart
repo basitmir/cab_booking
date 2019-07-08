@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../models/user_model.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -9,15 +10,15 @@ class Register extends StatefulWidget {
 }
 
 class RegisterScreen extends State<Register> {
-   final Map<String, dynamic> _registerDetails = {
-        'userName': null,
-        'email': null,
-        'password': null,
-      };
+  final Map<String, dynamic> _registerDetails = {
+    'userName': null,
+    'email': null,
+    'password': null,
+  };
   final TextEditingController _passwordTextController = TextEditingController();
   bool _autoValidate = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  bool _progressBarActive = false;
   Widget _userName() {
     return TextFormField(
       cursorColor: Colors.white,
@@ -44,14 +45,16 @@ class RegisterScreen extends State<Register> {
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.go,
       validator: (String value) {
-        if (value.length < 3 || !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$').hasMatch(value)) {
+        if (value.length < 3 ||
+            !RegExp(r'^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$')
+                .hasMatch(value)) {
           return 'Please enter valid username';
         } else
           return null;
       },
       onSaved: (String value) {
         // setState(() {
-         _registerDetails['userName'] = value;
+        _registerDetails['userName'] = value;
         // });
       },
     );
@@ -132,8 +135,8 @@ class RegisterScreen extends State<Register> {
       },
       onSaved: (String value) {
         // setState(() {
-          _registerDetails['password'] = value;
-         
+        _registerDetails['password'] = value;
+
         // });
       },
     );
@@ -166,12 +169,10 @@ class RegisterScreen extends State<Register> {
       obscureText: true,
       validator: (String value) {
         if (value != _passwordTextController.text) {
-         
           return 'Password mismatch';
         } else
           return null;
       },
-     
     );
   }
 
@@ -184,7 +185,13 @@ class RegisterScreen extends State<Register> {
           RaisedButton(
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
-            onPressed: _register,
+            onPressed: () {
+              setState(() {
+                _progressBarActive = true;
+
+                _register();
+              });
+            },
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -208,17 +215,43 @@ class RegisterScreen extends State<Register> {
     );
   }
 
-  void _register() {
+  void _register() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-     
-      print(_registerDetails);
-      Navigator.pushReplacementNamed(context, '/login');
+      final User user = User(
+          userName: _registerDetails['userName'],
+          email: _registerDetails['email'],
+          password: _registerDetails['password'],
+          id: '');
+
+      final Map<String, dynamic> msg = await user.register(
+          _registerDetails['userName'],
+          _registerDetails['email'],
+          _registerDetails['password']);
+
+      if (!msg['error']) {
+         showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return alertDialog(context, msg['message'],msg['error']); //function defination
+            });
+        // Navigator.pushReplacementNamed(context, '/login');
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return alertDialog(context, msg['message'],msg['error']); //function defination
+            });
+      }
     } else {
       setState(() {
         _autoValidate = true;
       });
     }
+
+    setState(() {
+      _progressBarActive = false;
+    });
   }
 
   void initState() {
@@ -274,7 +307,9 @@ class RegisterScreen extends State<Register> {
                       SizedBox(height: 7.0),
                       _checkPassword(),
                       // SizedBox(height: 2.0),
-                      _registerButton(),
+                      _progressBarActive
+                          ? _dataProcessing(context)
+                          : _registerButton(),
                     ],
                   ),
                 ),
@@ -284,6 +319,17 @@ class RegisterScreen extends State<Register> {
         ),
       ),
       bottomNavigationBar: bottomNavbar(context),
+    );
+  }
+
+  Widget _dataProcessing(BuildContext context) {
+    return AlertDialog(
+      contentPadding: EdgeInsets.all(0.0),
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      content: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 
@@ -344,5 +390,42 @@ Widget bottomNavbar(context) {
         ),
       ],
     ),
+  );
+}
+
+Widget alertDialog(BuildContext context, String message,bool error) {
+  return AlertDialog(
+    backgroundColor: Colors.orange.withOpacity(0.5),
+    title:error? Icon(Icons.sentiment_dissatisfied, size: 60.0):
+    Icon(Icons.sentiment_very_satisfied, size: 60.0),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Text(error?'Oops..':'Voila!',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize: 35.0)),
+        Text(
+          message,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
+    actions: <Widget>[
+      FlatButton(
+        child: Text(error ? 'OK' : 'LOGIN',
+            style: TextStyle(color: Colors.white)),
+        onPressed: () {
+          if (!error) {
+            Navigator.pop(context);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/login', (Route<dynamic> route) => false);
+          } else {
+            Navigator.pop(context);
+          }
+        },
+      ),
+    ],
   );
 }

@@ -48,38 +48,7 @@ class Payment extends StatelessWidget {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AlertDialog(
-                        backgroundColor: Colors.orange.withOpacity(0.5),
-                        title: Icon(Icons.sentiment_very_satisfied, size: 60.0),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text('Thank you for choosing RIDz',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 25.0)),
-                            Text(
-                              'You have sucessfully booked a cab',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text('OK',
-                                style: TextStyle(color: Colors.white)),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.popUntil(
-                                  context, ModalRoute.withName('/home'));
-                            },
-                          ),
-                        ],
-                      );
+                      return alertDialog(context);
                     });
                 // Navigator.pushReplacementNamed(context, '/login');
               },
@@ -177,4 +146,39 @@ Widget paymentDetails(BuildContext context) {
       ),
     ],
   );
+}
+
+Widget alertDialog(BuildContext context){
+  return AlertDialog(
+                        backgroundColor: Colors.orange.withOpacity(0.5),
+                        title: Icon(Icons.sentiment_very_satisfied, size: 60.0),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text('Thank you for choosing RIDEz',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 25.0)),
+                            Text(
+                              'You have sucessfully booked a cab',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text('OK',
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.popUntil(
+                                  context, ModalRoute.withName('/home'));
+                            },
+                          ),
+                        ],
+                      );
 }
