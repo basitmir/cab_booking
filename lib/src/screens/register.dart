@@ -244,9 +244,9 @@ class RegisterScreen extends State<Register> {
             });
       }
     } else {
-      setState(() {
+      // setState(() {
         _autoValidate = true;
-      });
+      // });
     }
 
     setState(() {

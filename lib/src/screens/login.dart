@@ -1,6 +1,7 @@
 // import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../models/user_model.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class Login extends StatefulWidget {
 
 class LoginScreen extends State<Login> {
   bool _autoValidate = false;
+  bool _progressBarActive = false;
   final Map<String, dynamic> _loginDetails = {
     'email': null,
     'password': null,
@@ -25,7 +27,7 @@ class LoginScreen extends State<Login> {
       decoration: InputDecoration(
         border: InputBorder.none,
         labelText: 'EMAIL',
-        
+
         errorStyle: TextStyle(
             backgroundColor: Colors.white.withOpacity(0.2),
             fontWeight: FontWeight.w600),
@@ -109,7 +111,12 @@ class LoginScreen extends State<Login> {
           RaisedButton(
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
-            onPressed: _submitLogin,
+            onPressed:(){
+              setState(() {
+                _progressBarActive = true;
+               _submitLogin();
+              });
+               },
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -146,17 +153,45 @@ class LoginScreen extends State<Login> {
     );
   }
 
-  void _submitLogin() {
+  void _submitLogin() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+      final User user = User(
+          userName: '',
+          email: _loginDetails['email'],
+          password: _loginDetails['password'],
+          id: '');
 
-      print(_loginDetails);
-      Navigator.pushReplacementNamed(context, '/home');
+      final Map<String, dynamic> msg =
+          await user.login(_loginDetails['email'], _loginDetails['password']);
+      if (!msg['error']) {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return alertDialog(context, msg['message']); //function defination
+            });
+      }
     } else {
       // setState(() {
       _autoValidate = true;
       // });
     }
+    setState(() {
+      _progressBarActive = false;
+    });
+  }
+
+  Widget _dataProcessing(BuildContext context) {
+    return AlertDialog(
+      contentPadding: EdgeInsets.all(0.0),
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      content: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 
   @override
@@ -208,7 +243,9 @@ class LoginScreen extends State<Login> {
                       _loginEmail(),
                       SizedBox(height: 7.0),
                       _loginPassword(),
-                      _loginButton(),
+                      _progressBarActive
+                          ? _dataProcessing(context)
+                          : _loginButton(),
                       SizedBox(height: 50.0),
                     ],
                   ),
@@ -279,5 +316,34 @@ Widget bottomNavBar(context) {
         ),
       ],
     ),
+  );
+}
+
+Widget alertDialog(BuildContext context, String message) {
+  return AlertDialog(
+    backgroundColor: Colors.orange.withOpacity(0.5),
+    title: Icon(Icons.sentiment_dissatisfied, size: 60.0),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Text('Oops..',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize: 35.0)),
+        Text(
+          message,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
+    actions: <Widget>[
+      FlatButton(
+        child: Text('OK', style: TextStyle(color: Colors.white)),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    ],
   );
 }
