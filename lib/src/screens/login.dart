@@ -2,9 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
+  final Function authDetails;
   @override
+  Login(this.authDetails);
   State<StatefulWidget> createState() {
     return LoginScreen();
   }
@@ -17,6 +20,7 @@ class LoginScreen extends State<Login> {
     'email': null,
     'password': null,
   };
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _loginEmail() {
@@ -111,12 +115,12 @@ class LoginScreen extends State<Login> {
           RaisedButton(
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
-            onPressed:(){
+            onPressed: () {
               setState(() {
                 _progressBarActive = true;
-               _submitLogin();
+                _submitLogin();
               });
-               },
+            },
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -165,6 +169,14 @@ class LoginScreen extends State<Login> {
       final Map<String, dynamic> msg =
           await user.login(_loginDetails['email'], _loginDetails['password']);
       if (!msg['error']) {
+        widget.authDetails(msg['userName'], msg['email']);
+
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', msg['token']);
+        prefs.setInt('id', msg['id']);
+        prefs.setString('userName', msg['userName']);
+        prefs.setString('email', msg['email']);
+
         Navigator.pushReplacementNamed(context, '/home');
       } else {
         showDialog(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/ensure_visible.dart';
+//import '../models/user_model.dart';
 // import 'package:map_view/map_view.dart';
 // import 'package:http/http.dart' as http;
 // import 'dart:convert';
@@ -7,12 +8,16 @@ import 'dart:async';
 import '../models/location_model.dart';
 // import 'package:location/location.dart' as geoloc;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import '../models/location_model.dart';
 
 class Home extends StatefulWidget {
   final Function addDetails;
   final LocationData getLocationDetails;
-  Home(this.addDetails, this.getLocationDetails);
+  final String userName;
+  final String email;
+  Home(this.addDetails, this.getLocationDetails,this.userName,this.email);
+
   @override
   State<StatefulWidget> createState() {
     return HomeState();
@@ -28,7 +33,21 @@ class HomeState extends State<Home> {
 
   @override
   void initState() {
+  
+    // if (widget.getLocationDetails == null) {
+    //   final LocationData locationData = LocationData(
+    //     origin: '',
+    //     latitude: 33.7782,
+    //     longitude: 76.5762,
+    //   );
+    //   _locationData = locationData;
+    // } else {
+    //   setState(() {
     _locationData = widget.getLocationDetails;
+
+    //   });
+    // }
+
     allMarkers.add(Marker(
         markerId: MarkerId('current'),
         position: LatLng(_locationData.latitude, _locationData.longitude),
@@ -36,10 +55,12 @@ class HomeState extends State<Home> {
         icon: BitmapDescriptor.defaultMarkerWithHue(
           BitmapDescriptor.hueOrange,
         )));
-  _originController.text=_locationData.origin;
+    _originController.text = _locationData.origin;
+    // _originController.text = widget.getLocationDetails.origin;
+
     super.initState();
   }
-
+ 
   @override
   void dispose() {
     // _addressInputFocusNode.removeListener(_updateLocation);
@@ -60,6 +81,11 @@ class HomeState extends State<Home> {
   //   return Column(
   //     children: <Widget>[],
   //   );
+  // }
+  
+
+  // void getName() async{
+  //      String name =await getUserName()
   // }
 
   Widget _originFeild() {
@@ -198,6 +224,7 @@ class HomeState extends State<Home> {
         ),
         onMapCreated: (GoogleMapController controller) {
           setState(() {
+            // _locationData=widget.getLocationDetails;
             _controller.complete(controller);
           });
         },
@@ -208,7 +235,7 @@ class HomeState extends State<Home> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: drawer(context),
+      drawer: drawer(context,widget.userName,widget.email),
       floatingActionButton: Container(
         child: FloatingButtons(),
       ),
@@ -250,7 +277,7 @@ class HomeState extends State<Home> {
                       ),
                     ),
                     // Image.network('https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg'),
-                    // Navigate(_originController.text, _destinationController.text),
+                    // Navigate(_o riginController.text, _destinationController.text),
                   ],
                 )),
           ),
@@ -260,17 +287,18 @@ class HomeState extends State<Home> {
   }
 }
 
-Widget drawer(BuildContext context) {
+Widget drawer(BuildContext context,String userName,String email) {
   return Drawer(
     child: ListView(
       children: <Widget>[
         UserAccountsDrawerHeader(
-          accountName: Text(
-            'Basit Mir',
+          accountName: 
+           Text(
+           userName,
             style: TextStyle(color: Colors.white),
           ),
           accountEmail: Text(
-            'basitmir@gmail.com',
+             email,
             style: TextStyle(color: Colors.white70),
           ),
           currentAccountPicture: CircleAvatar(
@@ -328,8 +356,11 @@ Widget drawer(BuildContext context) {
         ListTile(
           title: Text('Logout'),
           leading: Icon(Icons.power_settings_new, color: Colors.orange[500]),
-          onTap: () {
-          Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+          onTap: () async{
+            final SharedPreferences prefs = await SharedPreferences.getInstance();
+           prefs.clear();
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/login', (Route<dynamic> route) => false);
           },
         ),
         Divider(height: 0.0),

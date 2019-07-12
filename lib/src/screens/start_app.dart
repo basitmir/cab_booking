@@ -1,32 +1,51 @@
 import 'package:cab/src/screens/driver_list.dart';
 import 'package:cab/src/screens/payment_details.dart';
 import 'package:flutter/material.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+
 import 'register.dart';
 import 'login.dart';
 import 'home.dart';
 import '../manager/tabs_manager.dart';
 import '../screens/booking_form.dart';
-import '../widgets/location_widget.dart';
+// import '../widgets/location_widget.dart';
 import '../models/location_model.dart';
+
 class Start extends StatefulWidget {
+  final Map<String,dynamic> savedData;
+  final LocationData getLocationDetails;
+  Start(this.savedData,this.getLocationDetails);
   @override
   State<StatefulWidget> createState() {
     return StartApp();
   }
 }
-
+ 
 class StartApp extends State<Start> {
   String origin;
   String destination;
+  String userEmail;
+  String userName;
+  
+ 
+     
+
   //  List <Map<String,String>> singleDriver;
-  LocationData getLocationDetails;
+  // LocationData getLocationDetails;
   @override
   void initState() {
     // _addressInputFocusNode.addListener(_updateLocation);
-    getUserLocationDetails();
-    
+   
+      //  getUserLocationDetails();
+      
+    // print(widget.getLocationDetails.origin);
+   
+    // print(widget.savedData['token']);
+   
+
     super.initState();
   }
+ 
 
   @override
   void dispose() {
@@ -34,32 +53,45 @@ class StartApp extends State<Start> {
     super.dispose();
   }
 
-  void getUserLocationDetails() async{
-   getLocationDetails= await getUserLocation();
-    // print(getDetails.latitude);
-    // print('dddddddddddddddddddddddddddddddddddd');
-  }
+   
+
+  // void getUserLocationDetails() async {
+  //   getLocationDetails = await getUserLocation();
+  
+  // }
+
   void addDetails(String start, String end) {
     setState(() {
       origin = start;
       destination = end;
     });
+   
   }
+  
+  void authDetails(String username, String email) {
+    setState(() {
+    userName=username;
+    userEmail=email;
+    });
+    
+  }
+  
  
+   
   List<Map<String, String>> _drivers = [
     {
       'name': 'Basit Mir',
       'cabNumber': 'JK2012-Xb',
       'image': 'assets/car.jpg',
       'address': 'Naseem Bagh',
-      'city':'Srinagar',
-      'state':'j&k',
+      'city': 'Srinagar',
+      'state': 'j&k',
       'age': '54',
       'experience': '20',
       'gender': 'male',
       'vacancy': '4',
       'mobile': '9419476521',
-      'email' : 'basitmir98@gmail.com',
+      'email': 'basitmir98@gmail.com',
       'rating': '5',
     },
     {
@@ -67,14 +99,14 @@ class StartApp extends State<Start> {
       'cabNumber': 'JK01L-2103',
       'image': 'assets/car.jpg',
       'address': 'Naseem Bagh',
-       'city':'Srinagar',
-       'state':'j&k',
+      'city': 'Srinagar',
+      'state': 'j&k',
       'age': '54',
       'experience': '20',
       'gender': 'male',
       'vacancy': '4',
       'mobile': '9419476521',
-      'email' : 'basit@gmail.com',
+      'email': 'basit@gmail.com',
       'rating': '5',
     },
     {
@@ -82,14 +114,14 @@ class StartApp extends State<Start> {
       'cabNumber': 'JK2012-12',
       'image': 'assets/car.jpg',
       'address': 'Naseem Bagh',
-       'city':'Srinagar',
-       'state':'j&k',
+      'city': 'Srinagar',
+      'state': 'j&k',
       'age': '54',
       'experience': '20',
       'gender': 'male',
       'vacancy': '4',
       'mobile': '9419476521',
-      'email' : 'basit@gmail.com',
+      'email': 'basit@gmail.com',
       'rating': '5',
     },
   ];
@@ -101,21 +133,25 @@ class StartApp extends State<Start> {
     //   _drivers.add(DriverModel);
     // });
   }
+
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       theme: ThemeData(
           primaryColor: Colors.orange[500],
           iconTheme: IconThemeData(color: Colors.white),
           fontFamily: 'myFont',
           accentColor: Colors.orange,
-          unselectedWidgetColor:Colors.white),
-      home: StartAppScreen(),
+          unselectedWidgetColor: Colors.white),
+      home: widget.savedData['token']!=null
+          ? Home(addDetails, widget.getLocationDetails,widget.savedData['userName'],widget.savedData['email'])
+          : StartAppScreen(),
       debugShowCheckedModeBanner: false,
       routes: {
-        '/login': (BuildContext context) => Login(),
+        '/login': (BuildContext context) => Login(authDetails),
         '/register': (BuildContext context) => Register(),
-        '/home': (BuildContext context) => Home(addDetails,getLocationDetails),
+        '/home': (BuildContext context) => Home(addDetails, widget.getLocationDetails,userName,userEmail),
         '/drivers': (BuildContext context) => DriverList(_drivers),
         '/booking': (BuildContext context) => Booking(origin, destination),
         '/payment': (BuildContext context) => Payment(),
@@ -127,26 +163,24 @@ class StartApp extends State<Start> {
         }
         if (driverDetails[1] == 'driver') {
           final int index = int.parse(driverDetails[2]);
-           Map<String,String> _singleDriver={
-               'name':_drivers[index]['name'],
-                'cabNumber':_drivers[index]['cabNumber'],
-                'image':_drivers[index]['image'],
-                'address':_drivers[index]['address'],
-                'age':_drivers[index]['age'],
-                'experience':_drivers[index]['experience'],
-                'gender':_drivers[index]['gender'],
-                'vacancy':_drivers[index]['vacancy'],
-                'mobile':_drivers[index]['mobile'],
-                'email':_drivers[index]['email'],
-                 'city':_drivers[index]['city'],
-                  'state':_drivers[index]['state'],
-                'rating':_drivers[index]['rating'],
-          
-           };
+          Map<String, String> _singleDriver = {
+            'name': _drivers[index]['name'],
+            'cabNumber': _drivers[index]['cabNumber'],
+            'image': _drivers[index]['image'],
+            'address': _drivers[index]['address'],
+            'age': _drivers[index]['age'],
+            'experience': _drivers[index]['experience'],
+            'gender': _drivers[index]['gender'],
+            'vacancy': _drivers[index]['vacancy'],
+            'mobile': _drivers[index]['mobile'],
+            'email': _drivers[index]['email'],
+            'city': _drivers[index]['city'],
+            'state': _drivers[index]['state'],
+            'rating': _drivers[index]['rating'],
+          };
           return MaterialPageRoute(
-            builder: (BuildContext context) => Tabs(
-               _singleDriver,origin,destination
-                ),
+            builder: (BuildContext context) =>
+                Tabs(_singleDriver, origin, destination),
           );
         }
         return null;

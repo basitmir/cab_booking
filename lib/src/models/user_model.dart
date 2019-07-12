@@ -53,7 +53,7 @@ class User {
         body: json.encode(registerData),
         headers: {'Content-Type': 'application/json'});
     Map<String, dynamic> responseData = {
-      'hasError': true,
+      'error': true,
       'message': 'Something went wrong'
     };
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -61,7 +61,7 @@ class User {
     } else if (response.statusCode == 401) {
       responseData = json.decode(response.body);
     }
-
+   print(responseData);
     return responseData;
   }
   //...................end login..............................
