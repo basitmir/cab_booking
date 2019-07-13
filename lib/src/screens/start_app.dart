@@ -10,6 +10,7 @@ import '../manager/tabs_manager.dart';
 import '../screens/booking_form.dart';
 // import '../widgets/location_widget.dart';
 import '../models/location_model.dart';
+import '../models/driver_model.dart';
 
 class Start extends StatefulWidget {
   final Map<String,dynamic> savedData;
@@ -26,7 +27,8 @@ class StartApp extends State<Start> {
   String destination;
   String userEmail;
   String userName;
-  
+  List _drivers;
+  // DriverModel driverModelList;
  
      
 
@@ -41,7 +43,7 @@ class StartApp extends State<Start> {
     // print(widget.getLocationDetails.origin);
    
     // print(widget.savedData['token']);
-   
+   driversList();
 
     super.initState();
   }
@@ -75,56 +77,61 @@ class StartApp extends State<Start> {
     });
     
   }
+  void driversList() async {
+    _drivers=await  availableDrivers();
   
+    print(_drivers.length);
+  }
  
    
-  List<Map<String, String>> _drivers = [
-    {
-      'name': 'Basit Mir',
-      'cabNumber': 'JK2012-Xb',
-      'image': 'assets/car.jpg',
-      'address': 'Naseem Bagh',
-      'city': 'Srinagar',
-      'state': 'j&k',
-      'age': '54',
-      'experience': '20',
-      'gender': 'male',
-      'vacancy': '4',
-      'mobile': '9419476521',
-      'email': 'basitmir98@gmail.com',
-      'rating': '5',
-    },
-    {
-      'name': 'Basit',
-      'cabNumber': 'JK01L-2103',
-      'image': 'assets/car.jpg',
-      'address': 'Naseem Bagh',
-      'city': 'Srinagar',
-      'state': 'j&k',
-      'age': '54',
-      'experience': '20',
-      'gender': 'male',
-      'vacancy': '4',
-      'mobile': '9419476521',
-      'email': 'basit@gmail.com',
-      'rating': '5',
-    },
-    {
-      'name': 'Sami',
-      'cabNumber': 'JK2012-12',
-      'image': 'assets/car.jpg',
-      'address': 'Naseem Bagh',
-      'city': 'Srinagar',
-      'state': 'j&k',
-      'age': '54',
-      'experience': '20',
-      'gender': 'male',
-      'vacancy': '4',
-      'mobile': '9419476521',
-      'email': 'basit@gmail.com',
-      'rating': '5',
-    },
-  ];
+  // List<Map<String, String>> _drivers 
+  // [
+  //   {
+  //     'name': 'Basit Mir',
+  //     'cabNumber': 'JK2012-Xb',
+  //     'image': 'assets/car.jpg',
+  //     'address': 'Naseem Bagh',
+  //     'city': 'Srinagar',
+  //     'state': 'j&k',
+  //     'age': '54',
+  //     'experience': '20',
+  //     'gender': 'male',
+  //     'vacancy': '4',
+  //     'mobile': '9419476521',
+  //     'email': 'basitmir98@gmail.com',
+  //     'rating': '5',
+  //   },
+  //   {
+  //     'name': 'Basit',
+  //     'cabNumber': 'JK01L-2103',
+  //     'image': 'assets/car.jpg',
+  //     'address': 'Naseem Bagh',
+  //     'city': 'Srinagar',
+  //     'state': 'j&k',
+  //     'age': '54',
+  //     'experience': '20',
+  //     'gender': 'male',
+  //     'vacancy': '4',
+  //     'mobile': '9419476521',
+  //     'email': 'basit@gmail.com',
+  //     'rating': '5',
+  //   },
+  //   {
+  //     'name': 'Sami',
+  //     'cabNumber': 'JK2012-12',
+  //     'image': 'assets/car.jpg',
+  //     'address': 'Naseem Bagh',
+  //     'city': 'Srinagar',
+  //     'state': 'j&k',
+  //     'age': '54',
+  //     'experience': '20',
+  //     'gender': 'male',
+  //     'vacancy': '4',
+  //     'mobile': '9419476521',
+  //     'email': 'basit@gmail.com',
+  //     'rating': '5',
+  //   },
+  // ];
 
   void fetchDriver() async {
     //  var response= await get('http://www.splashbase.co/api/v1/images/random');
@@ -163,20 +170,22 @@ class StartApp extends State<Start> {
         }
         if (driverDetails[1] == 'driver') {
           final int index = int.parse(driverDetails[2]);
-          Map<String, String> _singleDriver = {
-            'name': _drivers[index]['name'],
+          Map<String, dynamic> _singleDriver = {
+            'userName': _drivers[index]['userName'],
             'cabNumber': _drivers[index]['cabNumber'],
-            'image': _drivers[index]['image'],
-            'address': _drivers[index]['address'],
+             'id': _drivers[index]['id'],
+            'zip': _drivers[index]['zip'],
             'age': _drivers[index]['age'],
             'experience': _drivers[index]['experience'],
             'gender': _drivers[index]['gender'],
             'vacancy': _drivers[index]['vacancy'],
-            'mobile': _drivers[index]['mobile'],
+            'phone': _drivers[index]['phone'],
             'email': _drivers[index]['email'],
             'city': _drivers[index]['city'],
             'state': _drivers[index]['state'],
-            'rating': _drivers[index]['rating'],
+            'address':'Naseem Bagh',
+            //'rating': _drivers[index]['rating'],
+            'rating': '5',
           };
           return MaterialPageRoute(
             builder: (BuildContext context) =>

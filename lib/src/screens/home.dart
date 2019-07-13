@@ -294,7 +294,7 @@ Widget drawer(BuildContext context,String userName,String email) {
         UserAccountsDrawerHeader(
           accountName: 
            Text(
-           userName,
+           userName.toUpperCase(),
             style: TextStyle(color: Colors.white),
           ),
           accountEmail: Text(

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class DriverDetails extends StatelessWidget {
-  final Map<String, String> singleDriver;
+  final Map<String, dynamic> singleDriver;
   DriverDetails(this.singleDriver);
   static Map<String, dynamic> iconList = {};
   // singleDriver.add('icon':'Icons.Person');
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -24,54 +25,63 @@ class DriverDetails extends StatelessWidget {
             margin: EdgeInsets.fromLTRB(3.0, 0.0, 3.0, 0.0),
             child: ListView(
               children: <Widget>[
-                rowContainer(singleDriver['name'], singleDriver['cabNumber'],
-                    singleDriver['image'], singleDriver['rating'], context),
+                rowContainer(singleDriver['userName'], singleDriver['cabNumber'],
+                     'assets/car.jpg', singleDriver['rating'], context),
 
                 singleRow(
                   'EMAIL',
-                  singleDriver['email'],
+                   singleDriver['email'],
+                  
                   iconList = {'icon': Icons.email},
                 ),
                 singleRow(
                   'ADDRESS',
-                  singleDriver['address'],
+                singleDriver['address'],
+                  
                   iconList = {'icon': Icons.person_pin_circle},
                 ),
                 singleRow(
                   'STATE',
-                  singleDriver['state'],
+                 singleDriver['state'],
+                  
                   iconList = {'icon': Icons.my_location},
                 ),
                 singleRow(
                   'CITY',
-                  singleDriver['city'],
+                singleDriver['city'],
+                  
                   iconList = {'icon': Icons.location_city},
                 ),
                 singleRow(
                   'CONTACT',
-                  singleDriver['mobile'],
+                singleDriver['phone'],
+                  
                   iconList = {'icon': Icons.contact_phone},
                 ),
 
                 singleRow(
                   'GENDER',
-                  singleDriver['gender'],
+                   singleDriver['gender'],
+                  
                   iconList = {'icon': Icons.assignment_ind},
                 ),
                 singleRow(
                   'EXPERIENCE',
-                  singleDriver['experience'],
+                singleDriver['experience'].toString(),
+                  
                   iconList = {'icon': Icons.verified_user},
                 ),
                 singleRow(
                   'AGE',
-                  singleDriver['age'],
+                singleDriver['age'].toString(),
+                
                   iconList = {'icon': Icons.perm_identity},
                 ),
 
                 singleRow(
                   'VACANCY',
-                  singleDriver['vacancy'],
+                singleDriver['vacancy'].toString(),
+                
                   iconList = {'icon': Icons.event_seat},
                 ),
 
@@ -121,10 +131,10 @@ Widget avatar(String image) {
     //  backgroundImage: NetworkImage('https://via.placeholder.com/150'),
     backgroundImage: AssetImage(image),
     backgroundColor: Colors.black12,
-    child: Text(
-      'Test',
-      style: TextStyle(color: Colors.white, fontSize: 12.0),
-    ),
+    // child: Text(
+    //   'Test',
+    //   style: TextStyle(color: Colors.white, fontSize: 12.0),
+    // ),
   );
 }
 
@@ -135,7 +145,7 @@ Widget avatarText(
   return Column(
     children: <Widget>[
       Text(
-        name,
+        name.toUpperCase(),
         style: TextStyle(
             color: Colors.orange, fontSize: 15.0, fontWeight: FontWeight.w600),
       ),

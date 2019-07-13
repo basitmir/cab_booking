@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 class DriverList extends StatelessWidget {
-  final List<Map<String, String>> drivers;
+  final List drivers;
   final List<int> stars = [1, 2, 3, 4, 5];
   DriverList(this.drivers);
-
+  
   Widget _singleListItem(BuildContext context, int index) {
     return Card(
       color: Colors.white,
       margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
       child: Column(
         children: <Widget>[
-          rowContainer(drivers[index]['name'], drivers[index]['cabNumber'],
-              drivers[index]['image'], index, context),
+          rowContainer(drivers[index]['userName'], drivers[index]['cabNumber'],
+              'assets/car.jpg', index, context),
           Image.asset(
-            drivers[index]['image'],
+            'assets/car.jpg',
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -33,6 +33,7 @@ class DriverList extends StatelessWidget {
   }
 
   Widget build(context) {
+     
     return Scaffold(
       backgroundColor: Colors.white30,
       appBar: AppBar(
@@ -64,7 +65,7 @@ class DriverList extends StatelessWidget {
         //                     color: Colors.yellow,
         //                   ),
         //                 ],
-        //               ),
+        //               ), 
         //             ))
         //         .toList(),
         //   ),
@@ -103,10 +104,10 @@ Widget avatar(String image) {
     // backgroundImage: NetworkImage('https://via.placeholder.com/150'),
     backgroundImage: AssetImage(image),
     backgroundColor: Colors.black12,
-    child: Text(
-      'Test',
-      style: TextStyle(color: Colors.white, fontSize: 12.0),
-    ),
+    // child: Text(
+    //   'Test',
+    //   style: TextStyle(color: Colors.white, fontSize: 12.0),
+    // ),
   );
 }
 
@@ -114,7 +115,7 @@ Widget avatarText(String name, String number) {
   return Column(
     children: <Widget>[
       Text(
-        name,
+        name.toUpperCase(),
         style: TextStyle(
             color: Colors.orange, fontSize: 15.0, fontWeight: FontWeight.w600),
       ),

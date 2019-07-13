@@ -8,7 +8,7 @@ import '../screens/driver_details.dart';
 class Tabs extends StatefulWidget { 
    final String origin;
    final String destination;
-  final Map<String,String> singleDriver;
+  final Map<String,dynamic> singleDriver;
   Tabs(this.singleDriver,this.origin,this.destination);
   @override
   State<StatefulWidget> createState() {
