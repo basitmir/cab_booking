@@ -4,7 +4,7 @@ class DriverList extends StatelessWidget {
   final List drivers;
   final List<int> stars = [1, 2, 3, 4, 5];
   DriverList(this.drivers);
-  
+
   Widget _singleListItem(BuildContext context, int index) {
     return Card(
       color: Colors.white,
@@ -12,9 +12,13 @@ class DriverList extends StatelessWidget {
       child: Column(
         children: <Widget>[
           rowContainer(drivers[index]['userName'], drivers[index]['cabNumber'],
-              'assets/car.jpg', index, context),
-          Image.asset(
-            'assets/car.jpg',
+              'assets/profile.png', index, context),
+          FadeInImage(
+            image: NetworkImage(
+              'http://192.168.43.254:443/assets/images/' +
+                  drivers[index]['image'],
+            ),
+            placeholder: AssetImage('assets/car.jpg'),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -33,7 +37,6 @@ class DriverList extends StatelessWidget {
   }
 
   Widget build(context) {
-     
     return Scaffold(
       backgroundColor: Colors.white30,
       appBar: AppBar(
@@ -65,7 +68,7 @@ class DriverList extends StatelessWidget {
         //                     color: Colors.yellow,
         //                   ),
         //                 ],
-        //               ), 
+        //               ),
         //             ))
         //         .toList(),
         //   ),

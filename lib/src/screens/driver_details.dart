@@ -26,7 +26,7 @@ class DriverDetails extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 rowContainer(singleDriver['userName'], singleDriver['cabNumber'],
-                     'assets/car.jpg', singleDriver['rating'], context),
+                     'assets/profile.png', singleDriver['rating'], context),
 
                 singleRow(
                   'EMAIL',

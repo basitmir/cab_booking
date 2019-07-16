@@ -304,11 +304,12 @@ Widget drawer(BuildContext context,String userName,String email) {
           currentAccountPicture: CircleAvatar(
             radius: 30.0,
             // backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+             backgroundImage: AssetImage('assets/profile.png'),
             backgroundColor: Colors.black12,
-            child: Text(
-              'Test',
-              style: TextStyle(color: Colors.white, fontSize: 12.0),
-            ),
+            // child: Text(
+            //   'Test',
+            //   style: TextStyle(color: Colors.white, fontSize: 12.0),
+            // ),
           ),
         ),
         ListTile(
