@@ -7,7 +7,7 @@ class DriverDetails extends StatelessWidget {
   // singleDriver.add('icon':'Icons.Person');
   @override
   Widget build(BuildContext context) {
-   
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

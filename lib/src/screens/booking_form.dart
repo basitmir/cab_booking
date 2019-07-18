@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import '../models/booking_model.dart';
+// import '../models/booking_model.dart';
 import '../helpers/ensure_visible.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 //import '../models/location_model.dart';
 // import 'navigation.dart';
 class Booking extends StatefulWidget {
   final String origin;
   final String destination;
-  Booking(this.origin, this.destination);
+  final int driverAssignId;
+  final Function bookingDetailFun;
+  Booking(this.origin, this.destination,this.bookingDetailFun,this.driverAssignId);
 
   @override
   State<StatefulWidget> createState() {
@@ -26,12 +30,14 @@ class BookingForm extends State<Booking> {
   Map<String, dynamic> passDetails = {};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, dynamic> _bookingDetails = {
+    'bookingUserId':null,
+    'driverAssignId':null,
     'name': null,
     'origin': null,
     'destination': null,
     'contact': null,
     'tripDetails': 'oneWayTrip',
-    'landMark': null,
+    'origin landMark': null,
     'date': null,
     'time': null,
   };
@@ -209,24 +215,27 @@ class BookingForm extends State<Booking> {
     );
   }
 
-  void saveDetails() {
+  void saveDetails() async{
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      BookingModel(
-        name: _bookingDetails['name'],
-        origin: _bookingDetails['origin'],
-        destination: _bookingDetails['destination'],
-        contact: int.parse(_bookingDetails['contact']),
-        tripDetails: _bookingDetails['tripDetails'],
-        date: _bookingDetails['date'],
-        time: _bookingDetails['time'],
-        landMark: _bookingDetails['landMark'],
-      );
+      // BookingModel(
+      //   name: _bookingDetails['name'],
+      //   origin: _bookingDetails['origin'],
+      //   destination: _bookingDetails['destination'],
+      //   contact: int.parse(_bookingDetails['contact']),
+      //   tripDetails: _bookingDetails['tripDetails'],
+      //   date: _bookingDetails['date'],
+      //   time: _bookingDetails['time'],
+      //   landMark: _bookingDetails['landMark'],
+      // );
+       final SharedPreferences prefs = await SharedPreferences.getInstance();
+       _bookingDetails['bookingUserId']=prefs.getInt('id');
+       _bookingDetails['driverAssignId']=widget.driverAssignId;
+       widget.bookingDetailFun(_bookingDetails);
       Navigator.pushNamed(context, '/payment');
-      print(_bookingDetails);
-      // Navigator.pushReplacementNamed(context, '/home');
+      // print(_bookingDetails);
     } else {
-      // setState(() {
+      // setState(() { 
       _autoValidate = true;
       // });
     }
@@ -359,7 +368,7 @@ class BookingForm extends State<Booking> {
                     ),
                     formField(
                         _bookingDetails,
-                        'origin landmark',
+                        'origin landMark',
                         passDetails = {
                           'icon': Icons.pin_drop,
                           'keyboard': TextInputType.text,
@@ -444,9 +453,9 @@ Widget formField(
             return commonValidation(value, 'destination');
           }
           break;
-        case 'origin landmark':
+        case 'origin landMark':
           {
-            return commonValidation(value, 'landmark');
+            return commonValidation(value, 'landMark');
           }
           break;
         case 'name':

@@ -12,6 +12,7 @@ import '../screens/booking_form.dart';
 import '../models/location_model.dart';
 import '../models/driver_model.dart';
 
+
 class Start extends StatefulWidget {
   final Map<String,dynamic> savedData;
   final LocationData getLocationDetails;
@@ -28,6 +29,8 @@ class StartApp extends State<Start> {
   String userEmail;
   String userName;
   List _drivers;
+  int driverAssignId;
+  Map<String,dynamic> bookingDetails;
   // DriverModel driverModelList;
  
      
@@ -62,6 +65,12 @@ class StartApp extends State<Start> {
   
   // }
 
+  void bookDetails(Map<String,dynamic> booking){
+   setState(() {
+      bookingDetails=booking;
+    });
+  }
+
   void addDetails(String start, String end) {
     setState(() {
       origin = start;
@@ -79,10 +88,8 @@ class StartApp extends State<Start> {
   }
   void driversList() async {
     _drivers=await  availableDrivers();
-  
-    print(_drivers.length);
   }
- 
+  
    
   // List<Map<String, String>> _drivers 
   // [
@@ -160,8 +167,8 @@ class StartApp extends State<Start> {
         '/register': (BuildContext context) => Register(),
         '/home': (BuildContext context) => Home(addDetails, widget.getLocationDetails,userName,userEmail),
         '/drivers': (BuildContext context) => DriverList(_drivers),
-        '/booking': (BuildContext context) => Booking(origin, destination),
-        '/payment': (BuildContext context) => Payment(),
+        '/booking': (BuildContext context) => Booking(origin, destination,bookDetails,driverAssignId),
+        '/payment': (BuildContext context) => Payment(bookingDetails),
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> driverDetails = settings.name.split('/');
@@ -170,6 +177,7 @@ class StartApp extends State<Start> {
         }
         if (driverDetails[1] == 'driver') {
           final int index = int.parse(driverDetails[2]);
+          driverAssignId=_drivers[index]['id'];
           Map<String, dynamic> _singleDriver = {
             'userName': _drivers[index]['userName'],
             'cabNumber': _drivers[index]['cabNumber'],

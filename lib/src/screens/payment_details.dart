@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import '../models/booking_model.dart';
 
 class Payment extends StatelessWidget {
+  final Map<String, dynamic> bookingDetails;
+  Payment(this.bookingDetails);
+
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -45,11 +50,8 @@ class Payment extends StatelessWidget {
               textColor: Colors.white,
               padding: const EdgeInsets.all(0.0),
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return alertDialog(context);
-                    });
+                bookCab(context,bookingDetails);
+
                 // Navigator.pushReplacementNamed(context, '/login');
               },
               shape: StadiumBorder(),
@@ -82,6 +84,33 @@ class Payment extends StatelessWidget {
       ),
     );
   }
+}
+
+void bookCab(BuildContext context,Map<String, dynamic> bookingDetails) async{
+   final BookingModel bookingModel=BookingModel();
+  final Map<String, dynamic> msg = await bookingModel.booking(bookingDetails);
+
+      if (!msg['error']) {
+        print(msg['message']);
+        //  showDialog(
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return alertDialog(context, msg['message'],msg['error']); //function defination
+        //     });
+       
+      } else {
+         print(msg['message']);
+        // showDialog(
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return alertDialog(context, msg['message'],msg['error']); //function defination
+        //     });
+      }
+  // showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return alertDialog(context);
+  //     });
 }
 
 Widget paymentDetails(BuildContext context) {
@@ -148,37 +177,32 @@ Widget paymentDetails(BuildContext context) {
   );
 }
 
-Widget alertDialog(BuildContext context){
+Widget alertDialog(BuildContext context) {
   return AlertDialog(
-                        backgroundColor: Colors.orange.withOpacity(0.5),
-                        title: Icon(Icons.sentiment_very_satisfied, size: 60.0),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text('Thank you for choosing RIDEz',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 25.0)),
-                            Text(
-                              'You have sucessfully booked a cab',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text('OK',
-                                style: TextStyle(color: Colors.white)),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.popUntil(
-                                  context, ModalRoute.withName('/home'));
-                            },
-                          ),
-                        ],
-                      );
+    backgroundColor: Colors.orange.withOpacity(0.5),
+    title: Icon(Icons.sentiment_very_satisfied, size: 60.0),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Text('Thank you for choosing RIDEz',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize: 25.0)),
+        Text(
+          'You have sucessfully booked a cab',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
+    actions: <Widget>[
+      FlatButton(
+        child: Text('OK', style: TextStyle(color: Colors.white)),
+        onPressed: () {
+          Navigator.pop(context);
+          Navigator.popUntil(context, ModalRoute.withName('/home'));
+        },
+      ),
+    ],
+  );
 }

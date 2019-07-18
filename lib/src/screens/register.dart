@@ -213,7 +213,7 @@ class RegisterScreen extends State<Register> {
         ],
       ),
     );
-  }
+  } 
 
   void _register() async {
     if (_formKey.currentState.validate()) {
