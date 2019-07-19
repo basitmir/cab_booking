@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
   final LocationData getLocationDetails;
   final String userName;
   final String email;
-  Home(this.addDetails, this.getLocationDetails,this.userName,this.email);
+  Home(this.addDetails, this.getLocationDetails, this.userName, this.email);
 
   @override
   State<StatefulWidget> createState() {
@@ -30,10 +30,10 @@ class HomeState extends State<Home> {
   List<Marker> allMarkers = [];
   Completer<GoogleMapController> _controller = Completer();
   LocationData _locationData;
-
+  String userName;
+  String email;
   @override
   void initState() {
-  
     // if (widget.getLocationDetails == null) {
     //   final LocationData locationData = LocationData(
     //     origin: '',
@@ -60,7 +60,7 @@ class HomeState extends State<Home> {
 
     super.initState();
   }
- 
+
   @override
   void dispose() {
     // _addressInputFocusNode.removeListener(_updateLocation);
@@ -82,7 +82,6 @@ class HomeState extends State<Home> {
   //     children: <Widget>[],
   //   );
   // }
-  
 
   // void getName() async{
   //      String name =await getUserName()
@@ -196,7 +195,10 @@ class HomeState extends State<Home> {
     );
   }
 
-  void nextPage() {
+  void nextPage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    userName = prefs.getString('userName');
+    email = prefs.getString('email');
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       widget.addDetails(
@@ -235,7 +237,10 @@ class HomeState extends State<Home> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: drawer(context,widget.userName,widget.email),
+      drawer: drawer(
+          context,
+          widget.userName == null ? userName : widget.userName,
+          widget.email == null ? email : widget.email),
       floatingActionButton: Container(
         child: FloatingButtons(),
       ),
@@ -287,24 +292,23 @@ class HomeState extends State<Home> {
   }
 }
 
-Widget drawer(BuildContext context,String userName,String email) {
+Widget drawer(BuildContext context, String userName, String email) {
   return Drawer(
     child: ListView(
       children: <Widget>[
         UserAccountsDrawerHeader(
-          accountName: 
-           Text(
-           userName.toUpperCase(),
+          accountName: Text(
+            userName.toUpperCase(),
             style: TextStyle(color: Colors.white),
           ),
           accountEmail: Text(
-             email,
+            email,
             style: TextStyle(color: Colors.white70),
           ),
           currentAccountPicture: CircleAvatar(
             radius: 30.0,
             // backgroundImage: NetworkImage('https://via.placeholder.com/150'),
-             backgroundImage: AssetImage('assets/profile.png'),
+            backgroundImage: AssetImage('assets/profile.png'),
             backgroundColor: Colors.black12,
             // child: Text(
             //   'Test',
@@ -357,9 +361,10 @@ Widget drawer(BuildContext context,String userName,String email) {
         ListTile(
           title: Text('Logout'),
           leading: Icon(Icons.power_settings_new, color: Colors.orange[500]),
-          onTap: () async{
-            final SharedPreferences prefs = await SharedPreferences.getInstance();
-           prefs.clear();
+          onTap: () async {
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            prefs.clear();
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/login', (Route<dynamic> route) => false);
           },

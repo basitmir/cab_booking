@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import '../models/booking_model.dart';
-
+import 'home.dart';
+bool _progressBarActive = false;
 class Payment extends StatelessWidget {
   final Map<String, dynamic> bookingDetails;
+  
   Payment(this.bookingDetails);
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         iconTheme: IconTheme.of(context),
         centerTitle: true,
-        title: Text(
+        title: Text( 
           'Payment',
           style: TextStyle(color: Colors.white, fontSize: 21.0),
         ),
@@ -46,39 +47,44 @@ class Payment extends StatelessWidget {
               child: paymentDetails(context),
             ),
             // SizedBox(height: 50),
-            RaisedButton(
-              textColor: Colors.white,
-              padding: const EdgeInsets.all(0.0),
-              onPressed: () {
-                bookCab(context,bookingDetails);
+            _progressBarActive
+                ? _dataProcessing(context)
+                : RaisedButton(
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    onPressed: () {
+                      _progressBarActive = true;
+                      bookCab(context, bookingDetails);
+                      _progressBarActive = false;
 
-                // Navigator.pushReplacementNamed(context, '/login');
-              },
-              shape: StadiumBorder(),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
+                      // Navigator.pushReplacementNamed(context, '/login');
+                    },
+                    shape: StadiumBorder(),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20.0),
+                        ),
+                        gradient: LinearGradient(
+                          begin: FractionalOffset(0.7, 0.8),
+                          end: FractionalOffset(0.0, 0.0),
+                          colors: <Color>[
+                            Color(0xFFFFFB74D),
+                            Colors.white,
+                            // Colors.orange
+                          ],
+                        ),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 9.9),
+                      child: const Text(
+                        'HIRE A CAB',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 15.0, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
-                  gradient: LinearGradient(
-                    begin: FractionalOffset(0.7, 0.8),
-                    end: FractionalOffset(0.0, 0.0),
-                    colors: <Color>[
-                      Color(0xFFFFFB74D),
-                      Colors.white,
-                      // Colors.orange
-                    ],
-                  ),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 9.9),
-                child: const Text(
-                  'HIRE A CAB',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -86,26 +92,38 @@ class Payment extends StatelessWidget {
   }
 }
 
-void bookCab(BuildContext context,Map<String, dynamic> bookingDetails) async{
-   final BookingModel bookingModel=BookingModel();
+Widget _dataProcessing(BuildContext context) {
+  return AlertDialog(
+    contentPadding: EdgeInsets.all(0.0),
+    elevation: 0.0,
+    backgroundColor: Colors.transparent,
+    content: Center(
+      child: CircularProgressIndicator(),
+    ),
+  );
+}
+
+void bookCab(BuildContext context, Map<String, dynamic> bookingDetails) async {
+  final BookingModel bookingModel = BookingModel();
   final Map<String, dynamic> msg = await bookingModel.booking(bookingDetails);
 
-      if (!msg['error']) {
-        print(msg['message']);
-        //  showDialog(
-        //     context: context,
-        //     builder: (BuildContext context) {
-        //       return alertDialog(context, msg['message'],msg['error']); //function defination
-        //     });
-       
-      } else {
-         print(msg['message']);
-        // showDialog(
-        //     context: context,
-        //     builder: (BuildContext context) {
-        //       return alertDialog(context, msg['message'],msg['error']); //function defination
-        //     });
-      }
+  if (!msg['error']) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alertDialog(
+              context, msg['message'], msg['error']); //function defination
+        });
+  } else {
+    print(msg['message']);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alertDialog(
+              context, msg['message'], msg['error']); //function defination
+        });
+  }
+
   // showDialog(
   //     context: context,
   //     builder: (BuildContext context) {
@@ -177,18 +195,20 @@ Widget paymentDetails(BuildContext context) {
   );
 }
 
-Widget alertDialog(BuildContext context) {
+Widget alertDialog(BuildContext context, String message, bool error) {
   return AlertDialog(
     backgroundColor: Colors.orange.withOpacity(0.5),
-    title: Icon(Icons.sentiment_very_satisfied, size: 60.0),
+    title: error
+        ? Icon(Icons.sentiment_dissatisfied, size: 60.0)
+        : Icon(Icons.sentiment_very_satisfied, size: 60.0),
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text('Thank you for choosing RIDEz',
+        Text(error ? 'Something went wrong' : 'Thank you for choosing RIDEz',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontSize: 25.0)),
         Text(
-          'You have sucessfully booked a cab',
+          message,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.bold),
@@ -199,8 +219,19 @@ Widget alertDialog(BuildContext context) {
       FlatButton(
         child: Text('OK', style: TextStyle(color: Colors.white)),
         onPressed: () {
-          Navigator.pop(context);
-          Navigator.popUntil(context, ModalRoute.withName('/home'));
+          if (!error) {
+             Navigator.pop(context);
+           
+            
+  //           Navigator.of(context).( Home(null,null,'tbjdfd','bsjdff')),
+  // );
+            //   Navigator.pop(context);
+             Navigator.of(context).pushNamedAndRemoveUntil(
+                '/home', (Route<dynamic> route) => false);
+          
+          } else {
+            Navigator.pop(context);
+          }
         },
       ),
     ],

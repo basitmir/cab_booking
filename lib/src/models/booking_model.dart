@@ -24,24 +24,18 @@ class BookingModel {
 //   });
 
 Future<Map<String, dynamic>> booking(Map<String,dynamic> bookingDetails) async {
-   print('tttttttttttttttttttttttttttttttttttttttt');
    print(bookingDetails);
-
     final http.Response response = await http.post(
         'http://192.168.43.254:443/api/addBooking',
         body: json.encode(bookingDetails),
         headers: {'Content-Type': 'application/json'});
         print(response.body);
     bool hasError = true;
-    String message = 'Something went wrong';
+    String message = 'Please try again after sometime';
     if (response.statusCode == 200 || response.statusCode == 201) {
       hasError = false;
-      message = 'Sucessfully Registered';
-    } else if (response.body.contains('Integrity constraint violation')) {
-      hasError = true;
-      message = 'User Already Registered';
+      message = 'You have sucessfully booked a cab';
     }
- 
     return {'error': hasError, 'message': message};
   }
 

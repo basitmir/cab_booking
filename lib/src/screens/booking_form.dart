@@ -348,7 +348,7 @@ class BookingForm extends State<Booking> {
                           
                             // initalVal: widget.origin,
                           addressInputFocusNode: _addressInputFocusNode,
-                           dataController: _originController=TextEditingController(text: widget.origin),
+                           dataController: _originController.text=widget.origin,
                           ),
                     ),
                     EnsureVisibleWhenFocused(
@@ -363,7 +363,8 @@ class BookingForm extends State<Booking> {
                         },
                           // initalVal: widget.destination,
                          addressInputFocusNode: _addressInputFocusNode,
-                        dataController: _destinationController=TextEditingController(text: widget.destination),
+                          dataController: _destinationController.text=widget.destination,
+                        // dataController: _destinationController=TextEditingController(text: widget.destination),
                          ),
                     ),
                     formField(
@@ -411,16 +412,16 @@ class BookingForm extends State<Booking> {
 
 Widget formField(
     _bookingDetails, String property, Map<String, dynamic> passDetails,
-    { dynamic addressInputFocusNode,TextEditingController dataController}) {
+    { dynamic addressInputFocusNode, dataController}) {
   return TextFormField(
     
-     controller: dataController,
-    focusNode: addressInputFocusNode,
+    //  controller: dataController,
+    // focusNode: addressInputFocusNode,
     maxLines: passDetails['lines'],
     keyboardType: passDetails['keyboard'],
     cursorColor: Colors.orange,
     style: TextStyle(color: Colors.orange[700]),
-    // initialValue: initalVal,
+    initialValue: dataController,
     decoration: InputDecoration(
       contentPadding:
           EdgeInsets.only(bottom: 5.0, top: 10.0, left: 10.0, right: 5.0),
