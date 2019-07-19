@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/booking_model.dart';
-import 'home.dart';
 bool _progressBarActive = false;
 class Payment extends StatelessWidget {
   final Map<String, dynamic> bookingDetails;

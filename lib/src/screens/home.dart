@@ -222,7 +222,7 @@ class HomeState extends State<Home> {
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(
           target: LatLng(_locationData.latitude, _locationData.longitude),
-          zoom: 15,
+          zoom: 15, 
         ),
         onMapCreated: (GoogleMapController controller) {
           setState(() {
