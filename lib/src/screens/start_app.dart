@@ -46,7 +46,10 @@ class StartApp extends State<Start> {
     // print(widget.getLocationDetails.origin);
    
     // print(widget.savedData['token']);
-   driversList();
+    setState(() {
+    driversList();
+    });
+   
 
     super.initState();
   }
@@ -86,8 +89,11 @@ class StartApp extends State<Start> {
     });
     
   }
-  void driversList() async {
-    _drivers=await  availableDrivers();
+  void driversList()async{
+
+       _drivers=await  availableDrivers();
+
+   
   }
   
    
@@ -150,7 +156,7 @@ class StartApp extends State<Start> {
 
   @override
   Widget build(BuildContext context) {
-    
+   
     return MaterialApp(
       theme: ThemeData(
           primaryColor: Colors.orange[500],

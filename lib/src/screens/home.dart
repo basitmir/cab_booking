@@ -23,15 +23,15 @@ class Home extends StatefulWidget {
     return HomeState();
   }
 }
-
+String userName;
+  String email;
 class HomeState extends State<Home> {
   final TextEditingController _originController = TextEditingController();
   final TextEditingController _destinationController = TextEditingController();
   List<Marker> allMarkers = [];
   Completer<GoogleMapController> _controller = Completer();
   LocationData _locationData;
-  String userName;
-  String email;
+  
   @override
   void initState() {
     // if (widget.getLocationDetails == null) {
@@ -43,11 +43,15 @@ class HomeState extends State<Home> {
     //   _locationData = locationData;
     // } else {
     //   setState(() {
+       setState(() {
+         getUserInfo();
+      });
+      
     _locationData = widget.getLocationDetails;
 
     //   });
     // }
-
+  
     allMarkers.add(Marker(
         markerId: MarkerId('current'),
         position: LatLng(_locationData.latitude, _locationData.longitude),
@@ -87,6 +91,11 @@ class HomeState extends State<Home> {
   //      String name =await getUserName()
   // }
 
+  void getUserInfo()async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    userName = prefs.getString('userName');
+    email = prefs.getString('email');
+  }
   Widget _originFeild() {
     return TextFormField(
         controller: _originController,
@@ -195,10 +204,11 @@ class HomeState extends State<Home> {
     );
   }
 
-  void nextPage() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName = prefs.getString('userName');
-    email = prefs.getString('email');
+  void nextPage(){
+    // final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // userName = prefs.getString('userName');
+    // email = prefs.getString('email');
+   
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       widget.addDetails(

@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import '../models/booking_model.dart';
-bool _progressBarActive = false;
-class Payment extends StatelessWidget {
-  final Map<String, dynamic> bookingDetails;
-  
-  Payment(this.bookingDetails);
 
+bool _progressBarActive = false;
+
+class Payment extends StatefulWidget {
+  final Map<String, dynamic> bookingDetails;
+
+  Payment(this.bookingDetails);
+  @override
+  State<StatefulWidget> createState() {
+    return PaymentPage();
+  }
+}
+
+class PaymentPage extends State<Payment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +21,7 @@ class Payment extends StatelessWidget {
       appBar: AppBar(
         iconTheme: IconTheme.of(context),
         centerTitle: true,
-        title: Text( 
+        title: Text(
           'Payment',
           style: TextStyle(color: Colors.white, fontSize: 21.0),
         ),
@@ -52,9 +60,10 @@ class Payment extends StatelessWidget {
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(0.0),
                     onPressed: () {
-                      _progressBarActive = true;
-                      bookCab(context, bookingDetails);
-                      _progressBarActive = false;
+                      setState(() {
+                        _progressBarActive = true;
+                        bookCab(context, widget.bookingDetails);
+                      });
 
                       // Navigator.pushReplacementNamed(context, '/login');
                     },
@@ -89,20 +98,7 @@ class Payment extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget _dataProcessing(BuildContext context) {
-  return AlertDialog(
-    contentPadding: EdgeInsets.all(0.0),
-    elevation: 0.0,
-    backgroundColor: Colors.transparent,
-    content: Center(
-      child: CircularProgressIndicator(),
-    ),
-  );
-}
-
-void bookCab(BuildContext context, Map<String, dynamic> bookingDetails) async {
+  void bookCab(BuildContext context, Map<String, dynamic> bookingDetails) async {
   final BookingModel bookingModel = BookingModel();
   final Map<String, dynamic> msg = await bookingModel.booking(bookingDetails);
 
@@ -128,7 +124,24 @@ void bookCab(BuildContext context, Map<String, dynamic> bookingDetails) async {
   //     builder: (BuildContext context) {
   //       return alertDialog(context);
   //     });
+  setState(() {
+    _progressBarActive = false;
+  });
 }
+}
+
+Widget _dataProcessing(BuildContext context) {
+  return AlertDialog(
+    contentPadding: EdgeInsets.all(0.0),
+    elevation: 0.0,
+    backgroundColor: Colors.transparent,
+    content: Center(
+      child: CircularProgressIndicator(),
+    ),
+  );
+}
+
+
 
 Widget paymentDetails(BuildContext context) {
   return ListView(
@@ -219,15 +232,13 @@ Widget alertDialog(BuildContext context, String message, bool error) {
         child: Text('OK', style: TextStyle(color: Colors.white)),
         onPressed: () {
           if (!error) {
-             Navigator.pop(context);
-           
-            
-  //           Navigator.of(context).( Home(null,null,'tbjdfd','bsjdff')),
-  // );
+            Navigator.pop(context);
+
+            //           Navigator.of(context).( Home(null,null,'tbjdfd','bsjdff')),
+            // );
             //   Navigator.pop(context);
-             Navigator.of(context).pushNamedAndRemoveUntil(
+            Navigator.of(context).pushNamedAndRemoveUntil(
                 '/home', (Route<dynamic> route) => false);
-          
           } else {
             Navigator.pop(context);
           }
