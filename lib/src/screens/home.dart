@@ -9,6 +9,7 @@ import '../models/location_model.dart';
 // import 'package:location/location.dart' as geoloc;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share/share.dart';
 // import '../models/location_model.dart';
 
 class Home extends StatefulWidget {
@@ -23,15 +24,17 @@ class Home extends StatefulWidget {
     return HomeState();
   }
 }
+
 String userName;
-  String email;
+String email;
+
 class HomeState extends State<Home> {
   final TextEditingController _originController = TextEditingController();
   final TextEditingController _destinationController = TextEditingController();
   List<Marker> allMarkers = [];
   Completer<GoogleMapController> _controller = Completer();
   LocationData _locationData;
-  
+
   @override
   void initState() {
     // if (widget.getLocationDetails == null) {
@@ -43,15 +46,15 @@ class HomeState extends State<Home> {
     //   _locationData = locationData;
     // } else {
     //   setState(() {
-       setState(() {
-         getUserInfo();
-      });
-      
+    setState(() {
+      getUserInfo();
+    });
+
     _locationData = widget.getLocationDetails;
 
     //   });
     // }
-  
+
     allMarkers.add(Marker(
         markerId: MarkerId('current'),
         position: LatLng(_locationData.latitude, _locationData.longitude),
@@ -91,11 +94,12 @@ class HomeState extends State<Home> {
   //      String name =await getUserName()
   // }
 
-  void getUserInfo()async{
+  void getUserInfo() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     userName = prefs.getString('userName');
     email = prefs.getString('email');
   }
+
   Widget _originFeild() {
     return TextFormField(
         controller: _originController,
@@ -204,11 +208,11 @@ class HomeState extends State<Home> {
     );
   }
 
-  void nextPage(){
+  void nextPage() {
     // final SharedPreferences prefs = await SharedPreferences.getInstance();
     // userName = prefs.getString('userName');
     // email = prefs.getString('email');
-   
+
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       widget.addDetails(
@@ -232,7 +236,7 @@ class HomeState extends State<Home> {
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(
           target: LatLng(_locationData.latitude, _locationData.longitude),
-          zoom: 15, 
+          zoom: 15,
         ),
         onMapCreated: (GoogleMapController controller) {
           setState(() {
@@ -329,7 +333,9 @@ Widget drawer(BuildContext context, String userName, String email) {
         ListTile(
           title: Text('My Trips'),
           leading: Icon(Icons.directions_car, color: Colors.orange[500]),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, '/trips');
+          },
         ),
         Divider(height: 0.0),
         ListTile(
@@ -359,7 +365,10 @@ Widget drawer(BuildContext context, String userName, String email) {
         ListTile(
           title: Text('Spread The Word'),
           leading: Icon(Icons.share, color: Colors.orange[500]),
-          onTap: () {},
+          onTap: () {
+            Share.share(
+                'DOWNLOAD THE RIDEz APP...\n"Joyfull and Comfortable travel" \nhttps://example.com');
+          },
         ),
         Divider(height: 0.0),
         ListTile(

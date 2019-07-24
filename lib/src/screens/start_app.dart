@@ -1,8 +1,8 @@
-import 'package:cab/src/screens/driver_list.dart';
-import 'package:cab/src/screens/payment_details.dart';
+import 'driver_list.dart';
+import 'payment_details.dart';
 import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
-
+import 'my_trips.dart';
 import 'register.dart';
 import 'login.dart';
 import 'home.dart';
@@ -12,17 +12,16 @@ import '../screens/booking_form.dart';
 import '../models/location_model.dart';
 import '../models/driver_model.dart';
 
-
 class Start extends StatefulWidget {
-  final Map<String,dynamic> savedData;
+  final Map<String, dynamic> savedData;
   final LocationData getLocationDetails;
-  Start(this.savedData,this.getLocationDetails);
+  Start(this.savedData, this.getLocationDetails);
   @override
   State<StatefulWidget> createState() {
     return StartApp();
   }
 }
- 
+
 class StartApp extends State<Start> {
   String origin;
   String destination;
@@ -30,30 +29,28 @@ class StartApp extends State<Start> {
   String userName;
   List _drivers;
   int driverAssignId;
-  Map<String,dynamic> bookingDetails;
+  Map<String, dynamic> bookingDetails;
+  bool _progressBarActive = false;
   // DriverModel driverModelList;
- 
-     
 
   //  List <Map<String,String>> singleDriver;
   // LocationData getLocationDetails;
   @override
   void initState() {
     // _addressInputFocusNode.addListener(_updateLocation);
-   
-      //  getUserLocationDetails();
-      
+
+    //  getUserLocationDetails();
+
     // print(widget.getLocationDetails.origin);
-   
+
     // print(widget.savedData['token']);
     setState(() {
-    driversList();
+      _progressBarActive = true;
+      driversList();
     });
-   
 
     super.initState();
   }
- 
 
   @override
   void dispose() {
@@ -61,16 +58,14 @@ class StartApp extends State<Start> {
     super.dispose();
   }
 
-   
-
   // void getUserLocationDetails() async {
   //   getLocationDetails = await getUserLocation();
-  
+
   // }
 
-  void bookDetails(Map<String,dynamic> booking){
-   setState(() {
-      bookingDetails=booking;
+  void bookDetails(Map<String, dynamic> booking) {
+    setState(() {
+      bookingDetails = booking;
     });
   }
 
@@ -79,25 +74,23 @@ class StartApp extends State<Start> {
       origin = start;
       destination = end;
     });
-   
   }
-  
+
   void authDetails(String username, String email) {
     setState(() {
-    userName=username;
-    userEmail=email;
+      userName = username;
+      userEmail = email;
     });
-    
   }
-  void driversList()async{
 
-       _drivers=await  availableDrivers();
-
-   
+  void driversList() async {
+    _drivers = await availableDrivers();
+    setState(() {
+      _progressBarActive = false;
+    });
   }
-  
-   
-  // List<Map<String, String>> _drivers 
+
+  // List<Map<String, String>> _drivers
   // [
   //   {
   //     'name': 'Basit Mir',
@@ -156,66 +149,71 @@ class StartApp extends State<Start> {
 
   @override
   Widget build(BuildContext context) {
-   
-    return MaterialApp(
-      theme: ThemeData(
-          primaryColor: Colors.orange[500],
-          iconTheme: IconThemeData(color: Colors.white),
-          fontFamily: 'myFont',
-          accentColor: Colors.orange,
-          unselectedWidgetColor: Colors.white),
-      home: widget.savedData['token']!=null
-          ? Home(addDetails, widget.getLocationDetails,widget.savedData['userName'],widget.savedData['email'])
-          : StartAppScreen(),
-      debugShowCheckedModeBanner: false,
-      routes: {
-        '/login': (BuildContext context) => Login(authDetails),
-        '/register': (BuildContext context) => Register(),
-        '/home': (BuildContext context) => Home(addDetails, widget.getLocationDetails,userName,userEmail),
-        '/drivers': (BuildContext context) => DriverList(_drivers),
-        '/booking': (BuildContext context) => Booking(origin, destination,bookDetails,driverAssignId),
-        '/payment': (BuildContext context) => Payment(bookingDetails),
-      },
-      onGenerateRoute: (RouteSettings settings) {
-        final List<String> driverDetails = settings.name.split('/');
-        if (driverDetails[0] != '') {
-          return null;
-        }
-        if (driverDetails[1] == 'driver') {
-          final int index = int.parse(driverDetails[2]);
-          driverAssignId=_drivers[index]['id'];
-          Map<String, dynamic> _singleDriver = {
-            'userName': _drivers[index]['userName'],
-            'cabNumber': _drivers[index]['cabNumber'],
-             'id': _drivers[index]['id'],
-            'zip': _drivers[index]['zip'],
-            'age': _drivers[index]['age'],
-            'experience': _drivers[index]['experience'],
-            'gender': _drivers[index]['gender'],
-            'vacancy': _drivers[index]['vacancy'],
-            'phone': _drivers[index]['phone'],
-            'email': _drivers[index]['email'],
-            'city': _drivers[index]['city'],
-            'state': _drivers[index]['state'],
-            'address':'Naseem Bagh',
-            //'rating': _drivers[index]['rating'],
-            'rating': '5',
-          };
-          return MaterialPageRoute(
-            builder: (BuildContext context) =>
-                Tabs(_singleDriver, origin, destination),
+    return _progressBarActive
+        ? _dataProcessing(context)
+        : MaterialApp(
+            theme: ThemeData(
+                primaryColor: Colors.orange[500],
+                iconTheme: IconThemeData(color: Colors.white),
+                fontFamily: 'myFont',
+                accentColor: Colors.orange,
+                unselectedWidgetColor: Colors.white),
+            home: widget.savedData['token'] != null
+                ? Home(addDetails, widget.getLocationDetails,
+                    widget.savedData['userName'], widget.savedData['email'])
+                : StartAppScreen(),
+            debugShowCheckedModeBanner: false,
+            routes: {
+              '/login': (BuildContext context) => Login(authDetails),
+              '/register': (BuildContext context) => Register(),
+              '/home': (BuildContext context) => Home(
+                  addDetails, widget.getLocationDetails, userName, userEmail),
+              '/drivers': (BuildContext context) => DriverList(_drivers),
+              '/booking': (BuildContext context) =>
+                  Booking(origin, destination, bookDetails, driverAssignId),
+              '/payment': (BuildContext context) => Payment(bookingDetails),
+              '/trips': (BuildContext context) => MyTrips(_drivers),
+            },
+            onGenerateRoute: (RouteSettings settings) {
+              final List<String> driverDetails = settings.name.split('/');
+              if (driverDetails[0] != '') {
+                return null;
+              }
+              if (driverDetails[1] == 'driver') {
+                final int index = int.parse(driverDetails[2]);
+                driverAssignId = _drivers[index]['id'];
+                Map<String, dynamic> _singleDriver = {
+                  'userName': _drivers[index]['userName'],
+                  'cabNumber': _drivers[index]['cabNumber'],
+                  'id': _drivers[index]['id'],
+                  'zip': _drivers[index]['zip'],
+                  'age': _drivers[index]['age'],
+                  'experience': _drivers[index]['experience'],
+                  'gender': _drivers[index]['gender'],
+                  'vacancy': _drivers[index]['vacancy'],
+                  'phone': _drivers[index]['phone'],
+                  'email': _drivers[index]['email'],
+                  'city': _drivers[index]['city'],
+                  'state': _drivers[index]['state'],
+                  'address': 'Naseem Bagh',
+                  //'rating': _drivers[index]['rating'],
+                  'rating': '5',
+                };
+                return MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      Tabs(_singleDriver, origin, destination),
+                );
+              }
+              return null;
+            },
           );
-        }
-        return null;
-      },
-    );
   }
 }
 
 class StartAppScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.orange[100],
       body: Container(
         padding:
             EdgeInsets.only(bottom: 10.0, left: 10.0, right: 10.0, top: 15.00),
@@ -337,5 +335,53 @@ Widget buttonAtBottom(BuildContext context) {
         ),
       ),
     ],
+  );
+}
+
+Widget _dataProcessing(BuildContext context) {
+  return MaterialApp(
+    theme: ThemeData(
+        primaryColor: Colors.orange[500],
+        iconTheme: IconThemeData(color: Colors.white),
+        fontFamily: 'myFont',
+        accentColor: Colors.white,
+        unselectedWidgetColor: Colors.white),
+    debugShowCheckedModeBanner: false,
+    home: Scaffold(
+      backgroundColor: Colors.orange[100],
+      body: Container(
+        padding:
+            EdgeInsets.only(bottom: 10.0, left: 10.0, right: 10.0, top: 15.00),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('assets/background.jpg'),
+            colorFilter: ColorFilter.mode(
+                Colors.orange.withOpacity(0.4), BlendMode.luminosity),
+          ),
+        ),
+        child: Column(
+          children: <Widget>[
+            textAtTop(),
+            Text(
+              'Please Wait...',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            AlertDialog(
+              contentPadding: EdgeInsets.all(0.0),
+              elevation: 0.0,
+              backgroundColor: Colors.transparent,
+              content: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }

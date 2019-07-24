@@ -28,7 +28,7 @@ class DriverList extends StatelessWidget {
                     Icons.star,
                     color: Colors.yellow,
                   ),
-                )
+                ) 
                 .toList(),
           ),
         ],
@@ -38,7 +38,7 @@ class DriverList extends StatelessWidget {
 
   Widget build(context) {
     return Scaffold(
-      backgroundColor: Colors.white30,
+      backgroundColor: Colors.orange[100],
       appBar: AppBar(
         iconTheme: IconTheme.of(context),
         centerTitle: true,
@@ -99,7 +99,7 @@ Widget rowContainer(
       ],
     ),
   );
-}
+} 
 
 Widget avatar(String image) {
   return CircleAvatar(

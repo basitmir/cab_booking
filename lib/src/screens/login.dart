@@ -188,7 +188,7 @@ class LoginScreen extends State<Login> {
     } else {
       // setState(() {
       _autoValidate = true;
-      // });
+      // }); 
     }
     setState(() {
       _progressBarActive = false;

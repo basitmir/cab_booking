@@ -305,7 +305,7 @@ class BookingForm extends State<Booking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.orange[100],
       appBar: AppBar(
         iconTheme: IconTheme.of(context),
         centerTitle: true,
