@@ -30,6 +30,7 @@ dependencies:
   google_maps_flutter: ^0.5.19+2
   shared_preferences: ^0.5.3+2
   share: ^0.6.2+1
+  app_settings: ^1.0.6
   # geolocator: '^2.1.0'
   # location: ^1.4.1
   

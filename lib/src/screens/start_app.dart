@@ -6,6 +6,7 @@ import 'my_trips.dart';
 import 'register.dart';
 import 'login.dart';
 import 'home.dart';
+import 'help.dart';
 import '../manager/tabs_manager.dart';
 import '../screens/booking_form.dart';
 // import '../widgets/location_widget.dart';
@@ -173,6 +174,7 @@ class StartApp extends State<Start> {
                   Booking(origin, destination, bookDetails, driverAssignId),
               '/payment': (BuildContext context) => Payment(bookingDetails),
               '/trips': (BuildContext context) => MyTrips(_drivers),
+              '/help': (BuildContext context) =>Help(),
             },
             onGenerateRoute: (RouteSettings settings) {
               final List<String> driverDetails = settings.name.split('/');
@@ -361,24 +363,33 @@ Widget _dataProcessing(BuildContext context) {
           ),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             textAtTop(),
-            Text(
-              'Please Wait...',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
-            ),
-            AlertDialog(
-              contentPadding: EdgeInsets.all(0.0),
-              elevation: 0.0,
-              backgroundColor: Colors.transparent,
-              content: Center(
-                child: CircularProgressIndicator(),
+            Align(
+              alignment: Alignment.center,
+              child: AlertDialog(
+                contentPadding: EdgeInsets.all(0.0),
+                elevation: 0.0,
+                backgroundColor: Colors.transparent,
+                content: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'Please Wait...',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                ),
               ),
             ),
+            SizedBox(height: 20.00),
           ],
         ),
       ),

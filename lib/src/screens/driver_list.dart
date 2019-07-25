@@ -1,39 +1,49 @@
 import 'package:flutter/material.dart';
- 
+
 class DriverList extends StatelessWidget {
   final List drivers;
   final List<int> stars = [1, 2, 3, 4, 5];
   DriverList(this.drivers);
 
   Widget _singleListItem(BuildContext context, int index) {
-    return Card(
-      color: Colors.white,
-      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
-      child: Column(
-        children: <Widget>[
-          rowContainer(drivers[index]['userName'], drivers[index]['cabNumber'],
-              'assets/profile.png', index, context),
-          FadeInImage(
-            image: NetworkImage(
-              'http://192.168.43.254:443/assets/images/' +
-                  drivers[index]['image'],
-            ),
-            placeholder: AssetImage('assets/car.jpg'),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: stars
-                .map(
-                  (element) => Icon(
-                    Icons.star,
-                    color: Colors.yellow,
+    return drivers[index]['cabNumber'] == null
+        ? Center(
+            child: Text(
+            'Something went wrong...',
+            style: TextStyle(color: Colors.orange, fontSize: 21.0),
+          ))
+        : Card(
+            color: Colors.white,
+            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
+            child: Column(
+              children: <Widget>[
+                rowContainer(
+                    drivers[index]['userName'],
+                    drivers[index]['cabNumber'],
+                    'assets/profile.png',
+                    index,
+                    context),
+                FadeInImage(
+                  image: NetworkImage(
+                    'http://192.168.43.254:443/assets/images/' +
+                        drivers[index]['image'],
                   ),
-                ) 
-                .toList(),
-          ),
-        ],
-      ),
-    );
+                  placeholder: AssetImage('assets/car.jpg'),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: stars
+                      .map(
+                        (element) => Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
+            ),
+          );
   }
 
   Widget build(context) {
@@ -99,7 +109,7 @@ Widget rowContainer(
       ],
     ),
   );
-} 
+}
 
 Widget avatar(String image) {
   return CircleAvatar(

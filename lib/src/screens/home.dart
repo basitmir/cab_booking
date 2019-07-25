@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/ensure_visible.dart';
-//import '../models/user_model.dart';
-// import 'package:map_view/map_view.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
+import 'package:app_settings/app_settings.dart';
 import 'dart:async';
 import '../models/location_model.dart';
 // import 'package:location/location.dart' as geoloc;
@@ -349,17 +346,27 @@ Widget drawer(BuildContext context, String userName, String email) {
           leading: Icon(Icons.payment, color: Colors.orange[500]),
           onTap: () {},
         ),
+         Divider(height: 0.0),
+        ListTile(
+          title: Text('Offers'),
+          leading: Icon(Icons.card_giftcard, color: Colors.orange[500]),
+          onTap: () {},
+        ),
         Divider(height: 0.0),
         ListTile(
           title: Text('Help'),
           leading: Icon(Icons.help, color: Colors.orange[500]),
-          onTap: () {},
+          onTap: () {
+             Navigator.pushNamed(context, '/help');
+          },
         ),
         Divider(height: 0.0),
         ListTile(
           title: Text('Settings'),
           leading: Icon(Icons.settings, color: Colors.orange[500]),
-          onTap: () {},
+          onTap: () {
+            AppSettings.openLocationSettings();
+          },
         ),
         Divider(height: 0.0),
         ListTile(
