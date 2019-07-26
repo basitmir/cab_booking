@@ -227,7 +227,7 @@ class BookingForm extends State<Booking> {
       //   date: _bookingDetails['date'],
       //   time: _bookingDetails['time'],
       //   landMark: _bookingDetails['landMark'],
-      // );
+      // ); 
        final SharedPreferences prefs = await SharedPreferences.getInstance();
        _bookingDetails['bookingUserId']=prefs.getInt('id');
        _bookingDetails['driverAssignId']=widget.driverAssignId;

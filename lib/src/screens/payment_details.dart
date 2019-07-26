@@ -216,7 +216,7 @@ Widget alertDialog(BuildContext context, String message, bool error) {
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text(error ? 'Something went wrong' : 'Thank you for choosing RIDEz',
+        Text(error ? 'Please try again later...' : 'Thank you for choosing RIDEz',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontSize: 25.0)),
         Text(

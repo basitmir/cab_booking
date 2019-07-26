@@ -365,7 +365,7 @@ Widget drawer(BuildContext context, String userName, String email) {
           title: Text('Settings'),
           leading: Icon(Icons.settings, color: Colors.orange[500]),
           onTap: () {
-            AppSettings.openLocationSettings();
+            AppSettings.openAppSettings();
           },
         ),
         Divider(height: 0.0),

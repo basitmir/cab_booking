@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MyTrips extends StatelessWidget {
   final List drivers;
-  // final List<int> stars = [1, 2, 3, 4, 5];
+  final List<int> stars = [1, 2, 3, 4, 5];
   MyTrips(this.drivers);
 
   Widget _singleListItem(BuildContext context, int index) {
@@ -11,8 +11,8 @@ class MyTrips extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
       child: Column(
         children: <Widget>[
-          rowContainer(drivers[index]['userName'], drivers[index]['cabNumber'],
-              'assets/profile.png', index, context),
+          rowContainer(drivers[index]['userName'], stars,drivers[index]['cabNumber'], 'assets/profile.png',
+              index, context),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             // Icon(Icons.check_circle,color: Colors.green,),
             //  Icon(Icons.sync,color: Colors.orangeAccent),
@@ -65,8 +65,8 @@ class MyTrips extends StatelessWidget {
   }
 }
 
-Widget rowContainer(
-    String name, String number, String image, int index, BuildContext context) {
+Widget rowContainer(String name, List<int> stars, String number,String image, int index,
+    BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       gradient: LinearGradient(
@@ -81,14 +81,27 @@ Widget rowContainer(
         children: <Widget>[
           avatar(image),
           Container(margin: EdgeInsets.only(left: 10.00)),
-          avatarText(name, number),
-          Spacer(),
+          avatarText(name,number),
+           Spacer(),
+         Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: stars
+            .map(
+              (element) => Icon(
+                Icons.star,
+                // size:10.00,
+                color: Colors.yellowAccent,
+              ),
+            )
+            .toList(),
+      ),
+           Spacer(flex: 4,),
           // avatarMore(index, context),
         ],
       ),
       children: <Widget>[
+         dataChips('DESTINATION : ', 'drivers[index]', Icons.place),
         dataChips('ORIGIN : ', 'This is the', Icons.trip_origin),
-        dataChips('DESTINATION : ', 'drivers[index]', Icons.place),
         dataChips('CONTACT : ', '9858536852', Icons.contact_phone),
         dataChips('NAME : ', 'drivers[index]', Icons.person),
         dataChips('DATE : ', 'drivers[index]', Icons.date_range),
@@ -111,7 +124,7 @@ Widget avatar(String image) {
   );
 }
 
-Widget avatarText(String name, String number) {
+Widget avatarText(String name,String number) {
   return Column(
     children: <Widget>[
       Text(
@@ -150,31 +163,42 @@ Widget dataChips(String label, String data, dynamic icon) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Chip(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(20),
-                  bottomRight: Radius.circular(20))),
-          avatar: Icon(
-            icon,
-            color: Colors.orange,
-          ),
-          label: RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                    text: label,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.orange)),
-                TextSpan(
-                  text: data,
-                  style: TextStyle(color: Colors.orange[400]),
+        
+         Expanded(
+            flex: 2,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 12.0),
+                Icon(
+                  icon,
+                  color: Colors.orangeAccent,
+                  size: 25.0,
+                ),
+                SizedBox(width: 8.0),
+                Text(
+                  label,
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange[600]),
                 ),
               ],
             ),
           ),
-        )
+          Expanded(
+            flex: 3,
+            child: Text(
+              data,
+              style: TextStyle(
+                  fontSize: 16.0,
+                  // fontWeight: FontWeight.bold,
+                  color: Colors.orange[700]),
+            ),
+          ),
+          SizedBox(
+            height: 51.0,
+          ),
+        
       ],
     ),
   );
@@ -182,15 +206,41 @@ Widget dataChips(String label, String data, dynamic icon) {
 
 Widget statusChip(dynamic icon, dynamic color, String text) {
   return Chip(
-      padding: EdgeInsets.all(0.0),
-        backgroundColor: Colors.white,
-        avatar: Icon(
-          icon,
-          color: color,
-        ),
-        label: Text(
-          text,
-          style: TextStyle(color: color,fontWeight: FontWeight.bold),
-        ),
+    padding: EdgeInsets.all(0.0),
+    backgroundColor: Colors.white,
+    avatar: Icon(
+      icon,
+      color: color,
+    ),
+    label: Text(
+      text,
+      style: TextStyle(color: color, fontWeight: FontWeight.bold),
+    ),
   );
 }
+
+// Chip(
+        //   backgroundColor: Colors.white,
+        //   shape: RoundedRectangleBorder(
+        //       borderRadius: BorderRadius.only(
+        //           topRight: Radius.circular(20),
+        //           bottomRight: Radius.circular(20))),
+        //   avatar: Icon(
+        //     icon,
+        //     color: Colors.orange,
+        //   ),
+        //   label: RichText(
+        //     text: TextSpan(
+        //       children: <TextSpan>[
+        //         TextSpan(
+        //             text: label,
+        //             style: TextStyle(
+        //                 fontWeight: FontWeight.bold, color: Colors.orange)),
+        //         TextSpan(
+        //           text: data,
+        //           style: TextStyle(color: Colors.orange[400]),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // )
