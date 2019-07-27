@@ -11,7 +11,7 @@ import '../manager/tabs_manager.dart';
 import '../screens/booking_form.dart';
 // import '../widgets/location_widget.dart';
 import '../models/location_model.dart';
-import '../models/driver_model.dart';
+// import '../models/driver_model.dart';
 
 class Start extends StatefulWidget {
   final Map<String, dynamic> savedData;
@@ -31,24 +31,16 @@ class StartApp extends State<Start> {
   List _drivers;
   int driverAssignId;
   Map<String, dynamic> bookingDetails;
-  bool _progressBarActive = false;
   // DriverModel driverModelList;
 
   //  List <Map<String,String>> singleDriver;
   // LocationData getLocationDetails;
   @override
   void initState() {
-    // _addressInputFocusNode.addListener(_updateLocation);
-
-    //  getUserLocationDetails();
-
-    // print(widget.getLocationDetails.origin);
-
-    // print(widget.savedData['token']);
-    setState(() {
-      _progressBarActive = true;
-      driversList();
-    });
+   
+    // setState(() {
+    //   driversList();
+    // });
 
     super.initState();
   }
@@ -77,6 +69,12 @@ class StartApp extends State<Start> {
     });
   }
 
+  void getDriverDetails(List driver){
+    setState(() {
+     _drivers=driver;
+    });
+  }
+
   void authDetails(String username, String email) {
     setState(() {
       userName = username;
@@ -84,12 +82,9 @@ class StartApp extends State<Start> {
     });
   }
 
-  void driversList() async {
-    _drivers = await availableDrivers();
-    setState(() {
-      _progressBarActive = false;
-    });
-  }
+  // void driversList() async {
+  //   _drivers = await availableDrivers();
+  // }
 
   // List<Map<String, String>> _drivers
   // [
@@ -150,9 +145,7 @@ class StartApp extends State<Start> {
 
   @override
   Widget build(BuildContext context) {
-    return _progressBarActive
-        ? _dataProcessing(context)
-        : MaterialApp(
+    return MaterialApp(
             theme: ThemeData(
                 primaryColor: Colors.orange[500],
                 iconTheme: IconThemeData(color: Colors.white),
@@ -169,11 +162,11 @@ class StartApp extends State<Start> {
               '/register': (BuildContext context) => Register(),
               '/home': (BuildContext context) => Home(
                   addDetails, widget.getLocationDetails, userName, userEmail),
-              '/drivers': (BuildContext context) => DriverList(_drivers),
+              '/drivers': (BuildContext context) => DriverList(getDriverDetails),
               '/booking': (BuildContext context) =>
                   Booking(origin, destination, bookDetails, driverAssignId),
               '/payment': (BuildContext context) => Payment(bookingDetails),
-              '/trips': (BuildContext context) => MyTrips(_drivers),
+              '/trips': (BuildContext context) => MyTrips(),
               '/help': (BuildContext context) =>Help(),
             },
             onGenerateRoute: (RouteSettings settings) {
@@ -197,7 +190,7 @@ class StartApp extends State<Start> {
                   'email': _drivers[index]['email'],
                   'city': _drivers[index]['city'],
                   'state': _drivers[index]['state'],
-                  'address': 'Naseem Bagh',
+                  'address': _drivers[index]['address'],
                   //'rating': _drivers[index]['rating'],
                   'rating': '5',
                 };
@@ -340,59 +333,59 @@ Widget buttonAtBottom(BuildContext context) {
   );
 }
 
-Widget _dataProcessing(BuildContext context) {
-  return MaterialApp(
-    theme: ThemeData(
-        primaryColor: Colors.orange[500],
-        iconTheme: IconThemeData(color: Colors.white),
-        fontFamily: 'myFont',
-        accentColor: Colors.white,
-        unselectedWidgetColor: Colors.white),
-    debugShowCheckedModeBanner: false,
-    home: Scaffold(
-      backgroundColor: Colors.orange[100],
-      body: Container(
-        padding:
-            EdgeInsets.only(bottom: 10.0, left: 10.0, right: 10.0, top: 15.00),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage('assets/background.jpg'),
-            colorFilter: ColorFilter.mode(
-                Colors.orange.withOpacity(0.4), BlendMode.luminosity),
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            textAtTop(),
-            Align(
-              alignment: Alignment.center,
-              child: AlertDialog(
-                contentPadding: EdgeInsets.all(0.0),
-                elevation: 0.0,
-                backgroundColor: Colors.transparent,
-                content: Center(
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        'Please Wait...',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      CircularProgressIndicator(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 20.00),
-          ],
-        ),
-      ),
-    ),
-  );
-}
+// Widget _dataProcessing(BuildContext context) {
+//   return MaterialApp(
+//     theme: ThemeData(
+//         primaryColor: Colors.orange[500],
+//         iconTheme: IconThemeData(color: Colors.white),
+//         fontFamily: 'myFont',
+//         accentColor: Colors.white,
+//         unselectedWidgetColor: Colors.white),
+//     debugShowCheckedModeBanner: false,
+//     home: Scaffold(
+//       backgroundColor: Colors.orange[100],
+//       body: Container(
+//         padding:
+//             EdgeInsets.only(bottom: 10.0, left: 10.0, right: 10.0, top: 15.00),
+//         decoration: BoxDecoration(
+//           image: DecorationImage(
+//             fit: BoxFit.cover,
+//             image: AssetImage('assets/background.jpg'),
+//             colorFilter: ColorFilter.mode(
+//                 Colors.orange.withOpacity(0.4), BlendMode.luminosity),
+//           ),
+//         ),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: <Widget>[
+//             textAtTop(),
+//             Align(
+//               alignment: Alignment.center,
+//               child: AlertDialog(
+//                 contentPadding: EdgeInsets.all(0.0),
+//                 elevation: 0.0,
+//                 backgroundColor: Colors.transparent,
+//                 content: Center(
+//                   child: Column(
+//                     children: <Widget>[
+//                       Text(
+//                         'Please Wait...',
+//                         textAlign: TextAlign.center,
+//                         style: TextStyle(
+//                             color: Colors.white,
+//                             fontSize: 25.0,
+//                             fontWeight: FontWeight.bold),
+//                       ),
+//                       CircularProgressIndicator(),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             SizedBox(height: 20.00),
+//           ],
+//         ),
+//       ),
+//     ),
+//   );
+// }

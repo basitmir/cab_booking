@@ -1,9 +1,46 @@
 import 'package:flutter/material.dart';
+import '../models/driver_model.dart';
 
-class DriverList extends StatelessWidget {
-  final List drivers;
+List drivers;
+
+class DriverList extends StatefulWidget {
+  final Function driverDetails;
+  DriverList(this.driverDetails);
+  @override
+  State<StatefulWidget> createState() {
+    return DriverListDetails();
+  }
+}
+
+class DriverListDetails extends State<DriverList> {
+  bool _progressBarActive = true;
   final List<int> stars = [1, 2, 3, 4, 5];
-  DriverList(this.drivers);
+  @override
+  void initState() {
+    setState(() {
+      _progressBarActive = true;
+      driversList();
+    });
+
+    super.initState();
+  }
+
+  Future<Null> refreshList() async {
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      // _progressBarActive = true;
+      driversList();
+    });
+    return null;
+  }
+
+  void driversList() async {
+    drivers = await availableDrivers();
+    setState(() {
+      widget.driverDetails(drivers);
+      _progressBarActive = false;
+    });
+  }
 
   Widget _singleListItem(BuildContext context, int index) {
     return drivers[index]['cabNumber'] == null
@@ -48,42 +85,56 @@ class DriverList extends StatelessWidget {
 
   Widget build(context) {
     return Scaffold(
-      backgroundColor: Colors.orange[100],
-      appBar: AppBar(
-        iconTheme: IconTheme.of(context),
-        centerTitle: true,
-        title: Text(
-          'Drivers',
-          style: TextStyle(color: Colors.white, fontSize: 21.0),
+        backgroundColor: Colors.orange[100],
+        appBar: AppBar(
+          iconTheme: IconTheme.of(context),
+          centerTitle: true,
+          title: Text(
+            'Drivers',
+            style: TextStyle(color: Colors.white, fontSize: 21.0),
+          ),
         ),
-      ),
-      body: ListView.builder(
-        itemBuilder: _singleListItem,
-        itemCount: drivers.length,
+        body:_progressBarActive ? noDataYet() : (drivers.length==0?noDriver():listBuilder())
+        );
+  }
 
-        // children: [
-        //   Column(
-        //     children: drivers
-        //         .map((element) => Card(
-        //               color: Colors.white,
-        //               margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
-        //               child: Column(
-        //                 children: <Widget>[
-        //                   rowContainer(element),
-        //                   Image.asset(
-        //                     'assets/car.jpg',
-        //                   ),
-        //                   Icon(
-        //                     Icons.star,
-        //                     color: Colors.yellow,
-        //                   ),
-        //                 ],
-        //               ),
-        //             ))
-        //         .toList(),
-        //   ),
-        // ],
-      ),
+  Widget listBuilder() {
+    
+
+    return RefreshIndicator(
+        child: ListView.builder(
+          itemBuilder: _singleListItem,
+          itemCount: drivers.length,
+          
+          // children: [
+          //   Column(
+          //     children: drivers
+          //         .map((element) => Card(
+          //               color: Colors.white,
+          //               margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
+          //               child: Column(
+          //                 children: <Widget>[
+          //                   rowContainer(element),
+          //                   Image.asset(
+          //                     'assets/car.jpg',
+          //                   ),
+          //                   Icon(
+          //                     Icons.star,
+          //                     color: Colors.yellow,
+          //                   ),
+          //                 ],
+          //               ),
+          //             ))
+          //         .toList(),
+          //   ),
+          // ],
+        ),
+        onRefresh: refreshList);
+  }
+
+  Widget noDataYet() {
+    return Center(
+      child: _dataProcessing(context),
     );
   }
 }
@@ -148,5 +199,34 @@ Widget avatarMore(int index, BuildContext context) {
     color: Colors.white,
     onPressed: () =>
         Navigator.pushNamed(context, '/driver/' + index.toString()),
+  );
+}
+
+Widget _dataProcessing(BuildContext context) {
+  return AlertDialog(
+    contentPadding: EdgeInsets.all(0.0),
+    elevation: 0.0,
+    backgroundColor: Colors.transparent,
+    content: Center(
+      child: CircularProgressIndicator(),
+    ),
+  );
+}
+
+Widget noDriver() {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(Icons.sentiment_very_dissatisfied,
+            color: Colors.white, size: 65.0),
+        Text(
+          'Currently no driver is available \n Try again later...',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
   );
 }
