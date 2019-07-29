@@ -337,27 +337,43 @@ Widget drawer(BuildContext context, String userName, String email) {
         Divider(height: 0.0),
         ListTile(
           title: Text('Notifications'),
-          leading: Icon(Icons.notifications_none, color: Colors.orange[500]),
-          onTap: () {},
+          leading: Stack(
+            children: <Widget>[
+              Icon(Icons.notifications, color: Colors.orange[500]),
+              Positioned(
+                left: 16.0,
+                child: Icon(Icons.brightness_1, color: Colors.green, size: 9.0),
+              ),
+            ],
+          ),
+
+          // Icon(Icons.notifications_none, color: Colors.orange[500]),
+          onTap: () {
+            Navigator.pushNamed(context, '/notifications');
+          },
         ),
         Divider(height: 0.0),
         ListTile(
           title: Text('Payments'),
           leading: Icon(Icons.payment, color: Colors.orange[500]),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, '/payments');
+          },
         ),
-         Divider(height: 0.0),
+        Divider(height: 0.0),
         ListTile(
           title: Text('Offers'),
           leading: Icon(Icons.card_giftcard, color: Colors.orange[500]),
-          onTap: () {},
+          onTap: () {
+             Navigator.pushNamed(context, '/offers');
+          },
         ),
         Divider(height: 0.0),
         ListTile(
           title: Text('Help'),
           leading: Icon(Icons.help, color: Colors.orange[500]),
           onTap: () {
-             Navigator.pushNamed(context, '/help');
+            Navigator.pushNamed(context, '/help');
           },
         ),
         Divider(height: 0.0),
@@ -426,8 +442,20 @@ class FloatingButtons extends StatelessWidget {
           child: FloatingActionButton(
             onPressed: () {
               // Scaffold.of(context).openDrawer();
+               Navigator.pushNamed(context, '/notifications');
             },
-            child: Icon(Icons.notifications, color: Colors.orange[500]),
+            child: Stack(
+              children: <Widget>[
+                Icon(Icons.notifications, color: Colors.orange[500]),
+                Positioned(
+                  left: 16.0,
+                  child:
+                      Icon(Icons.brightness_1, color: Colors.green, size: 9.0),
+                ),
+              ],
+            ),
+
+            // Icon(Icons.notifications, color: Colors.orange[500]),
             backgroundColor: Colors.transparent,
             foregroundColor: Colors.transparent,
             heroTag: 1,

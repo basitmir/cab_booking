@@ -179,10 +179,11 @@ Widget paymentDetails(BuildContext context) {
                   height: 20.0,
                 ),
                 Text(
-                  'Note: Online Payment services will be included soon...',
+                 '“You have to give payment to the driver when the trip is completed”',
                   style: TextStyle(
-                    fontSize: 20.0,
+                    fontSize: 15.0,
                     color: Colors.white70,
+                    fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -192,17 +193,26 @@ Widget paymentDetails(BuildContext context) {
               ],
             ),
           ),
+          
           Container(
             alignment: AlignmentDirectional.topCenter,
             child: CircleAvatar(
               radius: 70.0,
-              backgroundImage: NetworkImage(
-                  'https://image.flaticon.com/icons/png/512/199/199558.png'),
-              backgroundColor: Colors.transparent,
+              backgroundImage: AssetImage('assets/coin.png'),
+                backgroundColor: Colors.transparent,
             ),
           ),
         ],
       ),
+       SizedBox(height: 10.00),
+        Text(
+          'Note: Online Payment services will be included soon...',
+          style: TextStyle(
+            fontSize: 20.0,
+            color: Colors.white70,
+          ),
+          textAlign: TextAlign.center,
+        ),
     ],
   );
 }

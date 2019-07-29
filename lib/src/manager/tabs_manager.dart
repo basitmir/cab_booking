@@ -5,11 +5,11 @@ import '../screens/navigation.dart';
 import '../screens/help.dart';
 import '../screens/driver_details.dart';
 
-class Tabs extends StatefulWidget { 
-   final String origin;
-   final String destination;
-  final Map<String,dynamic> singleDriver;
-  Tabs(this.singleDriver,this.origin,this.destination);
+class Tabs extends StatefulWidget {
+  final String origin;
+  final String destination;
+  final Map<String, dynamic> singleDriver;
+  Tabs(this.singleDriver, this.origin, this.destination);
   @override
   State<StatefulWidget> createState() {
     return _MyTabs();
@@ -20,14 +20,14 @@ class _MyTabs extends State<Tabs> with SingleTickerProviderStateMixin {
   int _bottomNavBarIndex = 0;
   final List<Widget> _pageOption = [
     Chat(),
-   // Navigate(widget.origin,widget.destination),
+    // Navigate(widget.origin,widget.destination),
     Help(),
   ];
 
   @override
   void initState() {
     _pageOption.insert(0, DriverDetails(widget.singleDriver));
-    _pageOption.insert(2, Navigate(widget.origin,widget.destination));
+    _pageOption.insert(2, Navigate(widget.origin, widget.destination));
 
     super.initState();
   }
@@ -45,7 +45,8 @@ class _MyTabs extends State<Tabs> with SingleTickerProviderStateMixin {
       //   ),
       // ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/home')),
+        onPressed: () => Navigator.of(context)
+            .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false),
         mini: true,
         child: Icon(Icons.home, color: Colors.orange),
         backgroundColor: Colors.white,
@@ -74,20 +75,32 @@ class _MyTabs extends State<Tabs> with SingleTickerProviderStateMixin {
 
           items: [
             BottomNavigationBarItem(
-              icon:   Icon(Icons.person_pin),
-              title:  Text('Details', style: TextStyle(fontSize: 11.00),),
+              icon: Icon(Icons.person_pin),
+              title: Text(
+                'Details',
+                style: TextStyle(fontSize: 11.00),
+              ),
             ),
             BottomNavigationBarItem(
-              icon:  Icon(Icons.chat),
-              title:  Text('Chat',style: TextStyle(fontSize: 11.00),),
+              icon: Icon(Icons.chat),
+              title: Text(
+                'Chat',
+                style: TextStyle(fontSize: 11.00),
+              ),
             ),
             BottomNavigationBarItem(
-              icon:  Icon(Icons.location_searching),
-              title:  Text('Navigate',style: TextStyle(fontSize: 11.00),),
+              icon: Icon(Icons.location_searching),
+              title: Text(
+                'Navigate',
+                style: TextStyle(fontSize: 11.00),
+              ),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.help_outline),
-              title: Text('Help',style: TextStyle(fontSize: 11.00),),
+              title: Text(
+                'Help',
+                style: TextStyle(fontSize: 11.00),
+              ),
             ),
           ],
         ),

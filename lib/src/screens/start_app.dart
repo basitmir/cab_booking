@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'my_trips.dart';
 import 'register.dart';
 import 'login.dart';
+import 'payments.dart';
+import 'notifications.dart';
 import 'home.dart';
 import 'help.dart';
+import 'offers.dart';
 import '../manager/tabs_manager.dart';
 import '../screens/booking_form.dart';
 // import '../widgets/location_widget.dart';
@@ -168,6 +171,9 @@ class StartApp extends State<Start> {
               '/payment': (BuildContext context) => Payment(bookingDetails),
               '/trips': (BuildContext context) => MyTrips(),
               '/help': (BuildContext context) =>Help(),
+              '/payments': (BuildContext context) =>Payments(),
+               '/offers': (BuildContext context) =>Offers(),
+              '/notifications': (BuildContext context) =>Notifications(),
             },
             onGenerateRoute: (RouteSettings settings) {
               final List<String> driverDetails = settings.name.split('/');
