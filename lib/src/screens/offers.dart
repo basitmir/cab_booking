@@ -91,9 +91,15 @@ class Offers extends StatelessWidget {
         Stack(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.fromLTRB(12.00, 60.00, 12.00, 00.00),
+              margin: EdgeInsets.fromLTRB(12.00, 70.00, 12.00, 00.00),
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/giftback.jpg'),
+                  colorFilter:
+                      ColorFilter.mode(Colors.orange, BlendMode.hue),
+                ),
                 color: Colors.white,
                 gradient: LinearGradient(
                   begin: FractionalOffset(0.7, 0.8),
@@ -116,7 +122,7 @@ class Offers extends StatelessWidget {
                     data1,
                     style: TextStyle(
                         fontSize: 30.0,
-                        color: Colors.orange,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
@@ -142,7 +148,7 @@ class Offers extends StatelessWidget {
             Container(
               alignment: AlignmentDirectional.topCenter,
               child:
-                  Image.asset('assets/gift.png', width: 130.00, height: 130.00),
+                  Image.asset('assets/gift.png', width: 160.00, height: 160.00),
             ),
           ],
         ),
