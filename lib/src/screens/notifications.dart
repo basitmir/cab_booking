@@ -14,7 +14,7 @@ class Notifications extends StatelessWidget {
         ),
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        // height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: FractionalOffset(0.2, 0.8),
@@ -23,6 +23,13 @@ class Notifications extends StatelessWidget {
               Color(0xFFFFFB74D),
               Colors.white,
             ],
+          ),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            
+            image: AssetImage('assets/background.jpg'),
+            colorFilter: ColorFilter.mode(
+                Colors.orange, BlendMode.dstATop),
           ),
         ),
         child: Column(
@@ -39,6 +46,19 @@ class Notifications extends StatelessWidget {
             Expanded(
               child: paymentDetails(context),
             ),
+            Expanded(
+              child: paymentDetails(context),
+            ),
+            Expanded(
+              child: paymentDetails(context),
+            ),
+            Expanded(
+              child: paymentDetails(context),
+            ),
+            Expanded(
+              child: paymentDetails(context),
+            ),
+            
             // SizedBox(height: 50),
           ],
         ),
@@ -50,12 +70,12 @@ class Notifications extends StatelessWidget {
     return ListView(
       children: <Widget>[
         SizedBox(
-          height: 12.0,
+          height: 2.0,
         ),
         Stack(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.fromLTRB(12.00, 40.00, 12.00, 00.00),
+              margin: EdgeInsets.fromLTRB(18.00, 10.00, 0.00, 00.00),
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -71,39 +91,39 @@ class Notifications extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                    height: 20.0,
+                    height: 10.0,
                   ),
                   Text(
-                    'You will be charged ₹5.00 for every minute from the time of booking',
+                    'Win a Cashback on your first ride. HURRY.....',
                     style: TextStyle(
-                        fontSize: 30.0,
-                        color: Colors.orange,
+                        fontSize: 15.0,
+                        color: Colors.orange[700],
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 10.0,
                   ),
                   Text(
                     '“You have to give payment to the driver when the trip is completed”',
                     style: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.white70,
+                      fontSize: 10.0,
+                      color: Colors.orange[500],
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 10.0,
                   ),
                 ],
               ),
             ),
             Container(
-              alignment: AlignmentDirectional.topCenter,
+              alignment: AlignmentDirectional.topStart,
               child: CircleAvatar(
-                radius: 30.0,
-                backgroundImage: AssetImage('assets/coin.png'),
+                radius: 35.0,
+                backgroundImage: AssetImage('assets/logo.png'),
                 backgroundColor: Colors.transparent,
               ),
             ),
