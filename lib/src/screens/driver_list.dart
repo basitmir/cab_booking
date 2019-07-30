@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/driver_model.dart';
+import '../../base.dart';
 
 List drivers;
 
@@ -62,8 +63,7 @@ class DriverListDetails extends State<DriverList> {
                     context),
                 FadeInImage(
                   image: NetworkImage(
-                    'http://192.168.43.254:443/assets/images/' +
-                        drivers[index]['image'],
+                    baseUrl + '/assets/images/' + drivers[index]['image'],
                   ),
                   placeholder: AssetImage('assets/car.jpg'),
                 ),
@@ -94,18 +94,17 @@ class DriverListDetails extends State<DriverList> {
             style: TextStyle(color: Colors.white, fontSize: 21.0),
           ),
         ),
-        body:_progressBarActive ? noDataYet() : (drivers.length==0?noDriver():listBuilder())
-        );
+        body: _progressBarActive
+            ? noDataYet()
+            : (drivers.length == 0 ? noDriver() : listBuilder()));
   }
 
   Widget listBuilder() {
-    
-
     return RefreshIndicator(
         child: ListView.builder(
           itemBuilder: _singleListItem,
           itemCount: drivers.length,
-          
+
           // children: [
           //   Column(
           //     children: drivers

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../../base.dart';
 
 class User {
   final String id;
@@ -24,7 +25,7 @@ class User {
     };
 
     final http.Response response = await http.post(
-        'http://192.168.43.254:443/api/userregister',
+        baseUrl + '/api/userregister',
         body: json.encode(registerData),
         headers: {'Content-Type': 'application/json'});
     bool hasError = true;
@@ -49,7 +50,7 @@ class User {
     };
 
     final http.Response response = await http.post(
-        'http://192.168.43.254:443/api/userlogin',
+        'http://10.10.14.251:8000/api/userlogin',
         body: json.encode(registerData),
         headers: {'Content-Type': 'application/json'});
     Map<String, dynamic> responseData = {
@@ -61,7 +62,7 @@ class User {
     } else if (response.statusCode == 401) {
       responseData = json.decode(response.body);
     }
-   
+
     return responseData;
   }
   //...................end login..............................
