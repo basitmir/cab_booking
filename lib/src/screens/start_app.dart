@@ -8,6 +8,7 @@ import 'login.dart';
 import 'payments.dart';
 import 'notifications.dart';
 import 'home.dart';
+import 'driver_dashboard.dart';
 import 'help.dart';
 import 'offers.dart';
 import '../manager/tabs_manager.dart';
@@ -173,6 +174,7 @@ class StartApp extends State<Start> {
               '/help': (BuildContext context) =>Help(),
               '/payments': (BuildContext context) =>Payments(),
                '/offers': (BuildContext context) =>Offers(),
+               '/driverDashboard':(BuildContext context) =>Dashboard(),
               '/notifications': (BuildContext context) =>Notifications(),
             },
             onGenerateRoute: (RouteSettings settings) {

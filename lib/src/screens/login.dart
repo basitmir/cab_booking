@@ -156,7 +156,7 @@ class LoginScreen extends State<Login> {
       ),
     );
   }
-
+ 
   void _submitLogin() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
@@ -176,8 +176,11 @@ class LoginScreen extends State<Login> {
         prefs.setInt('id', msg['id']);
         prefs.setString('userName', msg['userName']);
         prefs.setString('email', msg['email']);
-
+        if(msg['whichUser']=='user'){
         Navigator.pushReplacementNamed(context, '/home');
+        }else{
+          Navigator.pushReplacementNamed(context, '/driverDashboard');
+        }
       } else {
         showDialog(
             context: context,
