@@ -29,7 +29,8 @@ class EnsureVisibleWhenFocused extends StatefulWidget {
   /// Defaults to 100 milliseconds.
   final Duration duration;
 
-  EnsureVisibleWhenFocusedState createState() => new EnsureVisibleWhenFocusedState();
+  EnsureVisibleWhenFocusedState createState() =>
+      new EnsureVisibleWhenFocusedState();
 }
 
 class EnsureVisibleWhenFocusedState extends State<EnsureVisibleWhenFocused> {
@@ -51,8 +52,7 @@ class EnsureVisibleWhenFocusedState extends State<EnsureVisibleWhenFocused> {
     // the need insert a delay here.
     await Future.delayed(const Duration(milliseconds: 300));
 
-    if (!widget.focusNode.hasFocus)
-      return;
+    if (!widget.focusNode.hasFocus) return;
 
     final RenderObject object = context.findRenderObject();
     final RenderAbstractViewport viewport = RenderAbstractViewport.of(object);
@@ -66,7 +66,8 @@ class EnsureVisibleWhenFocusedState extends State<EnsureVisibleWhenFocused> {
     if (position.pixels > viewport.getOffsetToReveal(object, 0.0).offset) {
       // Move down to the top of the viewport
       alignment = 0.0;
-    } else if (position.pixels < viewport.getOffsetToReveal(object, 1.0).offset) {
+    } else if (position.pixels <
+        viewport.getOffsetToReveal(object, 1.0).offset) {
       // Move up to the bottom of the viewport
       alignment = 1.0;
     } else {

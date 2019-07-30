@@ -151,8 +151,8 @@ Widget rowContainer(
             'DESTINATION : ', _mytrips[index]['bookingAddressTo'], Icons.place),
         dataChips('ORIGIN : ', _mytrips[index]['bookingAddressFrom'],
             Icons.trip_origin),
-        dataChips(
-            'CONTACT : ', _mytrips[index]['bookingPhone'], Icons.contact_phone),
+        dataChips('CONTACT : ', _mytrips[index]['bookingPhone'].toString(),
+            Icons.contact_phone),
         dataChips('NAME : ', _mytrips[index]['user_userName'], Icons.person),
         dataChips('DATE : ', _mytrips[index]['date'], Icons.date_range),
         dataChips('TIME : ', _mytrips[index]['time'], Icons.timer),
