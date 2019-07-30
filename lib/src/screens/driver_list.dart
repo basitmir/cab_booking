@@ -15,7 +15,7 @@ class DriverList extends StatefulWidget {
 
 class DriverListDetails extends State<DriverList> {
   bool _progressBarActive = true;
-  final List<int> stars = [1, 2, 3, 4, 5];
+  // final List<int> stars = [1, 2, 3, 4, 5];
   @override
   void initState() {
     setState(() {
@@ -61,23 +61,18 @@ class DriverListDetails extends State<DriverList> {
                     'assets/profile.png',
                     index,
                     context),
-                FadeInImage(
-                  image: NetworkImage(
-                    baseUrl + '/assets/images/' + drivers[index]['image'],
+                Container(
+                  child: FadeInImage(
+                    image: NetworkImage(
+                      baseUrl + 'assets/images/' + drivers[index]['image'],
+                    ),
+                    placeholder: AssetImage('assets/car.jpg'),
                   ),
-                  placeholder: AssetImage('assets/car.jpg'),
+
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: stars
-                      .map(
-                        (element) => Icon(
-                          Icons.star,
-                          color: Colors.yellow,
-                        ),
-                      )
-                      .toList(),
-                ),
+                
+                currentLocation(drivers[index]['currentLocation']),
+                
               ],
             ),
           );
@@ -226,6 +221,35 @@ Widget noDriver() {
               color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ],
+    ),
+  );
+}
+
+Widget currentLocation(String currentLocation) {
+  return Chip(
+    backgroundColor: Colors.orange[300],
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20), bottomRight: Radius.circular(20))),
+    avatar: Icon(
+      Icons.location_city,
+      color: Colors.orange,
+    ),
+    label: RichText(
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+              text: 'Current Location : ',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 10.00)),
+          TextSpan(
+            text: currentLocation,
+            style: TextStyle(color: Colors.white, fontSize: 10.00),
+          ),
+        ],
+      ),
     ),
   );
 }

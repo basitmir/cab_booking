@@ -12,7 +12,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class DriverDashboard extends State<Dashboard> {
-  // final List<int> stars = [1, 2, 3, 4, 5];
+  final List<int> stars = [1, 2, 3, 4, 5];
   bool _progressBarActive = true;
   void myTripList() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -47,7 +47,7 @@ class DriverDashboard extends State<Dashboard> {
       margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
       child: Column(
         children: <Widget>[
-          rowContainer(_mytrips[index]['currentLocation'], 'assets/profile.png', index, context),
+          rowContainer(stars, 'assets/profile.png', index, context),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             // Icon(Icons.check_circle,color: Colors.green,),
             //  Icon(Icons.sync,color: Colors.orangeAccent),

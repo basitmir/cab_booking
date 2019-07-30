@@ -179,6 +179,7 @@ class LoginScreen extends State<Login> {
         if(msg['whichUser']=='user'){
         Navigator.pushReplacementNamed(context, '/home');
         }else{
+          print('in the driverDashborad');
           Navigator.pushReplacementNamed(context, '/driverDashboard');
         }
       } else {
