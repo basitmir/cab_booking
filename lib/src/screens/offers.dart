@@ -98,7 +98,7 @@ class Offers extends StatelessWidget {
                   fit: BoxFit.cover,
                   image: AssetImage('assets/giftback.jpg'),
                   colorFilter:
-                      ColorFilter.mode(Colors.orange, BlendMode.hue),
+                      ColorFilter.mode(Color(0xFFFFFB74D), BlendMode.screen),
                 ),
                 color: Colors.white,
                 gradient: LinearGradient(
