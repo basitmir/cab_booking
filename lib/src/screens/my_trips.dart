@@ -55,7 +55,7 @@ class MyTripDetails extends State<MyTrips> {
                 // Icon(Icons.check_circle,color: Colors.green,),
                 //  Icon(Icons.sync,color: Colors.orangeAccent),
                 SizedBox(
-                  width: 30.00,
+                  width: 55.00,
                 ),
                 _mytrips[index]['status'] != 'incomplete'
                     ? statusChip(Icons.check_circle, Colors.green, 'Completed')
@@ -63,6 +63,7 @@ class MyTripDetails extends State<MyTrips> {
                 _mytrips[index]['status'] != 'incomplete'
                     ? shareButtonDisable()
                     : shareButtonEnable(index),
+                    
               ]),
         ],
       ),
@@ -71,49 +72,56 @@ class MyTripDetails extends State<MyTrips> {
 
   Widget build(context) {
     return Scaffold(
-      backgroundColor: Colors.orange[100],
-      appBar: AppBar(
-        iconTheme: IconTheme.of(context),
-        centerTitle: true,
-        title: Text(
-          'My Trips',
-          style: TextStyle(color: Colors.white, fontSize: 21.0),
+        backgroundColor: Colors.orange[100],
+        appBar: AppBar(
+          iconTheme: IconTheme.of(context),
+          centerTitle: true,
+          title: Text(
+            'My Trips',
+            style: TextStyle(color: Colors.white, fontSize: 21.0),
+          ),
         ),
-      ),
-      body: _progressBarActive
-          ? Center(
-              child: _dataProcessing(context),
-            )
-          : RefreshIndicator(
-              child: ListView.builder(
-                itemBuilder: _singleListItem,
-                itemCount: _mytrips.length,
+        body: _progressBarActive
+            ? noDataYet()
+            : (_mytrips.length == 0 ? noTrip() : listBuilder()));
+  }
 
-                // children: [
-                //   Column(
-                //     children: drivers
-                //         .map((element) => Card(
-                //               color: Colors.white,
-                //               margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
-                //               child: Column(
-                //                 children: <Widget>[
-                //                   rowContainer(element),
-                //                   Image.asset(
-                //                     'assets/car.jpg',
-                //                   ),
-                //                   Icon(
-                //                     Icons.star,
-                //                     color: Colors.yellow,
-                //                   ),
-                //                 ],
-                //               ),
-                //             ))
-                //         .toList(),
-                //   ),
-                // ],
-              ),
-              onRefresh: refreshList,
-            ),
+  Widget listBuilder() {
+    return RefreshIndicator(
+      child: ListView.builder(
+        itemBuilder: _singleListItem,
+        itemCount: _mytrips.length,
+
+        // children: [
+        //   Column(
+        //     children: drivers
+        //         .map((element) => Card(
+        //               color: Colors.white,
+        //               margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
+        //               child: Column(
+        //                 children: <Widget>[
+        //                   rowContainer(element),
+        //                   Image.asset(
+        //                     'assets/car.jpg',
+        //                   ),
+        //                   Icon(
+        //                     Icons.star,
+        //                     color: Colors.yellow,
+        //                   ),
+        //                 ],
+        //               ),
+        //             ))
+        //         .toList(),
+        //   ),
+        // ],
+      ),
+      onRefresh: refreshList,
+    );
+  }
+
+  Widget noDataYet() {
+    return Center(
+      child: _dataProcessing(context),
     );
   }
 }
@@ -276,6 +284,24 @@ Widget statusChip(dynamic icon, dynamic color, String text) {
   );
 }
 
+Widget noTrip() {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(Icons.sentiment_very_dissatisfied,
+            color: Colors.white, size: 65.0),
+        Text(
+          'You have not booked any Cab \n Book a Cab and enjoy our services...',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
+  );
+}
+
 Widget _dataProcessing(BuildContext context) {
   return AlertDialog(
     contentPadding: EdgeInsets.all(0.0),
@@ -313,7 +339,10 @@ Widget _dataProcessing(BuildContext context) {
 //   ),
 // )
 Widget shareButtonEnable(int index) {
-  return FloatingActionButton(
+  return
+  Container(
+    padding: EdgeInsets.only(right:4.0),
+    child: FloatingActionButton(
     shape: _DiamondBorder(),
     mini: true,
     onPressed: () {
@@ -340,6 +369,7 @@ Widget shareButtonEnable(int index) {
               'and install RIDEz\n' +
               'https://example.com'
           // 'DOWNLOAD THE RIDEz APP...\n"Joyfull and Comfortable travel" \nhttps://example.com'
+          
           );
     },
     child: Icon(
@@ -348,6 +378,7 @@ Widget shareButtonEnable(int index) {
       size: 15.00,
     ),
     backgroundColor: Colors.orange,
+  ),
   );
 }
 

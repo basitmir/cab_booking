@@ -24,10 +24,10 @@ class DriverDashboard extends State<Dashboard> {
     } else {
       currentLocation = _mytrips[index]['bookingAddressTo'];
     }
-    
-     final BookingModel bookingModel = BookingModel();
+
+    final BookingModel bookingModel = BookingModel();
     final Map<String, dynamic> msg = await bookingModel.updateBooking(
-       _mytrips[index]['id'].toString(),
+        _mytrips[index]['id'].toString(),
         _mytrips[index]['driverAssignedId'].toString(),
         currentLocation);
 
@@ -61,111 +61,6 @@ class DriverDashboard extends State<Dashboard> {
     setState(() {
       _progressBarActive = false;
     });
-  }
-
-  @override
-  void initState() {
-    setState(() {
-      _progressBarActive = true;
-      myTripList();
-    });
-    super.initState();
-  }
-
-  Future<Null> refreshList() async {
-    await Future.delayed(Duration(seconds: 2));
-    setState(() {
-      // _progressBarActive = true;
-      myTripList();
-    });
-    return null;
-  }
-
-  Widget _singleListItem(BuildContext context, int index) {
-    return Card(
-      color: Colors.white,
-      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 7.0),
-      child: Column(
-        children: <Widget>[
-          // SizedBox(height: 5.00,),
-          rowContainer('assets/profile.png', index, context),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            _progressBarActive
-                ? _dataProcessing(context)
-                : rideCompleted(index),
-          ]),
-        ],
-      ),
-    );
-  }
-
-  Widget build(context) {
-    return Scaffold(
-      backgroundColor: Colors.orange[100],
-      appBar: AppBar(
-        leading: IconButton(
-          padding: EdgeInsets.only(left: 20.00),
-          icon: Icon(Icons.power_settings_new),
-          onPressed: () async {
-            final SharedPreferences prefs =
-                await SharedPreferences.getInstance();
-            prefs.clear();
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/login', (Route<dynamic> route) => false);
-          },
-        ),
-        iconTheme: IconTheme.of(context),
-        centerTitle: true,
-        title: Text(
-          'Dashboard',
-          style: TextStyle(color: Colors.white, fontSize: 21.0),
-        ),
-        actions: <Widget>[
-          // action button
-          IconButton(
-            padding: EdgeInsets.only(right: 5.00),
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-               Navigator.pushNamed(context, '/notifications');
-            },
-          ),
-        ],
-      ),
-      body: _progressBarActive
-          ? Center(
-              child: _dataProcessing(context),
-            )
-          : RefreshIndicator(
-              child: ListView.builder(
-                itemBuilder: _singleListItem,
-                itemCount: _mytrips.length,
-
-                // children: [
-                //   Column(
-                //     children: drivers
-                //         .map((element) => Card(
-                //               color: Colors.white,
-                //               margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
-                //               child: Column(
-                //                 children: <Widget>[
-                //                   rowContainer(element),
-                //                   Image.asset(
-                //                     'assets/car.jpg',
-                //                   ),
-                //                   Icon(
-                //                     Icons.star,
-                //                     color: Colors.yellow,
-                //                   ),
-                //                 ],
-                //               ),
-                //             ))
-                //         .toList(),
-                //   ),
-                // ],
-              ),
-              onRefresh: refreshList,
-            ),
-    );
   }
 
   Widget rideCompleted(int index) {
@@ -211,6 +106,95 @@ class DriverDashboard extends State<Dashboard> {
               ),
             ),
           );
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      _progressBarActive = true;
+      myTripList();
+    });
+    super.initState();
+  }
+
+  Future<Null> refreshList() async {
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      // _progressBarActive = true;
+      myTripList();
+    });
+    return null;
+  }
+
+  Widget _singleListItem(BuildContext context, int index) {
+    return Card(
+      color: Colors.white,
+      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 7.0),
+      child: Column(
+        children: <Widget>[
+          // SizedBox(height: 5.00,),
+          rowContainer('assets/profile.png', index, context),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            _progressBarActive
+                ? _dataProcessing(context)
+                : rideCompleted(index),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  Widget build(context) {
+    return Scaffold(
+        backgroundColor: Colors.orange[100],
+        appBar: AppBar(
+          leading: IconButton(
+            padding: EdgeInsets.only(left: 20.00),
+            icon: Icon(Icons.power_settings_new),
+            onPressed: () async {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              prefs.clear();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login', (Route<dynamic> route) => false);
+            },
+          ),
+          iconTheme: IconTheme.of(context),
+          centerTitle: true,
+          title: Text(
+            'Dashboard',
+            style: TextStyle(color: Colors.white, fontSize: 21.0),
+          ),
+          actions: <Widget>[
+            // action button
+            IconButton(
+              padding: EdgeInsets.only(right: 5.00),
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                Navigator.pushNamed(context, '/notifications');
+              },
+            ),
+          ],
+        ),
+        body: _progressBarActive
+            ? noDataYet()
+            : (_mytrips.length == 0 ? noTrip() : listBuilder()));
+  }
+
+  Widget listBuilder() {
+    return RefreshIndicator(
+      child: ListView.builder(
+        itemBuilder: _singleListItem,
+        itemCount: _mytrips.length,
+      ),
+      onRefresh: refreshList,
+    );
+  }
+
+  Widget noDataYet() {
+    return Center(
+      child: _dataProcessing(context),
+    );
   }
 }
 
@@ -391,10 +375,7 @@ Widget alertDialog(BuildContext context, String message, bool error) {
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text(
-            error
-                ? 'Please try again later...'
-                : 'Voila!',
+        Text(error ? 'Please try again later...' : 'Voila!',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontSize: 25.0)),
         Text(
@@ -417,5 +398,23 @@ Widget alertDialog(BuildContext context, String message, bool error) {
         },
       ),
     ],
+  );
+}
+
+Widget noTrip() {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(Icons.sentiment_very_dissatisfied,
+            color: Colors.white, size: 65.0),
+        Text(
+          'No bookings Available yet \n Stay tuned...',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
   );
 }
