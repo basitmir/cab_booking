@@ -41,7 +41,6 @@ class StartApp extends State<Start> {
   // LocationData getLocationDetails;
   @override
   void initState() {
-   
     // setState(() {
     //   driversList();
     // });
@@ -73,9 +72,9 @@ class StartApp extends State<Start> {
     });
   }
 
-  void getDriverDetails(List driver){
+  void getDriverDetails(List driver) {
     setState(() {
-     _drivers=driver;
+      _drivers = driver;
     });
   }
 
@@ -150,66 +149,68 @@ class StartApp extends State<Start> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-            theme: ThemeData(
-                primaryColor: Colors.orange[500],
-                iconTheme: IconThemeData(color: Colors.white),
-                fontFamily: 'myFont',
-                accentColor: Colors.orange,
-                unselectedWidgetColor: Colors.white),
-            home: widget.savedData['token'] != null
-                ? Home(addDetails, widget.getLocationDetails,
-                    widget.savedData['userName'], widget.savedData['email'])
-                : StartAppScreen(),
-            debugShowCheckedModeBanner: false,
-            routes: {
-              '/login': (BuildContext context) => Login(authDetails),
-              '/register': (BuildContext context) => Register(),
-              '/home': (BuildContext context) => Home(
-                  addDetails, widget.getLocationDetails, userName, userEmail),
-              '/drivers': (BuildContext context) => DriverList(getDriverDetails),
-              '/booking': (BuildContext context) =>
-                  Booking(origin, destination, bookDetails, driverAssignId),
-              '/payment': (BuildContext context) => Payment(bookingDetails),
-              '/trips': (BuildContext context) => MyTrips(),
-              '/help': (BuildContext context) =>Help(),
-              '/payments': (BuildContext context) =>Payments(),
-               '/offers': (BuildContext context) =>Offers(),
-               '/driverDashboard':(BuildContext context) =>Dashboard(),
-              '/notifications': (BuildContext context) =>Notifications(),
-            },
-            onGenerateRoute: (RouteSettings settings) {
-              final List<String> driverDetails = settings.name.split('/');
-              if (driverDetails[0] != '') {
-                return null;
-              }
-              if (driverDetails[1] == 'driver') {
-                final int index = int.parse(driverDetails[2]);
-                driverAssignId = _drivers[index]['id'];
-                Map<String, dynamic> _singleDriver = {
-                  'userName': _drivers[index]['userName'],
-                  'cabNumber': _drivers[index]['cabNumber'],
-                  'id': _drivers[index]['id'],
-                  'zip': _drivers[index]['zip'],
-                  'age': _drivers[index]['age'],
-                  'experience': _drivers[index]['experience'],
-                  'gender': _drivers[index]['gender'],
-                  'vacancy': _drivers[index]['vacancy'],
-                  'phone': _drivers[index]['phone'],
-                  'email': _drivers[index]['email'],
-                  'city': _drivers[index]['city'],
-                  'state': _drivers[index]['state'],
-                  'address': _drivers[index]['address'],
-                  //'rating': _drivers[index]['rating'],
-                  'rating': '5',
-                };
-                return MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      Tabs(_singleDriver, origin, destination),
-                );
-              }
-              return null;
-            },
+      theme: ThemeData(
+          primaryColor: Colors.orange[500],
+          iconTheme: IconThemeData(color: Colors.white),
+          fontFamily: 'myFont',
+          accentColor: Colors.orange,
+          unselectedWidgetColor: Colors.white),
+      home: widget.savedData['token'] != null
+          ? (widget.savedData['whichUser'] == 'user'
+              ? Home(addDetails, widget.getLocationDetails,
+                  widget.savedData['userName'], widget.savedData['email'])
+              : Dashboard())
+          : StartAppScreen(),
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/login': (BuildContext context) => Login(authDetails),
+        '/register': (BuildContext context) => Register(),
+        '/home': (BuildContext context) =>
+            Home(addDetails, widget.getLocationDetails, userName, userEmail),
+        '/drivers': (BuildContext context) => DriverList(getDriverDetails),
+        '/booking': (BuildContext context) =>
+            Booking(origin, destination, bookDetails, driverAssignId),
+        '/payment': (BuildContext context) => Payment(bookingDetails),
+        '/trips': (BuildContext context) => MyTrips(),
+        '/help': (BuildContext context) => Help(),
+        '/payments': (BuildContext context) => Payments(),
+        '/offers': (BuildContext context) => Offers(),
+        '/driverDashboard': (BuildContext context) => Dashboard(),
+        '/notifications': (BuildContext context) => Notifications(),
+      },
+      onGenerateRoute: (RouteSettings settings) {
+        final List<String> driverDetails = settings.name.split('/');
+        if (driverDetails[0] != '') {
+          return null;
+        }
+        if (driverDetails[1] == 'driver') {
+          final int index = int.parse(driverDetails[2]);
+          driverAssignId = _drivers[index]['id'];
+          Map<String, dynamic> _singleDriver = {
+            'userName': _drivers[index]['userName'],
+            'cabNumber': _drivers[index]['cabNumber'],
+            'id': _drivers[index]['id'],
+            'zip': _drivers[index]['zip'],
+            'age': _drivers[index]['age'],
+            'experience': _drivers[index]['experience'],
+            'gender': _drivers[index]['gender'],
+            'vacancy': _drivers[index]['vacancy'],
+            'phone': _drivers[index]['phone'],
+            'email': _drivers[index]['email'],
+            'city': _drivers[index]['city'],
+            'state': _drivers[index]['state'],
+            'address': _drivers[index]['address'],
+            //'rating': _drivers[index]['rating'],
+            'rating': '5',
+          };
+          return MaterialPageRoute(
+            builder: (BuildContext context) =>
+                Tabs(_singleDriver, origin, destination),
           );
+        }
+        return null;
+      },
+    );
   }
 }
 

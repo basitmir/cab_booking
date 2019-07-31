@@ -66,7 +66,7 @@ class DriverListDetails extends State<DriverList> {
                     image: NetworkImage(
                       baseUrl + 'assets/images/' + drivers[index]['image'],
                     ),
-                    placeholder: AssetImage('assets/car.jpg'),
+                    placeholder: AssetImage('assets/car.jpeg'),
                   ),
 
                 ),

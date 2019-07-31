@@ -176,6 +176,7 @@ class LoginScreen extends State<Login> {
         prefs.setInt('id', msg['id']);
         prefs.setString('userName', msg['userName']);
         prefs.setString('email', msg['email']);
+        prefs.setString('whichUser', msg['whichUser']);
         if(msg['whichUser']=='user'){
         Navigator.pushReplacementNamed(context, '/home');
         }else{

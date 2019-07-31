@@ -12,12 +12,12 @@ class Dashboard extends StatefulWidget {
 }
 
 class DriverDashboard extends State<Dashboard> {
-  final List<int> stars = [1, 2, 3, 4, 5];
+  // final List<int> stars = [1, 2, 3, 4, 5];
   bool _progressBarActive = true;
   void myTripList() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    _mytrips = await myTrips(prefs.getInt('id').toString());
+    _mytrips = await mybookings(prefs.getInt('id').toString());
     setState(() {
       _progressBarActive = false;
     });
@@ -47,13 +47,9 @@ class DriverDashboard extends State<Dashboard> {
       margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
       child: Column(
         children: <Widget>[
-          rowContainer(stars, 'assets/profile.png', index, context),
+          rowContainer('assets/profile.png', index, context),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            // Icon(Icons.check_circle,color: Colors.green,),
-            //  Icon(Icons.sync,color: Colors.orangeAccent),
-            _mytrips[index]['status'] != 'incomplete'
-                ? statusChip(Icons.check_circle, Colors.green, 'Completed')
-                : statusChip(Icons.sync, Colors.orangeAccent, 'Scheduled'),
+           rideCompleted(context),
           ]),
         ],
       ),
@@ -64,12 +60,31 @@ class DriverDashboard extends State<Dashboard> {
     return Scaffold(
       backgroundColor: Colors.orange[100],
       appBar: AppBar(
+        leading: IconButton(
+          padding: EdgeInsets.only(left:20.00),
+            icon:Icon(Icons.power_settings_new),
+            onPressed: () async{
+               final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            prefs.clear();
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/login', (Route<dynamic> route) => false);
+            },
+          ),
         iconTheme: IconTheme.of(context),
         centerTitle: true,
         title: Text(
-          'My Trips',
+          'Dashboard',
           style: TextStyle(color: Colors.white, fontSize: 21.0),
         ),
+        actions: <Widget>[
+          // action button
+          IconButton(
+            padding: EdgeInsets.only(right:5.00),
+            icon:Icon(Icons.notifications),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: _progressBarActive
           ? Center(
@@ -109,8 +124,7 @@ class DriverDashboard extends State<Dashboard> {
   }
 }
 
-Widget rowContainer(
-    List<int> stars, String image, int index, BuildContext context) {
+Widget rowContainer(String image, int index, BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       gradient: LinearGradient(
@@ -127,18 +141,14 @@ Widget rowContainer(
           Container(margin: EdgeInsets.only(left: 10.00)),
           avatarText(_mytrips[index]['driver_name'],
               _mytrips[index]['driver_cabNumber']),
-          Spacer(),
+          SizedBox(width: 25.00),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: stars
-                .map(
-                  (element) => Icon(
-                    Icons.star,
-                    // size:10.00,
-                    color: Colors.yellowAccent,
-                  ),
-                )
-                .toList(),
+            children: <Widget>[
+              _mytrips[index]['status'] != 'incomplete'
+                  ? statusChip(Icons.check_circle, Colors.green, 'Completed')
+                  : statusChip(Icons.sync, Colors.orangeAccent, 'Scheduled'),
+            ],
           ),
           Spacer(
             flex: 4,
@@ -151,8 +161,8 @@ Widget rowContainer(
             'DESTINATION : ', _mytrips[index]['bookingAddressTo'], Icons.place),
         dataChips('ORIGIN : ', _mytrips[index]['bookingAddressFrom'],
             Icons.trip_origin),
-        dataChips(
-            'CONTACT : ', _mytrips[index]['bookingPhone'].toString(), Icons.contact_phone),
+        dataChips('CONTACT : ', _mytrips[index]['bookingPhone'].toString(),
+            Icons.contact_phone),
         dataChips('NAME : ', _mytrips[index]['user_userName'], Icons.person),
         dataChips('DATE : ', _mytrips[index]['date'], Icons.date_range),
         dataChips('TIME : ', _mytrips[index]['time'], Icons.timer),
@@ -254,8 +264,11 @@ Widget dataChips(String label, String data, dynamic icon) {
 
 Widget statusChip(dynamic icon, dynamic color, String text) {
   return Chip(
-    padding: EdgeInsets.all(0.0),
+    padding: EdgeInsets.fromLTRB(10.00, 0.00, 20.00, 0.00),
     backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20), bottomRight: Radius.circular(20))),
     avatar: Icon(
       icon,
       color: color,
@@ -276,6 +289,48 @@ Widget _dataProcessing(BuildContext context) {
       child: CircularProgressIndicator(),
     ),
   );
+}
+
+Widget rideCompleted(BuildContext context){
+  return  RaisedButton(
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    onPressed: () {
+                      // setState(() {
+                        // _progressBarActive = true;
+                        // bookCab(context, widget.bookingDetails);
+                      // });
+
+                      // Navigator.pushReplacementNamed(context, '/login');
+                    },
+                    shape: StadiumBorder(),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        gradient: LinearGradient(
+                          begin: FractionalOffset(0.9, 0.5),
+                          end: FractionalOffset(0.0, 0.0),
+                          colors: <Color>[
+                            Color(0xFFFFFB74D),
+                            Colors.white,
+                            // Colors.orange
+                          ],
+                        ),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 9.9),
+                      child: const Text(
+                        'Trip Completed...',
+                  
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 15.0,
+                           color: Colors.orange , fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  );
 }
 
 // Chip(

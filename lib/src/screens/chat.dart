@@ -12,6 +12,7 @@ class Chat extends StatelessWidget {
           'Chat',
           style: TextStyle(color: Colors.white, fontSize: 21.0),
         ),
+       
       ),
       body: Center(
         child: Text('Comming Soon'),

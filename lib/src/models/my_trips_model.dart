@@ -15,3 +15,17 @@ Future<List> myTrips(String id) async {
   }
   return responseData;
 }
+
+Future<List> mybookings(String id) async {
+  final http.Response response =
+      await http.get(baseUrl + '/api/getDriverBookings/' + id);
+  List responseData = [
+    {'error': true, 'message': 'Something went wrong'}
+  ];
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    responseData = json.decode(response.body);
+  } else if (response.statusCode == 401) {
+    responseData = json.decode(response.body);
+  }
+  return responseData;
+}

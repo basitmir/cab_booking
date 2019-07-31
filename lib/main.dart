@@ -16,6 +16,7 @@ void main() async {
     'userName': prefs.getString('userName'),
     'email': prefs.getString('email'),
     'token': prefs.getString('token'),
+    'whichUser':prefs.getString('whichUser'),
   };
 
   LocationData getLocationDetails = await getUserLocation();

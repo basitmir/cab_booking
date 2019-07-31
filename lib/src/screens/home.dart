@@ -48,7 +48,7 @@ class HomeState extends State<Home> {
     });
 
     _locationData = widget.getLocationDetails;
-
+ 
     //   });
     // }
 
