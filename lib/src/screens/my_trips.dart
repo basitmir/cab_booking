@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/my_trips_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share/share.dart';
 
 List _mytrips;
 
@@ -48,13 +49,21 @@ class MyTripDetails extends State<MyTrips> {
       child: Column(
         children: <Widget>[
           rowContainer(stars, 'assets/profile.png', index, context),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            // Icon(Icons.check_circle,color: Colors.green,),
-            //  Icon(Icons.sync,color: Colors.orangeAccent),
-            _mytrips[index]['status'] != 'incomplete'
-                ? statusChip(Icons.check_circle, Colors.green, 'Completed')
-                : statusChip(Icons.sync, Colors.orangeAccent, 'Scheduled'),
-          ]),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                // Icon(Icons.check_circle,color: Colors.green,),
+                //  Icon(Icons.sync,color: Colors.orangeAccent),
+                SizedBox(
+                  width: 30.00,
+                ),
+                _mytrips[index]['status'] != 'incomplete'
+                    ? statusChip(Icons.check_circle, Colors.green, 'Completed')
+                    : statusChip(Icons.sync, Colors.orangeAccent, 'Scheduled'),
+                _mytrips[index]['status'] != 'incomplete'
+                    ? shareButtonDisable()
+                    : shareButtonEnable(index),
+              ]),
         ],
       ),
     );
@@ -303,3 +312,90 @@ Widget _dataProcessing(BuildContext context) {
 //     ),
 //   ),
 // )
+Widget shareButtonEnable(int index) {
+  return FloatingActionButton(
+    shape: _DiamondBorder(),
+    mini: true,
+    onPressed: () {
+      Share.share(_mytrips[index]['bookingName'] +
+              ' ' +
+              'is going to' +
+              ' ' +
+              _mytrips[index]['bookingAddressTo'] +
+              '\nJoin' +
+              ' ' +
+              _mytrips[index]['bookingName'] +
+              ' ' +
+              'on' +
+              ' ' +
+              _mytrips[index]['date'] +
+              '\nFor more info contact' +
+              ' ' +
+              _mytrips[index]['bookingName'] +
+              ' ' +
+              'on' +
+              ' ' +
+              _mytrips[index]['bookingPhone'] +
+              ' ' +
+              'and install RIDEz\n' +
+              'https://example.com'
+          // 'DOWNLOAD THE RIDEz APP...\n"Joyfull and Comfortable travel" \nhttps://example.com'
+          );
+    },
+    child: Icon(
+      Icons.share,
+      color: Colors.white,
+      size: 15.00,
+    ),
+    backgroundColor: Colors.orange,
+  );
+}
+
+Widget shareButtonDisable() {
+  return FloatingActionButton(
+    shape: _DiamondBorder(),
+    mini: true,
+    onPressed: () {
+      // Add your onPressed code here!
+    },
+    child: Icon(
+      Icons.share,
+      color: Colors.white,
+      size: 15.00,
+    ),
+    backgroundColor: Colors.grey,
+  );
+}
+
+class _DiamondBorder extends ShapeBorder {
+  const _DiamondBorder();
+
+  @override
+  EdgeInsetsGeometry get dimensions {
+    return const EdgeInsets.only();
+  }
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection textDirection}) {
+    return getOuterPath(rect, textDirection: textDirection);
+  }
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+    return Path()
+      ..moveTo(rect.left + rect.width / 2.0, rect.top)
+      ..lineTo(rect.right, rect.top + rect.height / 2.0)
+      ..lineTo(rect.left + rect.width / 2.0, rect.bottom)
+      ..lineTo(rect.left, rect.top + rect.height / 2.0)
+      ..close();
+  }
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) {}
+
+  // This border doesn't support scaling.
+  @override
+  ShapeBorder scale(double t) {
+    return null;
+  }
+}

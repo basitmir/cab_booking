@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import '../models/my_trips_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../widgets/location_widget.dart';
+import '../models/location_model.dart';
 
 List _mytrips;
+bool _progressBarActive = false;
 
 class Dashboard extends StatefulWidget {
   @override
@@ -12,8 +15,43 @@ class Dashboard extends StatefulWidget {
 }
 
 class DriverDashboard extends State<Dashboard> {
-  // final List<int> stars = [1, 2, 3, 4, 5];
-  bool _progressBarActive = true;
+  void rideDone(BuildContext context, int index) async {
+    LocationData getLocationDetails = await getUserLocation();
+    print(getLocationDetails.origin);
+    print(_mytrips[index]['id']);
+    print(_mytrips[index]['driverAssignedId']);
+    if (getLocationDetails.origin != '') {
+      print(getLocationDetails.origin);
+    } else {
+      print(_mytrips[index]['bookingAddressTo']);
+    }
+
+    Navigator.pushReplacementNamed(context, '/driverDashboard');
+    // final BookingModel bookingModel = BookingModel();
+    // final Map<String, dynamic> msg = await bookingModel.booking(bookingDetails);
+
+    // if (!msg['error']) {
+    //   showDialog(
+    //       context: context,
+    //       builder: (BuildContext context) {
+    //         return alertDialog(
+    //             context, msg['message'], msg['error']); //function defination
+    //       });
+    // } else {
+    //   print(msg['message']);
+    //   showDialog(
+    //       context: context,
+    //       builder: (BuildContext context) {
+    //         return alertDialog(
+    //             context, msg['message'], msg['error']); //function defination
+    //       });
+    // }
+
+    setState(() {
+      _progressBarActive = false;
+    });
+  }
+
   void myTripList() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -49,7 +87,9 @@ class DriverDashboard extends State<Dashboard> {
         children: <Widget>[
           rowContainer('assets/profile.png', index, context),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-           rideCompleted(context),
+            _progressBarActive
+                ? _dataProcessing(context)
+                : rideCompleted(index),
           ]),
         ],
       ),
@@ -61,16 +101,16 @@ class DriverDashboard extends State<Dashboard> {
       backgroundColor: Colors.orange[100],
       appBar: AppBar(
         leading: IconButton(
-          padding: EdgeInsets.only(left:20.00),
-            icon:Icon(Icons.power_settings_new),
-            onPressed: () async{
-               final SharedPreferences prefs =
+          padding: EdgeInsets.only(left: 20.00),
+          icon: Icon(Icons.power_settings_new),
+          onPressed: () async {
+            final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
             prefs.clear();
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/login', (Route<dynamic> route) => false);
-            },
-          ),
+          },
+        ),
         iconTheme: IconTheme.of(context),
         centerTitle: true,
         title: Text(
@@ -80,8 +120,8 @@ class DriverDashboard extends State<Dashboard> {
         actions: <Widget>[
           // action button
           IconButton(
-            padding: EdgeInsets.only(right:5.00),
-            icon:Icon(Icons.notifications),
+            padding: EdgeInsets.only(right: 5.00),
+            icon: Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
@@ -122,6 +162,51 @@ class DriverDashboard extends State<Dashboard> {
             ),
     );
   }
+
+  Widget rideCompleted(int index) {
+    return _mytrips[index]['status'] == 'complete'
+        ? Container()
+        : RaisedButton(
+            textColor: Colors.white,
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () {
+              setState(() {
+                _progressBarActive = true;
+                rideDone(context, index);
+              });
+            },
+            shape: StadiumBorder(),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+                gradient: LinearGradient(
+                  begin: FractionalOffset(0.9, 0.5),
+                  end: FractionalOffset(0.0, 0.0),
+                  colors: <Color>[
+                    Color(0xFFFFFB74D),
+                    Colors.white,
+                    // Colors.orange
+                  ],
+                ),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 9.9),
+              child: Container(
+                padding: EdgeInsets.only(left: 25.00),
+                child: Text(
+                  'TRIP COMPLETED',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          );
+  }
 }
 
 Widget rowContainer(String image, int index, BuildContext context) {
@@ -141,7 +226,8 @@ Widget rowContainer(String image, int index, BuildContext context) {
           Container(margin: EdgeInsets.only(left: 10.00)),
           avatarText(_mytrips[index]['driver_name'],
               _mytrips[index]['driver_cabNumber']),
-          SizedBox(width: 25.00),
+          // SizedBox(width: 0.00),
+          Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -290,71 +376,3 @@ Widget _dataProcessing(BuildContext context) {
     ),
   );
 }
-
-Widget rideCompleted(BuildContext context){
-  return  RaisedButton(
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    onPressed: () {
-                      // setState(() {
-                        // _progressBarActive = true;
-                        // bookCab(context, widget.bookingDetails);
-                      // });
-
-                      // Navigator.pushReplacementNamed(context, '/login');
-                    },
-                    shape: StadiumBorder(),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                        gradient: LinearGradient(
-                          begin: FractionalOffset(0.9, 0.5),
-                          end: FractionalOffset(0.0, 0.0),
-                          colors: <Color>[
-                            Color(0xFFFFFB74D),
-                            Colors.white,
-                            // Colors.orange
-                          ],
-                        ),
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 9.9),
-                      child: const Text(
-                        'Trip Completed...',
-                  
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 15.0,
-                           color: Colors.orange , fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  );
-}
-
-// Chip(
-//   backgroundColor: Colors.white,
-//   shape: RoundedRectangleBorder(
-//       borderRadius: BorderRadius.only(
-//           topRight: Radius.circular(20),
-//           bottomRight: Radius.circular(20))),
-//   avatar: Icon(
-//     icon,
-//     color: Colors.orange,
-//   ),
-//   label: RichText(
-//     text: TextSpan(
-//       children: <TextSpan>[
-//         TextSpan(
-//             text: label,
-//             style: TextStyle(
-//                 fontWeight: FontWeight.bold, color: Colors.orange)),
-//         TextSpan(
-//           text: data,
-//           style: TextStyle(color: Colors.orange[400]),
-//         ),
-//       ],
-//     ),
-//   ),
-// )

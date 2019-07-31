@@ -48,8 +48,8 @@ Future<LocationData> getUserLocation() async {
       'latlng': '${lat.toString()},${lng.toString()}',
       'key': 'AIzaSyAYSefL-7VDaENcauwR7Z3xLn82j00e0TI'
     });
-    // print('uri');
-    print(uri);
+   
+    // print(uri);
     final http.Response response = await http.get(uri);
     final decodeResponse = json.decode(response.body);
 

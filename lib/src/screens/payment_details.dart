@@ -98,36 +98,40 @@ class PaymentPage extends State<Payment> {
       ),
     );
   }
-  void bookCab(BuildContext context, Map<String, dynamic> bookingDetails) async {
-  final BookingModel bookingModel = BookingModel();
-  final Map<String, dynamic> msg = await bookingModel.booking(bookingDetails);
 
-  if (!msg['error']) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alertDialog(
-              context, msg['message'], msg['error']); //function defination
-        });
-  } else {
-    print(msg['message']);
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alertDialog(
-              context, msg['message'], msg['error']); //function defination
-        });
+  void bookCab(
+      BuildContext context, Map<String, dynamic> bookingDetails) async {
+    final BookingModel bookingModel = BookingModel();
+    final Map<String, dynamic> msg = await bookingModel.booking(bookingDetails);
+
+    if (!msg['error']) {
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alertDialog(
+                context, msg['message'], msg['error']); //function defination
+          });
+    } else {
+      print(msg['message']);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alertDialog(
+                context, msg['message'], msg['error']); //function defination
+          });
+    }
+
+    // showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return alertDialog(context);
+    //     });
+    setState(() {
+      _progressBarActive = false;
+    });
   }
-
-  // showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return alertDialog(context);
-  //     });
-  setState(() {
-    _progressBarActive = false;
-  });
-}
 }
 
 Widget _dataProcessing(BuildContext context) {
@@ -140,8 +144,6 @@ Widget _dataProcessing(BuildContext context) {
     ),
   );
 }
-
-
 
 Widget paymentDetails(BuildContext context) {
   return ListView(
@@ -179,7 +181,7 @@ Widget paymentDetails(BuildContext context) {
                   height: 20.0,
                 ),
                 Text(
-                 '“You have to give payment to the driver when the trip is completed”',
+                  '“You have to give payment to the driver when the trip is completed”',
                   style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.white70,
@@ -193,26 +195,25 @@ Widget paymentDetails(BuildContext context) {
               ],
             ),
           ),
-          
           Container(
             alignment: AlignmentDirectional.topCenter,
             child: CircleAvatar(
               radius: 70.0,
               backgroundImage: AssetImage('assets/coin.png'),
-                backgroundColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
             ),
           ),
         ],
       ),
-       SizedBox(height: 10.00),
-        Text(
-          'Note: Online Payment services will be included soon...',
-          style: TextStyle(
-            fontSize: 20.0,
-            color: Colors.white70,
-          ),
-          textAlign: TextAlign.center,
+      SizedBox(height: 10.00),
+      Text(
+        'Note: Online Payment services will be included soon...',
+        style: TextStyle(
+          fontSize: 20.0,
+          color: Colors.white70,
         ),
+        textAlign: TextAlign.center,
+      ),
     ],
   );
 }
@@ -226,7 +227,10 @@ Widget alertDialog(BuildContext context, String message, bool error) {
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text(error ? 'Please try again later...' : 'Thank you for choosing RIDEz',
+        Text(
+            error
+                ? 'Please try again later...'
+                : 'Thank you for choosing RIDEz',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontSize: 25.0)),
         Text(
@@ -243,12 +247,6 @@ Widget alertDialog(BuildContext context, String message, bool error) {
         onPressed: () {
           if (!error) {
             Navigator.pop(context);
-
-            //           Navigator.of(context).( Home(null,null,'tbjdfd','bsjdff')),
-            // );
-            //   Navigator.pop(context);
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/home', (Route<dynamic> route) => false);
           } else {
             Navigator.pop(context);
           }
