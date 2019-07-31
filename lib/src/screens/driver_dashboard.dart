@@ -3,6 +3,7 @@ import '../models/my_trips_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/location_widget.dart';
 import '../models/location_model.dart';
+import '../models/booking_model.dart';
 
 List _mytrips;
 bool _progressBarActive = false;
@@ -17,35 +18,36 @@ class Dashboard extends StatefulWidget {
 class DriverDashboard extends State<Dashboard> {
   void rideDone(BuildContext context, int index) async {
     LocationData getLocationDetails = await getUserLocation();
-    print(getLocationDetails.origin);
-    print(_mytrips[index]['id']);
-    print(_mytrips[index]['driverAssignedId']);
+    String currentLocation;
     if (getLocationDetails.origin != '') {
-      print(getLocationDetails.origin);
+      currentLocation = getLocationDetails.origin;
     } else {
-      print(_mytrips[index]['bookingAddressTo']);
+      currentLocation = _mytrips[index]['bookingAddressTo'];
     }
+    
+     final BookingModel bookingModel = BookingModel();
+    final Map<String, dynamic> msg = await bookingModel.updateBooking(
+       _mytrips[index]['id'].toString(),
+        _mytrips[index]['driverAssignedId'].toString(),
+        currentLocation);
 
-    Navigator.pushReplacementNamed(context, '/driverDashboard');
-    // final BookingModel bookingModel = BookingModel();
-    // final Map<String, dynamic> msg = await bookingModel.booking(bookingDetails);
-
-    // if (!msg['error']) {
-    //   showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) {
-    //         return alertDialog(
-    //             context, msg['message'], msg['error']); //function defination
-    //       });
-    // } else {
-    //   print(msg['message']);
-    //   showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) {
-    //         return alertDialog(
-    //             context, msg['message'], msg['error']); //function defination
-    //       });
-    // }
+    if (!msg['error']) {
+      Navigator.pushReplacementNamed(context, '/driverDashboard');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alertDialog(
+                context, msg['message'], msg['error']); //function defination
+          });
+    } else {
+      print(msg['message']);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alertDialog(
+                context, msg['message'], msg['error']); //function defination
+          });
+    }
 
     setState(() {
       _progressBarActive = false;
@@ -82,9 +84,10 @@ class DriverDashboard extends State<Dashboard> {
   Widget _singleListItem(BuildContext context, int index) {
     return Card(
       color: Colors.white,
-      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
+      margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 7.0),
       child: Column(
         children: <Widget>[
+          // SizedBox(height: 5.00,),
           rowContainer('assets/profile.png', index, context),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             _progressBarActive
@@ -122,7 +125,9 @@ class DriverDashboard extends State<Dashboard> {
           IconButton(
             padding: EdgeInsets.only(right: 5.00),
             icon: Icon(Icons.notifications),
-            onPressed: () {},
+            onPressed: () {
+               Navigator.pushNamed(context, '/notifications');
+            },
           ),
         ],
       ),
@@ -168,7 +173,7 @@ class DriverDashboard extends State<Dashboard> {
         ? Container()
         : RaisedButton(
             textColor: Colors.white,
-            padding: const EdgeInsets.all(0.0),
+            padding: EdgeInsets.all(0.0),
             onPressed: () {
               setState(() {
                 _progressBarActive = true;
@@ -217,7 +222,7 @@ Widget rowContainer(String image, int index, BuildContext context) {
           end: Alignment.centerLeft,
           colors: [Colors.orange[400], Colors.white]),
     ),
-    margin: EdgeInsets.fromLTRB(6.0, 4.0, 0.0, 1.0),
+    margin: EdgeInsets.fromLTRB(6.0, 4.0, 0.0, 0.0),
     child: ExpansionTile(
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -249,7 +254,7 @@ Widget rowContainer(String image, int index, BuildContext context) {
             Icons.trip_origin),
         dataChips('CONTACT : ', _mytrips[index]['bookingPhone'].toString(),
             Icons.contact_phone),
-        dataChips('NAME : ', _mytrips[index]['user_userName'], Icons.person),
+        dataChips('NAME : ', _mytrips[index]['bookingName'], Icons.person),
         dataChips('DATE : ', _mytrips[index]['date'], Icons.date_range),
         dataChips('TIME : ', _mytrips[index]['time'], Icons.timer),
       ],
@@ -374,5 +379,43 @@ Widget _dataProcessing(BuildContext context) {
     content: Center(
       child: CircularProgressIndicator(),
     ),
+  );
+}
+
+Widget alertDialog(BuildContext context, String message, bool error) {
+  return AlertDialog(
+    backgroundColor: Colors.orange.withOpacity(0.5),
+    title: error
+        ? Icon(Icons.sentiment_dissatisfied, size: 60.0)
+        : Icon(Icons.sentiment_very_satisfied, size: 60.0),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Text(
+            error
+                ? 'Please try again later...'
+                : 'Voila!',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize: 25.0)),
+        Text(
+          message,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
+    actions: <Widget>[
+      FlatButton(
+        child: Text('OK', style: TextStyle(color: Colors.white)),
+        onPressed: () {
+          if (!error) {
+            Navigator.pop(context);
+          } else {
+            Navigator.pop(context);
+          }
+        },
+      ),
+    ],
   );
 }
