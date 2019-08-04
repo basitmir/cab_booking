@@ -390,7 +390,7 @@ Widget drawer(BuildContext context, String userName, String email) {
           leading: Icon(Icons.share, color: Colors.orange[500]),
           onTap: () {
             Share.share(
-                'DOWNLOAD THE RIDEz APP...\n"Joyfull and Comfortable travel" \nhttps://example.com');
+                'DOWNLOAD THE RIDEz APP...\n"Joyfull and Comfortable travel" \nhttps://www.dropbox.com/s/8iireeb52o4tmkt/RIDEz.apk?dl=0');
           },
         ),
         Divider(height: 0.0),

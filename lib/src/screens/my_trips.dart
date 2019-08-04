@@ -367,7 +367,7 @@ Widget shareButtonEnable(int index) {
               _mytrips[index]['bookingPhone'] +
               ' ' +
               'and install RIDEz\n' +
-              'https://example.com'
+              'https://www.dropbox.com/s/8iireeb52o4tmkt/RIDEz.apk?dl=0'
           // 'DOWNLOAD THE RIDEz APP...\n"Joyfull and Comfortable travel" \nhttps://example.com'
           
           );
