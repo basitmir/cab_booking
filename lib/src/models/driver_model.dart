@@ -17,7 +17,7 @@ import '../../base.dart';
 
 Future<List> availableDrivers() async {
   final http.Response response =
-      await http.get(baseUrl + 'api/getAvailableDrivers');
+      await http.get(baseUrl + '/api/getAvailableDrivers');
   List responseData = [
     {'error': true, 'message': 'Something went wrong'}
   ];

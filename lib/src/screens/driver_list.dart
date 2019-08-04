@@ -64,7 +64,7 @@ class DriverListDetails extends State<DriverList> {
                 Container(
                   child: FadeInImage(
                     image: NetworkImage(
-                      baseUrl + 'assets/images/' + drivers[index]['image'],
+                      baseUrl + '/images/' + drivers[index]['image'],
                     ),
                     placeholder: AssetImage('assets/car.jpeg'),
                   ),
