@@ -7,6 +7,7 @@ import '../models/booking_model.dart';
 
 List _mytrips;
 bool _progressBarActive = false;
+bool _floatProgressBarActive = false;
 
 class Dashboard extends StatefulWidget {
   @override
@@ -51,6 +52,43 @@ class DriverDashboard extends State<Dashboard> {
 
     setState(() {
       _progressBarActive = false;
+    });
+  }
+
+   void updateLocation(BuildContext context) async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+    LocationData getLocationDetails = await getUserLocation();
+    String currentLocation;
+    if (getLocationDetails.origin != '') {
+      currentLocation = getLocationDetails.origin;
+    } else {
+      currentLocation = 'Jammu & Kashmir';
+    }
+
+    final BookingModel bookingModel = BookingModel();
+    final Map<String, dynamic> msg = await bookingModel.updateLocation(
+        prefs.getInt('id').toString(),
+        currentLocation);
+
+    if (!msg['error']) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alertDialog(
+                context, msg['message'], msg['error']); //function defination
+          });
+    } else {
+      print(msg['message']);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alertDialog(
+                context, msg['message'], msg['error']); //function defination
+          });
+    }
+
+    setState(() {
+      _floatProgressBarActive = false;
     });
   }
 
@@ -127,6 +165,7 @@ class DriverDashboard extends State<Dashboard> {
   }
 
   Widget _singleListItem(BuildContext context, int index) {
+    
     return Card(
       color: Colors.white,
       margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 7.0),
@@ -178,7 +217,21 @@ class DriverDashboard extends State<Dashboard> {
         ),
         body: _progressBarActive
             ? noDataYet()
-            : (_mytrips.length == 0 ? noTrip() : listBuilder()));
+            : (_mytrips.length == 0 ? noTrip() : listBuilder()),
+            floatingActionButton: _floatProgressBarActive?_dataProcessing(context):FloatingActionButton(
+      onPressed: () {
+        setState(() {
+                 _floatProgressBarActive = true;
+                updateLocation(context);
+               });
+      },
+      child: Icon(Icons.my_location,
+      color: Colors.white,
+      // size: 30.0,
+      ),
+      backgroundColor: Colors.orange,
+    ),
+            );
   }
 
   Widget listBuilder() {

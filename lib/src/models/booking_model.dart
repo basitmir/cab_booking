@@ -62,4 +62,24 @@ class BookingModel {
     }
     return {'error': hasError, 'message': message};
   }
+
+Future <Map<String, dynamic>> updateLocation(
+       String driverId, String currentLocation) async {
+    final Map<String, dynamic> updateData = {
+      'currentLocation': currentLocation,
+      'driverId': driverId, 
+    };
+    final http.Response response = await http.post(
+        baseUrl + '/api/updateLocation',
+        body: json.encode(updateData),
+        headers: {'Content-Type': 'application/json'});
+    print(response.body);
+    bool hasError = true;
+    String message = 'Something went wrong';
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      hasError = false;
+      message = 'Location updated Successfully!';
+    }
+    return {'error': hasError, 'message': message};
+  }
 }
