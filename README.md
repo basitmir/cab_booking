@@ -6,11 +6,26 @@ FRONT END : FLUTTER <br>
 BACK END : LARAVEL<br>
 <p align="left">
 <img src ="assets/splashScreen.jpg" height="500">
-<img src ="src/assets/imgs/ss1.png" height="500">
-<img src ="src/assets/imgs/ss2.png" height="500">
-<img src ="src/assets/imgs/ss3.png" height="500">
-<img src ="src/assets/imgs/ss4.png" height="500">
-<img src ="src/assets/imgs/ss5.png" height="500">
+<img src ="assets/IntroPage.jpg" height="500">
+<img src ="assets/register.jpg" height="500">
+<img src ="assets/login.jpg" height="500">
+<img src ="assets/loginLoading.jpg" height="500">
+<img src ="assets/firstPage.jpg" height="500">
+<img src ="assets/drivers.jpg" height="500">
+<img src ="assets/driverDetails.jpg" height="500">
+<img src ="assets/bookingDetails.jpg" height="500">
+<img src ="assets/bookingDetailErrors.jpg" height="500">
+<img src ="assets/bookingDetailsFilled.jpg" height="500">
+<img src ="assets/payment.jpg" height="500">
+<img src ="assets/sucessMessage.jpg" height="500">
+<img src ="assets/sideBar.jpg" height="500">
+<img src ="assets/offers.jpg" height="500">
+<img src ="assets/paymentDetails.jpg" height="500">
+<img src ="assets/myTrip.jpg" height="500">
+<img src ="assets/myTripDetails.jpg" height="500">
+<img src ="assets/help.jpg" height="500">
+<img src ="assets/notifications.jpg" height="500">
+<img src ="assets/.jpg" height="500">
 </p>
   
 
