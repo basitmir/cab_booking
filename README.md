@@ -5,7 +5,7 @@ Joyfull and Comfortable travel<br>
 FRONT END : FLUTTER <br>
 BACK END : LARAVEL<br>
 <p align="left">
-<img src ="assets/splashScreen.png" height="500">
+<img src ="assets/splashScreen.jpg" height="500">
 <img src ="src/assets/imgs/ss1.png" height="500">
 <img src ="src/assets/imgs/ss2.png" height="500">
 <img src ="src/assets/imgs/ss3.png" height="500">
