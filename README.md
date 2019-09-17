@@ -1,6 +1,18 @@
-# cab
 
-Flutter project for cab booking...
+# RideZ 
+Joyfull and Comfortable travel<br>
+<a href="https://www.dropbox.com/s/8iireeb52o4tmkt/RIDEz.apk?dl=0">DOWNLOAD THE APP</a><br>
+FRONT END : FLUTTER <br>
+BACK END : LARAVEL<br>
+<p align="left">
+<img src ="assets/splashScreen.png" height="500">
+<img src ="src/assets/imgs/ss1.png" height="500">
+<img src ="src/assets/imgs/ss2.png" height="500">
+<img src ="src/assets/imgs/ss3.png" height="500">
+<img src ="src/assets/imgs/ss4.png" height="500">
+<img src ="src/assets/imgs/ss5.png" height="500">
+</p>
+  
 
 
 ## Getting Started
