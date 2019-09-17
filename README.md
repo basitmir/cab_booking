@@ -1,6 +1,7 @@
 # cab
 
-A new Flutter project.
+Flutter project for cab booking...
+
 
 ## Getting Started
 
