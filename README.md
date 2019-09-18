@@ -27,6 +27,15 @@ BACK END : LARAVEL<br>
 <img src ="assets/notifications.jpg" height="500">
 <img src ="assets/.jpg" height="500">
 </p>
+Drivers Dashboard<br>
+<p align="left">
+<img src ="assets/driverDashboard.jpg" height="500">
+<img src ="assets/driverTripDetails.jpg" height="500">
+<img src ="assets/tripSucessDetails.jpg" height="500">
+<img src ="assets/locationUpdateAlert.jpg" height="500">
+
+</p>
+
   
 
 
