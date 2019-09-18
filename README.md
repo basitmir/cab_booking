@@ -17,33 +17,33 @@ UserLogin credentials : <br>
 <p> UserName : driver@driver.com<br>
     PassWord : driver@driver.com</p>
 <p align="left">
-<img src ="assets/splashScreen.jpg" height="500">
-<img src ="assets/IntroPage.jpg" height="500">
-<img src ="assets/register.jpg" height="500">
-<img src ="assets/login.jpg" height="500">
-<img src ="assets/loginLoading.jpg" height="500">
-<img src ="assets/firstPage.jpg" height="500">
-<img src ="assets/drivers.jpg" height="500">
-<img src ="assets/driverDetails.jpg" height="500">
-<img src ="assets/bookingDetails.jpg" height="500">
-<img src ="assets/bookingDetailErrors.jpg" height="500">
-<img src ="assets/bookingDetailsFilled.jpg" height="500">
-<img src ="assets/payment.jpg" height="500">
-<img src ="assets/sucessMessage.jpg" height="500">
-<img src ="assets/sideBar.jpg" height="500">
-<img src ="assets/offers.jpg" height="500">
-<img src ="assets/paymentDetails.jpg" height="500">
-<img src ="assets/myTrip.jpg" height="500">
-<img src ="assets/myTripDetails.jpg" height="500">
-<img src ="assets/help.jpg" height="500">
-<img src ="assets/notifications.jpg" height="500">
+<img src ="assets/screenshots/splashScreen.jpg" height="500">
+<img src ="assets/screenshots/IntroPage.jpg" height="500">
+<img src ="assets/screenshots/register.jpg" height="500">
+<img src ="assets/screenshots/login.jpg" height="500">
+<img src ="assets/screenshots/loginLoading.jpg" height="500">
+<img src ="assets/screenshots/firstPage.jpg" height="500">
+<img src ="assets/screenshots/drivers.jpg" height="500">
+<img src ="assets/screenshots/driverDetails.jpg" height="500">
+<img src ="assets/screenshots/bookingDetails.jpg" height="500">
+<img src ="assets/screenshots/bookingDetailErrors.jpg" height="500">
+<img src ="assets/screenshots/bookingDetailsFilled.jpg" height="500">
+<img src ="assets/screenshots/payment.jpg" height="500">
+<img src ="assets/screenshots/sucessMessage.jpg" height="500">
+<img src ="assets/screenshots/sideBar.jpg" height="500">
+<img src ="assets/screenshots/offers.jpg" height="500">
+<img src ="assets/screenshots/paymentDetails.jpg" height="500">
+<img src ="assets/screenshots/myTrip.jpg" height="500">
+<img src ="assets/screenshots/myTripDetails.jpg" height="500">
+<img src ="assets/screenshots/help.jpg" height="500">
+<img src ="assets/screenshots/notifications.jpg" height="500">
 </p>
 Drivers Dashboard<br><br>
 <p align="left">
-<img src ="assets/driverDashboard.jpg" height="500">
-<img src ="assets/driverTripDetails.jpg" height="500">
-<img src ="assets/tripSucessDetails.jpg" height="500">
-<img src ="assets/locationUpdateAlert.jpg" height="500">
+<img src ="assets/screenshots/driverDashboard.jpg" height="500">
+<img src ="assets/screenshots/driverTripDetails.jpg" height="500">
+<img src ="assets/screenshots/tripSucessDetails.jpg" height="500">
+<img src ="assets/screenshots/locationUpdateAlert.jpg" height="500">
 
 </p>
 
